@@ -5,6 +5,14 @@ require('dotenv').config();
 
 const User = require('../models/User');
 const  passwordValidator = require('password-validator');
+const { Connection } = require('mongoose');
+const mysql = require('mysql');
+var connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_DATABASE,
+})
 var schema = new passwordValidator();
 
 schema
@@ -39,6 +47,44 @@ exports.signup = (req, res, next) => {
   }
 };
 
+/*exports.getAllUsers = (req, res, next) => {
+  const data = {
+    'error': 1,
+    'users': ""
+  };
+
+  connection.query("SELECT * FROM users", function(err, rows, fields){
+    if (rows.length != 0){
+      data['error'] = 0;
+      data['users'] = rows;
+      console.log(data.users);
+      res.json(data);
+    } else {
+      data['users'] = 'No users found..';
+      res.json(data);
+    }
+  })
+}*/
+
+exports.getAllUsers = (req, res, next) => {
+  const data = {
+    'error': 1,
+    'users': []
+  };
+
+  connection.query("SELECT * FROM users", function(err, rows, fields){
+    if (rows.length != 0){
+      data['error'] = 0;
+      data['users'] = rows;
+      console.log(data.users);
+      res.json(data);
+    } else {
+      data['users'] = 'No users found..';
+      res.json(data);
+    }
+  })
+}
+
 exports.login = (req, res, next) => {
   const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
   if (!mailRegex.test(req.body.email) && req.body.length < 50) {
@@ -68,3 +114,4 @@ exports.login = (req, res, next) => {
   })
   .catch(error => res.status(500).json({ error }));
 };
+

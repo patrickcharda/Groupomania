@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+const User = require('../models/User');
+
 module.exports = (req, res, next) => {
   try {
     console.log('yop'+req.body);
@@ -19,18 +21,23 @@ module.exports = (req, res, next) => {
     console.log('req.body.userId :'+ req.body.userId);
     console.log('req.body.userId :'+ req.body.login);
     console.log('req.params.userId'+ req.params.userId);
-    if (req.body.userId !== userId) {
-      console.log('aie');
-      next(); // le frontend Angular n'envoyant pas le userId dans le body des requêtes on laisse passer qd même :-(
-      //throw 'Invalid user ID';
-    } else {
-      console.log('ok'+req.body.userId);
-      next();
-    }
-  } catch {
+
+    if (req.body.userId && req.body.userId !== userId) {
+      throw 'Invalid user ID';
+    } else { 
+      User.findOne({_id: userId})
+      .then(user => {
+        if (!user) {
+          return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+        } else {console.log('verif ok');next();}
+      })
+    }} 
+    catch {
     res.status(401).json({
       error: new Error('Invalid request!')
     });
   }
 };
+
+
 

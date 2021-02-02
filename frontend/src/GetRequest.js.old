@@ -5,7 +5,7 @@ class GetRequest extends React.Component {
         super(props);
 
         this.state = {
-            sauce: null
+            sauce: [],
         };
     }
 
@@ -13,15 +13,22 @@ class GetRequest extends React.Component {
         // Simple GET request using fetch
         fetch('http://localhost:3000/api/sauces/600aa49bd6d72005dc1caf1b')
             .then(response => response.json())
-            .then(data => this.setState({ sauce: data.name }));
+            .then(data => this.setState({ sauce: data }));
     }
 
+
     render() {
-        const { sauce } = this.state;
+        const {sauce} = this.state;
+        console.log(sauce.usersLiked);
+        
         return (
             <div>
-                <h5>{sauce}</h5>
-                <div>
+                <h5>{sauce.name}</h5>
+                <div>{sauce.description}
+                <ul>
+                
+                {sauce.usersLiked}
+                </ul>
                 </div>
             </div>
         );
