@@ -25,6 +25,38 @@ schema
 
 
 exports.signup = (req, res, next) => {
+  //console.log(req.body.email+req.body.password);
+  const data = {
+    'error': 1,
+    'signup': null
+  };
+  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
+  if (!mailRegex.test(req.body.email) && req.body.length < 50) {
+    return res.status(400).json({message: 'adresse email invalide'});
+  }
+  if (schema.validate(req.body.password)) {
+    const cipherEmail = cryptojs.HmacSHA512(req.body.email, process.env.KEY_CRYPTOJS).toString();
+    bcrypt.hash(req.body.password, 10)
+    .then(hash => {
+      console.log(hash);
+      console.log(cipherEmail);
+      connection.query("INSERT INTO users VALUES('',?,?,'','','')",[cipherEmail, hash], function(err, rows, fields){
+        if (!!err){
+          data['signup'] = err.sqlMessage;
+        } else {
+          data['error'] = 0;
+          data['signup'] = 'user added successfully';
+        }
+        res.json(data);
+      })
+    })
+    .catch(error => res.status(500).json({ error }));
+  } else {
+    return(res.status(400).json({error: 'mot de passe invalide'}));
+  }
+};
+
+/*exports.signup = (req, res, next) => {
   const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
   if (!mailRegex.test(req.body.email) && req.body.length < 50) {
     return res.status(400).json({message: 'adresse email invalide'});
@@ -45,7 +77,7 @@ exports.signup = (req, res, next) => {
   } else {
     return(res.status(400).json({error: 'mot de passe invalide'}));
   }
-};
+};*/
 
 /*exports.getAllUsers = (req, res, next) => {
   const data = {
@@ -71,7 +103,6 @@ exports.getAllUsers = (req, res, next) => {
     'error': 1,
     'users': []
   };
-
   connection.query("SELECT * FROM users", function(err, rows, fields){
     if (rows.length != 0){
       data['error'] = 0;
