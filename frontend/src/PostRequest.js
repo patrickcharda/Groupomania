@@ -14,7 +14,7 @@ class PostRequest extends React.Component {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: 'fanny@free.fr', password: 'Fanny777' })
+            body: JSON.stringify({ email: 'pierre@free.fr', password: 'Pierre777' })
         };
         fetch('http://localhost:3000/api/auth/signup', requestOptions)
             .then(response => response.json())

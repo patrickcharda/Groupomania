@@ -28,7 +28,7 @@ class GetRequest extends React.Component {
                     <ul>
                         {usersList.map(user => (
                             <li>
-                                {user.id} {user.email}
+                                {user.id} <br></br> {user.email}
                             </li>
                         ))}
                     </ul>
