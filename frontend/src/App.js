@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-//import { GetRequest } from './GetRequest';
+import { GetRequest } from './GetRequest';
 //import { PostRequest } from './PostRequest';
 import { PostRequestLogin } from './PostRequestLogin';
 
@@ -21,9 +21,11 @@ function App() {
           Learn React ...
         </a>
       </header>
-      {/*<GetRequest />*/}
+      
       {/*<PostRequest />*/}
       <PostRequestLogin />
+      <GetRequest />
+
     </div>
   );
 }

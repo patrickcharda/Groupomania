@@ -104,6 +104,7 @@ exports.getAllUsers = (req, res, next) => {
     'error': 1,
     'users': []
   };
+  console.log('authentif token ok');
   connection.query("SELECT * FROM user", function(err, rows, fields){
     if (rows.length != 0){
       data['error'] = 0;
@@ -137,7 +138,8 @@ exports.login = (req, res, next) => {
       data['err'] = 'user not found';
       data['user'] = [{email : 'user not found'}];
       //res.status(401).json({ error: 'Utilisateur non trouvé !' });
-      res.json(data);
+      return res.status(401).json({ error: 'login incorrect !', user: [{email : 'Utilisateur non trouvé'}] });
+      //res.json(data);
     } else {
       data['user'] = (result);
       console.log('resultat requete : '+result[0].email);
@@ -145,8 +147,8 @@ exports.login = (req, res, next) => {
       bcrypt.compare(password, result[0].password)
       .then(valid => {
       if (!valid) {
-        console.log('password not matched');
-        return res.status(401).json({ error: 'Mot de passe incorrect !', user: [{email : 'password ko'}] });
+        console.log('password do not matched');
+        return res.status(401).json({ error: 'Mot de passe incorrect !', user: [{email : 'Mot de passe incorrect'}] });
       }
       console.log('password ok');
       res.status(200).json({

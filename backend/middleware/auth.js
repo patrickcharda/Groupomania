@@ -1,7 +1,15 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const User = require('../models/User');
+const mysql = require('mysql');
+var connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_DATABASE,
+})
+
+//const User = require('../models/User');
 
 module.exports = (req, res, next) => {
   try {
@@ -9,35 +17,32 @@ module.exports = (req, res, next) => {
     console.log('yip'+req.params);
     console.log(req.authorization);
     console.log(req.headers);
-    /*var data = req.body;
-    data.forEach(function (item) {
-       console.log(item);
-    });*/
     const token = req.headers.authorization.split(' ')[1];
+    console.log('toktok : '+token);
     const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-    const userId = decodedToken.userId;
-    console.log(userId);
-    
-    console.log('req.body.userId :'+ req.body.userId);
-    console.log('req.body.userId :'+ req.body.login);
-    console.log('req.params.userId'+ req.params.userId);
+    const email = decodedToken.email;
+    console.log('decodedtokenemail : '+email);
+    console.log('req.body.email :'+ req.body.email);
+    //console.log('req.body.userId :'+ req.body.login);
+    console.log('req.params.email'+ req.params.email);
 
-    if (req.body.userId && req.body.userId !== userId) {
+    if (req.body.email && req.body.email !== email) {
       throw 'Invalid user ID';
     } else { 
-      User.findOne({_id: userId})
-      .then(user => {
-        if (!user) {
-          return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+      console.log('ELSE');
+      connection.query(`SELECT email  FROM user WHERE email=?`,email, function(err, result){
+        if (result == 0){
+          console.log('user not in db');
+          data['err'] = 'user not found';
+          data['user'] = [{email : 'user not found'}];
+          //res.status(401).json({ error: 'Utilisateur non trouvé !' });
+          return res.status(401).json({ error: 'login incorrect !', user: [{email : 'Utilisateur non trouvé'}] });
+          //res.json(data);
         } else {console.log('verif ok');next();}
-      })
-    }} 
+      });
+    }}
     catch {
-    res.status(401).json({
+    res.status(407).json({
       error: new Error('Invalid request!')
-    });
-  }
-};
-
-
-
+    })
+}}
