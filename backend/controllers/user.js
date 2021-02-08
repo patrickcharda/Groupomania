@@ -133,7 +133,7 @@ exports.login = (req, res, next) => {
   const password = req.body.password;
   console.log('email login : '+email);
 
-  connection.query(`SELECT email,password  FROM user WHERE email=?`,email, function(err, result){
+  connection.query(`SELECT email, password, id  FROM user WHERE email=?`,email, function(err, result){
     console.log('resultat req sql login : '+result);
     if (!result){
       console.log('erreur !!');
@@ -156,6 +156,7 @@ exports.login = (req, res, next) => {
       res.status(200).json({
         email: email,
         user : [{email : email}],
+        userId : result[0].id,
         token: jwt.sign(
           { email: email },
           process.env.KEY_TOKEN,

@@ -15,22 +15,52 @@ class Display {
         et afficher les posts */
         var bearer = sessionStorage.getItem("bearer");
         if (bearer) {
-            // appeler this.getAllPosts()
+            // afficher les posts
             console.log('token '+bearer);
-            if (this.posthandler.getAllPosts(bearer)) {
-                const posts = sessionStorage.getItem('posts');
+            let posts = sessionStorage.getItem('posts');
+            if (posts) {
                 console.log('allPosts : '+posts);
-                const postsDiv = document.createElement('div');
-                postsDiv.textContent = posts;
+                posts = JSON.parse(posts);
+                console.log('type of posts' + typeof(posts));
+                var postsDiv = document.createElement('div');
+                for (let post of posts) {
+                    console.log(post.content);
+                    const contentTextarea = document.createElement('textarea');
+                    contentTextarea.textContent = post.content;
+                    const userId = sessionStorage.getItem('userId');
+                    console.log(userId);
+                    console.log(post.user_id);
+                    contentTextarea.textContent += ' '+post.user_id+' ';
+                    contentTextarea.textContent += +post.id+' ';
+                    if (userId != post.user_id) {
+                        contentTextarea.setAttribute('readonly', 'true');
+                    }
+                    else {
+                        //le post est modifiable
+                        const modifyButton = document.createElement('button');
+                        modifyButton.setAttribute('id', post.id);
+                        modifyButton.textContent = 'modifier'+post.id;
+                        modifyButton.addEventListener('click', (event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            this.posthandler.modify(post.id, contentTextarea.value);
+                            console.log(contentTextarea.value);
+                        });
+                        postsDiv.appendChild(modifyButton);
+
+                    }
+                    postsDiv.appendChild(contentTextarea);
+                }
+                //postsDiv.textContent = posts;
                 const main= document.getElementById('main');
                 main.appendChild(postsDiv);
             }
             else {
-                //soit pas de post encore, soit autre problème
+                this.posthandler.getAllPosts(bearer);
             }       
         }
         else {
-            // affichier inscription ou login
+            // affichier choix : inscription ou login
             const welcomeDiv = document.createElement('div');
             welcomeDiv.setAttribute('id', 'welcome');
             const loginDiv = document.createElement('div');

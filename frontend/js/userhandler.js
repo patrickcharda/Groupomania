@@ -2,6 +2,13 @@ class Userhandler {
     constructor() {
         this.ajax = new Ajax();
     }
+
+    removeAllChildNodes(parent) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
+
     async login(mail, password) {
         /*const main = document.getElementById('main');
         const divTest = document.createElement('div');
@@ -14,12 +21,12 @@ class Userhandler {
             var response = await Ajax.post(apiUrl, mail, password);
             console.log(response.token);
             sessionStorage.setItem('bearer', response.token);
+            sessionStorage.setItem('userId', response.userId);
             document.location = './index.html';
         }
         catch(e) {
             console.log('dans display : ' +e);
             window.location.href = './warning.html';
-            return;
         }
         
     }
