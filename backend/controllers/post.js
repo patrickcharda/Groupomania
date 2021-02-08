@@ -15,7 +15,7 @@ exports.getAllPosts = (req, res, next) => {
     'posts':[]
   };
   console.log('toto');
-  connection.query("SELECT * FROM post", function(err, rows, fields){
+  connection.query("select p.content, p.date_creation, p.id, p.user_id, u.firstname, u.lastname from post as p inner join user as u on p.user_id = u.id order by p.id desc", function(err, rows, fields){
     if (rows.length != 0){
       data['error'] = 0;
       data['posts'] = rows;

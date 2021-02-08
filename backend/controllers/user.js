@@ -34,6 +34,9 @@ exports.signup = (req, res, next) => {
   if (!mailRegex.test(req.body.email) && req.body.length < 50) {
     return res.status(400).json({message: 'adresse email invalide'});
   }
+  const firstname = req.body.firstname;
+  const lastname = req.body.lastname;
+
   if (schema.validate(req.body.password)) {
     //const cipherEmail = cryptojs.HmacSHA512(req.body.email, process.env.KEY_CRYPTOJS).toString();
     const email = req.body.email;
@@ -41,14 +44,16 @@ exports.signup = (req, res, next) => {
     .then(hash => {
       console.log(hash);
       console.log(email);
-      connection.query("INSERT INTO user VALUES('',?,?,'','','')",[email, hash], function(err, rows, fields){
+      connection.query("INSERT INTO user VALUES('',?,?,?,?,'')",[email, hash, firstname, lastname], function(err, rows, fields){
         if (!!err){
+          console.log('insert ok');
           data['signup'] = err.sqlMessage;
         } else {
           data['error'] = 0;
           data['signup'] = 'user added successfully';
         }
-        res.json(data);
+        //res.json(data);
+        res.status(201).json({ message: 'Utilisateur créé !' });
       })
     })
     .catch(error => res.status(500).json({ error }));
