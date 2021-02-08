@@ -134,7 +134,9 @@ exports.login = (req, res, next) => {
   console.log('email login : '+email);
 
   connection.query(`SELECT email,password  FROM user WHERE email=?`,email, function(err, result){
-    if (result == 0){
+    console.log('resultat req sql login : '+result);
+    if (!result){
+      console.log('erreur !!');
       data['err'] = 'user not found';
       data['user'] = [{email : 'user not found'}];
       //res.status(401).json({ error: 'Utilisateur non trouvé !' });

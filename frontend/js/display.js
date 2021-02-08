@@ -17,7 +17,17 @@ class Display {
         if (bearer) {
             // appeler this.getAllPosts()
             console.log('token '+bearer);
-            this.posthandler.getAllPosts(bearer);
+            if (this.posthandler.getAllPosts(bearer)) {
+                const posts = sessionStorage.getItem('posts');
+                console.log('allPosts : '+posts);
+                const postsDiv = document.createElement('div');
+                postsDiv.textContent = posts;
+                const main= document.getElementById('main');
+                main.appendChild(postsDiv);
+            }
+            else {
+                //soit pas de post encore, soit autre problème
+            }       
         }
         else {
             // affichier inscription ou login
