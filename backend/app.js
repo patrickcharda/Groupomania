@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
+const postRoutes = require('./routes/post');
 const dbAdmin = require('./key');
 const dbKey = dbAdmin.dbKey;
 //const mongoSanitize = require('express-mongo-sanitize');
@@ -61,5 +62,6 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 //app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
+app.use('/api/post', postRoutes);
 
 module.exports = app;

@@ -10,8 +10,8 @@ class Posthandler {
         console.log('mybearer : '+bearer);
         //récupérer les valeurs des champs
         try {
-            let apiUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' )? "http://localhost:3000/api/auth/getAllUsers": "https://bckend.herokuapp.com/api/furniture";
-            var response = await Ajax.get(apiUrl, bearer);
+            let apiUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' )? "http://localhost:3000/api/post/all": "https://bckend.herokuapp.com/api/furniture";
+            var response = await Ajax.getAllPosts(apiUrl, bearer);
             console.log(response);
         }
         catch(e) {

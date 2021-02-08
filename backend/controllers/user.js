@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 //const cryptojs = require('crypto-js');
 require('dotenv').config();
 
-const User = require('../models/User');
+//const User = require('../models/User');
 const  passwordValidator = require('password-validator');
 const { Connection } = require('mongoose');
 const mysql = require('mysql');
