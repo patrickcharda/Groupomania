@@ -2,8 +2,11 @@ const multer = require('multer');
 
 const MIME_TYPES = {
   'image/jpg': 'jpg',
-  'image/jpeg': 'jpg',
-  'image/png': 'png'
+  'image/jpeg': 'jpeg',
+  'image/png': 'png',
+  'image/gif': 'gif',
+  'image/webp': 'webp',
+  'application/pdf': 'pdf',
 };
 
 var maxSize = 1024 * 1024;

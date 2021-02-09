@@ -11,13 +11,24 @@ class Display {
     }
   
     welcome() {
-        /* si localStorage session existe, alors l'utiliser pour le login
-        et afficher les posts */
+        /* si localStorage de session existe, afficher les posts */
         var bearer = sessionStorage.getItem("bearer");
         if (bearer) {
             // afficher les posts
             console.log('token '+bearer);
             let posts = sessionStorage.getItem('posts');
+            const newPostBtn = document.createElement('button');
+            newPostBtn.textContent = 'ajouter un post';
+
+            newPostBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.addPostForm();
+            });
+
+
+            const main= document.getElementById('main');
+            main.appendChild(newPostBtn);
             if (posts) {
                 console.log('allPosts : '+posts);
                 posts = JSON.parse(posts);
@@ -62,7 +73,7 @@ class Display {
                     }
                 }
                 //postsDiv.textContent = posts;
-                const main= document.getElementById('main');
+                
                 main.appendChild(postsDiv);
             }
             else {
@@ -102,7 +113,6 @@ class Display {
 
     loginForm() {
         const main = document.getElementById('main');
-        //main.removeChild(main.firstChild);
         this.removeAllChildNodes(main);
 
         const loginForm = document.createElement('form');
@@ -236,7 +246,64 @@ class Display {
 
         main.appendChild(signupForm);
 
-    } 
+    }
+
+    addPostForm() {
+        const main = document.getElementById('main');
+        this.removeAllChildNodes(main);
+        
+        const newPostForm = document.createElement('form');
+        newPostForm.setAttribute('id', 'newPostForm');
+        newPostForm.setAttribute('method', 'POST');
+        newPostForm.setAttribute('enctype', '"multipart/form-data');
+
+        const formGroupDiv1 = document.createElement('div');
+        formGroupDiv1.setAttribute('class', 'formGroup');
+        
+        const label1 = document.createElement('label');
+        label1.setAttribute('for', 'newContent');
+        label1.textContent = 'contenu : '
+        formGroupDiv1.appendChild(label1);
+
+        const inputContent = document.createElement('input');
+        inputContent.setAttribute('type', 'text');
+        inputContent.setAttribute('id', 'newContent');
+        formGroupDiv1.appendChild(inputContent);
+
+        const formGroupDiv2 = document.createElement('div');
+        formGroupDiv2.setAttribute('class', 'formGroup');
+        
+        const label2 = document.createElement('label');
+        label2.setAttribute('for', 'newFile');
+        label2.textContent = 'ajouter une image : '
+        formGroupDiv2.appendChild(label2);
+
+        const inputFile = document.createElement('input');
+        inputFile.setAttribute('type', 'file');
+        inputFile.setAttribute('id', 'newFile');
+        inputFile.setAttribute('name', 'files[]');
+        inputFile.setAttribute('accept', 'image/*, .pdf');
+        formGroupDiv2.appendChild(inputFile);
+
+        const formGroupDiv3 = document.createElement('div');
+        formGroupDiv3.setAttribute('class', 'formGroup');
+        
+        const button = document.createElement('button');
+        button.setAttribute('id', 'buttonNewPost');
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            this.posthandler.add(inputContent.value);
+        });
+        button.textContent = 'publier';
+        formGroupDiv3.appendChild(button);
+
+        newPostForm.appendChild(formGroupDiv1);
+        newPostForm.appendChild(formGroupDiv2);
+        newPostForm.appendChild(formGroupDiv3);
+
+        main.appendChild(newPostForm);
+    }
 }
 
   

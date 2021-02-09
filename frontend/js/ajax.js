@@ -1,6 +1,5 @@
 class Ajax {
 
-
     static getAllPosts(url, token) {
         return new Promise(function(resolve, reject) {
             var request = new XMLHttpRequest();
@@ -22,6 +21,43 @@ class Ajax {
             request.setRequestHeader("Content-Type", "application/json");
             request.send();
         });
+    }
+
+    static addPost(url, content) {
+        alert(url);
+        /*return new Promise(function(resolve, reject) {
+            var request = new XMLHttpRequest();
+            //console.log(order);
+            request.onreadystatechange = function () {
+                if (this.readyState == XMLHttpRequest.DONE && (this.status == 200 || this.status == 201)) {
+                    var response = JSON.parse(this.responseText);
+                    //alert('echo');
+                    //console.log(response);
+                    resolve(response);
+                } else if (this.readyState == XMLHttpRequest.DONE && (this.status != 200 || this.status != 201)) {
+                    //console.log(this.status);
+                    //console.log('requete order hs');
+                    reject('KO');
+                }
+            };
+            const files = document.querySelector('[type=file]').files;
+
+            for (let i = 0; i < files.length; i++) {
+                let file = files[i]
+            
+                formData.append('files[]', file)
+              }
+            
+            formData.append('content', content);
+            const userId = sessionStorage.getItem('userId');
+            formData.append('userId', userId);
+            request.open("POST", url);
+            request.setRequestHeader(
+                "Authorization", "Bearer " + token
+            );
+            request.setRequestHeader("Content-Type", "application/json");
+            request.send(JSON.stringify({body: formData}));
+        });*/
     }
     
     static get(url, token) {

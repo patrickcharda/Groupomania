@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fs = require('fs');
 
 
 const mysql = require('mysql');
@@ -29,6 +30,30 @@ exports.getAllPosts = (req, res, next) => {
     }
   })
 }
+
+exports.newPost = (req, res, next) => {
+  console.log('ça passe');
+  //console.log(req.body.email+req.body.password);
+  const data = {
+    'error': 1,
+    'newPost': null
+  };
+  const userId = req.body.userId;
+  const content = req.body.content;
+  const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+  connection.query(`INSERT INTO post VALUES('',?,?,?,?)`,[userId, Date.now(), content, imageUrl], function(err, rows, fields){
+    if (!!err){
+      console.log('insert ok');
+      data['newPost'] = err.sqlMessage;
+    } else {
+      data['error'] = err.sqlMessage;;
+      data['newPost'] = 'user added successfully';
+    }
+  });
+    //res.json(data);
+    res.status(201).json({ message: 'Post créé !' }); 
+}
+
 
 
 

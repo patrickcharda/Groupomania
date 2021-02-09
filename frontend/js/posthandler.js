@@ -29,12 +29,30 @@ class Posthandler {
             window.location.href = './warning.html';
         }
     }
-    getAllPost(bearer) {
-        console.log(bearer);
-    }
 
-    modify(postId, postContent) {
+
+    async modify(postId, postContent) {
         return;
     }
 
+    async add(content) {
+        console.log(content);
+        try {
+            let apiUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' )? "http://localhost:3000/api/post/new": "https://bckend.herokuapp.com/api/furniture";
+
+            var response = await Ajax.addPost(apiUrl, content);
+            //const test = sessionStorage.getItem('posts');
+            //console.log(test);
+            //return true;
+            document.location = './index.html';
+        }
+        catch(e) {
+            console.log('dans display : ' +e);
+            window.location.href = './warning.html';
+        }
+    }        
 }
+
+
+
+
