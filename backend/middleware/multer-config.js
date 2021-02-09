@@ -5,8 +5,7 @@ const MIME_TYPES = {
   'image/jpeg': 'jpeg',
   'image/png': 'png',
   'image/gif': 'gif',
-  'image/webp': 'webp',
-  'application/pdf': 'pdf',
+  'image/webp': 'webp'
 };
 
 var maxSize = 1024 * 1024;

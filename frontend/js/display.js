@@ -81,7 +81,7 @@ class Display {
             }       
         }
         else {
-            // affichier choix : inscription ou login
+            // afficher choix : inscription ou login
             const welcomeDiv = document.createElement('div');
             welcomeDiv.setAttribute('id', 'welcome');
             const loginDiv = document.createElement('div');
@@ -249,6 +249,8 @@ class Display {
     }
 
     addPostForm() {
+        var bearer = sessionStorage.getItem("bearer");
+        console.log(bearer);
         const main = document.getElementById('main');
         this.removeAllChildNodes(main);
         
@@ -270,7 +272,7 @@ class Display {
         inputContent.setAttribute('id', 'newContent');
         formGroupDiv1.appendChild(inputContent);
 
-        const formGroupDiv2 = document.createElement('div');
+        /*const formGroupDiv2 = document.createElement('div');
         formGroupDiv2.setAttribute('class', 'formGroup');
         
         const label2 = document.createElement('label');
@@ -283,7 +285,7 @@ class Display {
         inputFile.setAttribute('id', 'newFile');
         inputFile.setAttribute('name', 'files[]');
         inputFile.setAttribute('accept', 'image/*, .pdf');
-        formGroupDiv2.appendChild(inputFile);
+        formGroupDiv2.appendChild(inputFile);*/
 
         const formGroupDiv3 = document.createElement('div');
         formGroupDiv3.setAttribute('class', 'formGroup');
@@ -293,13 +295,13 @@ class Display {
         button.addEventListener('click', (event) => {
             event.preventDefault();
             event.stopPropagation();
-            this.posthandler.add(inputContent.value);
+            this.posthandler.addPost(bearer, inputContent.value);
         });
         button.textContent = 'publier';
         formGroupDiv3.appendChild(button);
 
         newPostForm.appendChild(formGroupDiv1);
-        newPostForm.appendChild(formGroupDiv2);
+        //newPostForm.appendChild(formGroupDiv2);
         newPostForm.appendChild(formGroupDiv3);
 
         main.appendChild(newPostForm);

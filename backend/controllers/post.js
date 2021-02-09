@@ -1,5 +1,6 @@
 require('dotenv').config();
 const fs = require('fs');
+const Post = require('../models/Post');
 
 
 const mysql = require('mysql');
@@ -10,7 +11,17 @@ var connection = mysql.createConnection({
   database: process.env.DB_DATABASE,
 })
 
-exports.getAllPosts = (req, res, next) => {
+exports.getAllPosts = (req, res) => {
+  Post.getAllPosts(function(err, posts) {
+
+    console.log('controller')
+    if (err)
+      res.send(err);
+      console.log('res', posts);
+    res.json(posts);
+  });
+};
+/*exports.getAllPosts = (req, res, next) => {
   const data = {
     'error': 1,
     'posts':[]
@@ -29,19 +40,26 @@ exports.getAllPosts = (req, res, next) => {
       res.json(data);
     }
   })
-}
+}*/
 
 exports.newPost = (req, res, next) => {
-  console.log('ça passe');
-  //console.log(req.body.email+req.body.password);
   const data = {
     'error': 1,
-    'newPost': null
+    'created':true
   };
-  const userId = req.body.userId;
+
+  console.log(req.body);
+  /*const userId = req.body.userId;
   const content = req.body.content;
-  const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-  connection.query(`INSERT INTO post VALUES('',?,?,?,?)`,[userId, Date.now(), content, imageUrl], function(err, rows, fields){
+  const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;*/
+  //const userId = '8';
+  //const content = 'test';
+  //const date = String.toStringDate.now();
+  //console.log(date);
+  //const imageUrl = 'http://blabla/images/test.jpg';
+  //console.log(imageUrl+' '+req.body.content+' '+userId);
+
+  /*connection.query(`INSERT INTO post VALUES('',?,?,?,?)`,[userId, date, content, imageUrl], function(err, rows, fields){
     if (!!err){
       console.log('insert ok');
       data['newPost'] = err.sqlMessage;
@@ -49,9 +67,8 @@ exports.newPost = (req, res, next) => {
       data['error'] = err.sqlMessage;;
       data['newPost'] = 'user added successfully';
     }
-  });
-    //res.json(data);
-    res.status(201).json({ message: 'Post créé !' }); 
+  });*/
+    res.json(data); 
 }
 
 

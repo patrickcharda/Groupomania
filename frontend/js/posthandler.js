@@ -12,10 +12,11 @@ class Posthandler {
         //récupérer les valeurs des champs
         //var posts = [];
         try {
-            let apiUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' )? "http://localhost:3000/api/post/all": "https://bckend.herokuapp.com/api/furniture";
+            const apiUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' )? "http://localhost:3000/api/post/all": "https://bckend.herokuapp.com/api/furniture";
             var response = await Ajax.getAllPosts(apiUrl, bearer);
-            console.log('response.posts : '+response.posts[0].content);   
-            var posts = JSON.stringify(response.posts);
+            //console.log('response.posts : '+response.posts[0].content);
+            console.log(response);   
+            var posts = JSON.stringify(response);
             console.log(typeof(posts));
             sessionStorage.setItem('posts', posts);
             //const test = sessionStorage.getItem('posts');
@@ -35,12 +36,16 @@ class Posthandler {
         return;
     }
 
-    async add(content) {
+    async addPost(bearer, content) {
         console.log(content);
+        console.log(bearer);
+        this.content = content;
+        this.bearer = bearer;
         try {
-            let apiUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' )? "http://localhost:3000/api/post/new": "https://bckend.herokuapp.com/api/furniture";
-
-            var response = await Ajax.addPost(apiUrl, content);
+            const apiUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' )? "http://localhost:3000/api/post/newone": "https://bckend.herokuapp.com/api/furniture";
+            console.log(apiUrl);
+            var response = await Ajax.addPost(apiUrl, this.bearer, this.content);
+            console.log(response);
             //const test = sessionStorage.getItem('posts');
             //console.log(test);
             //return true;
@@ -48,7 +53,7 @@ class Posthandler {
         }
         catch(e) {
             console.log('dans display : ' +e);
-            window.location.href = './warning.html';
+            //window.location.href = './warning.html';
         }
     }        
 }

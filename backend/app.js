@@ -8,7 +8,7 @@ const postRoutes = require('./routes/post');
 const dbAdmin = require('./key');
 const dbKey = dbAdmin.dbKey;
 //const mongoSanitize = require('express-mongo-sanitize');
-const mysql = require('mysql');
+
 const cors = require("cors");
 require('dotenv').config();
 
@@ -21,12 +21,20 @@ const app = express();
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 */
 
-/*var connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_DATABASE,
-})*/
+const mysql = require('mysql');
+require('dotenv').config();
+
+var conn = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DATABASE,
+});
+
+conn.connect(function(err) {
+    if (err) throw err;
+});
+
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
