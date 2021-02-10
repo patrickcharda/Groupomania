@@ -3,16 +3,16 @@ const jwt = require('jsonwebtoken');
 //const cryptojs = require('crypto-js');
 require('dotenv').config();
 
-//const User = require('../models/User');
+const User = require('../models/User');
 const  passwordValidator = require('password-validator');
-const { Connection } = require('mongoose');
-const mysql = require('mysql');
+//const { Connection } = require('mongoose');
+/*const mysql = require('mysql');
 var connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_DATABASE,
-})
+})*/
 var schema = new passwordValidator();
 
 schema
@@ -23,15 +23,43 @@ schema
 .has().digits(2)                                // Must have at least 2 digits
 .has().not().spaces();                          // no space
 
+exports.signup = (req, res) => {
+  var newUser = new User(req.body);
+  // handles null errors
+  if(!newUser.email || !newUser.password || !newUser.firstname || !newUser.lastname) {
+    res.status(400).json({ error: true, message: 'formulaire incomplet'});
+  }
+  //checks 
+  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
+  if (!mailRegex.test(newUser.email) || newUser.email.length > 50) {
+    console.log('error: ', 'adresse email invalide');
+    res.status(400).json({ error: true, message: 'formulaire incomplet'});
+  }
 
-exports.signup = (req, res, next) => {
-  //console.log(req.body.email+req.body.password);
+  if (!schema.validate(newUser.password)) {
+    res.status(400).json({ error: true, message: 'formulaire incomplet'});
+  }
+
+  bcrypt.hash(req.body.password, 10)
+  .then(hash => {
+    newUser.password = hash;
+  })
+  .then(
+    User.signup(newUser, function(err, user) {
+    if (err)
+      res.send(err);
+    res.json(user);
+  }));
+}
+
+/*
+exports.signup = (req, res) => {
   const data = {
     'error': 1,
     'signup': null
   };
   const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
-  if (!mailRegex.test(req.body.email) && req.body.length < 50) {
+  if (!mailRegex.test(req.body.email) || req.body.email.length > 50) {
     return res.status(400).json({message: 'adresse email invalide'});
   }
   const firstname = req.body.firstname;
@@ -61,10 +89,13 @@ exports.signup = (req, res, next) => {
     return(res.status(400).json({error: 'mot de passe invalide'}));
   }
 };
+*/
 
-/*exports.signup = (req, res, next) => {
+/* //version de signup avec masquage adresse email en bdd
+exports.signup = (req, res, next) => {
+  console.log(req.body.email.length);
   const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
-  if (!mailRegex.test(req.body.email) && req.body.length < 50) {
+  if (!mailRegex.test(req.body.email) || req.body.email.length > 50) {
     return res.status(400).json({message: 'adresse email invalide'});
   }
   if (schema.validate(req.body.password)) {

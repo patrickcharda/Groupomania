@@ -3,18 +3,16 @@ const fs = require('fs');
 const Post = require('../models/Post');
 
 
-const mysql = require('mysql');
+/*const mysql = require('mysql');
 var connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_DATABASE,
-})
+})*/
 
 exports.getAllPosts = (req, res) => {
   Post.getAllPosts(function(err, posts) {
-
-    console.log('controller')
     if (err)
       res.send(err);
       console.log('res', posts);
