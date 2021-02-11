@@ -97,7 +97,7 @@ exports.getAllUsers = (req, res) => {
   })
 }
 
-exports.login = (req, res) => {
+/*exports.login = (req, res) => {
   //console.log(req.body.email+req.body.password);
   const data = {
     'error': 1,
@@ -145,10 +145,46 @@ exports.login = (req, res) => {
         })
     }
   })
-};
+};*/
+exports.login = async(req, res) => {
+  // handles errors
+  if(!req.body.email || !req.body.password) {
+    res.status(400).json({ error: true, message: 'formulaire incomplet'});
+  }
+  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
+  if (!mailRegex.test(req.body.email) && req.body.length < 50) {
+    return res.status(400).json({message: 'adresse email invalide'});
+  }
 
-
-
-
-
-
+  var user = {...req.body};
+  User.login(user, async function(err, userFound) {
+    if (err) {
+      res.send(err);
+    } else {
+      const passIsOk = await bcrypt.compare(user.password, userFound[0].password)
+        .then(valid => {
+        if (!valid) {
+          //console.log('password do not matched');
+          return false;
+        } else {
+          return true;
+        }
+      })
+      if (passIsOk) {
+        //console.log('pass ok');
+        res.status(200).json({
+          email: userFound[0].email,
+          user : [{email : userFound[0].email}],
+          userId : userFound[0].id,
+          role: userFound[0].role,
+          token: jwt.sign(
+            { email: userFound[0].email },
+            process.env.KEY_TOKEN,
+            { expiresIn: '24h' }
+          )
+          });
+      }
+    }
+  });
+}
+  

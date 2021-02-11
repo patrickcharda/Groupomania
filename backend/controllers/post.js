@@ -40,7 +40,7 @@ exports.getAllPosts = (req, res) => {
   })
 }*/
 
-exports.newPost = (req, res, next) => {
+exports.newPost = (req, res) => {
   const data = {
     'error': 1,
     'created':true
