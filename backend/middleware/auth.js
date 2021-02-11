@@ -13,8 +13,8 @@ var connection = mysql.createConnection({
 
 module.exports = (req, res, next) => {
   try {
-    console.log('yop'+req.body);
-    console.log('yip'+req.params);
+    //console.log('yop'+req.body);
+    //console.log('yap'+req.params);
     console.log(req.authorization);
     console.log(req.headers);
     const token = req.headers.authorization.split(' ')[1];

@@ -40,6 +40,51 @@ exports.getAllPosts = (req, res) => {
   })
 }*/
 
+exports.delete = (req, res) => {
+  console.log('loggedId '+req.body.userLoggedId);
+  console.log('publisherId '+req.params.publisherId);
+  console.log('post id '+req.params.id);
+  //le propriétaire du post peut le supprimer
+  if (req.body.userLoggedId == req.params.publisherId) {
+    Post.delete(req.params.id, req.params.publisherId, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found post with id ${req.params.id}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Could not delete user with id " + req.params.id
+          });
+        }
+      } else res.send({ message: `Post was deleted successfully!` });
+    });
+  } else {
+    res.status(500).send({
+      message: "Could not delete a user that is not you " + req.params.id
+    });
+  }
+};
+
+exports.deleteByAdmin = (req, res) => {
+  console.log('loggedId '+req.body.userLoggedId);
+  console.log('publisherId '+req.params.publisherId);
+  console.log('post id '+req.params.id);
+  Post.delete(req.params.id, req.params.publisherId, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found post with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete user with id " + req.params.id
+        });
+      }
+    } else res.send({ message: `Post was deleted successfully!` });
+  });
+};
+
 exports.newPost = (req, res) => {
   const data = {
     'error': 1,

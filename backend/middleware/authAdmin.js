@@ -41,6 +41,8 @@ module.exports = (req, res, next) => {
         } else {
           console.log('verif ok');
           console.log(result[0].id);
+          req.body.userLoggedId = result[0].id;
+          req.body.admin = true;
           next();
         }
       });

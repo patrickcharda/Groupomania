@@ -21,4 +21,23 @@ Post.getAllPosts = function(result) {
     });   
 };
 
+Post.delete = (postId, publisherId,  result) => {
+    sql.query(`DELETE FROM post WHERE id = ? AND user_id = ?`,[postId, publisherId], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+  
+      if (res.affectedRows == 0) {
+        // not found post with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+  
+      console.log("deleted post with id: ", postId);
+      result(null, res);
+    });
+  };
+
 module.exports= Post;
