@@ -37,7 +37,7 @@ User.login = function(user, result) {
 }
 
 User.delete = (id, result) => {
-  sql.query("DELETE FROM user WHERE id = ?", id, (err, res) => {
+  sql.query(`DELETE FROM user WHERE id = ?`,id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);

@@ -21,35 +21,7 @@ schema
 .has().digits(2)                                // Must have at least 2 digits
 .has().not().spaces();                          // no space
 
-/*exports.signup = (req, res) => {
-  var newUser = new User(req.body);
-  // handles null errors
-  if(!newUser.email || !newUser.password || !newUser.firstname || !newUser.lastname) {
-    res.status(400).json({ error: true, message: 'formulaire incomplet'});
-  }
-  //checks 
-  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
-  if (!mailRegex.test(newUser.email) || newUser.email.length > 50) {
-    console.log('error: ', 'adresse email invalide');
-    res.status(400).json({ error: true, message: 'formulaire incomplet'});
-  }
 
-  if (!schema.validate(newUser.password)) {
-    res.status(400).json({ error: true, message: 'formulaire incomplet'});
-  }
-
-  bcrypt.hash(req.body.password, 10)
-  .then(hash => {
-    newUser.password = hash;
-    newUser.role = 'user';
-  })
-  .then(
-    User.signup(newUser, function(err, user) {
-    if (err)
-      res.send(err);
-    res.json(user);
-  }));
-}*/
 exports.signup = async(req, res) => {
 
   // handles null errors
@@ -97,55 +69,6 @@ exports.getAllUsers = (req, res) => {
   })
 }
 
-/*exports.login = (req, res) => {
-  //console.log(req.body.email+req.body.password);
-  const data = {
-    'error': 1,
-    'login': null
-  };
-  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
-  if (!mailRegex.test(req.body.email) && req.body.length < 50) {
-    return res.status(400).json({message: 'adresse email invalide'});
-  }
-  const email = req.body.email;
-  const password = req.body.password;
-  console.log('email login : '+email);
-
-  connection.query(`SELECT email, password, id, role  FROM user WHERE email=?`,email, function(err, result){
-    console.log('resultat req sql login : '+result);
-    if (!result){
-      console.log('erreur !!');
-      data['err'] = 'user not found';
-      data['user'] = [{email : 'user not found'}];
-      //res.status(401).json({ error: 'Utilisateur non trouvé !' });
-      return res.status(401).json({ error: 'login incorrect !', user: [{email : 'Utilisateur non trouvé'}] });
-      //res.json(data);
-    } else {
-      data['user'] = (result);
-      console.log('resultat requete : '+result[0].email);
-      //res.json(data);
-      bcrypt.compare(password, result[0].password)
-      .then(valid => {
-      if (!valid) {
-        console.log('password do not matched');
-        return res.status(401).json({ error: 'Mot de passe incorrect !', user: [{email : 'Mot de passe incorrect'}] });
-      }
-      console.log('password ok');
-      res.status(200).json({
-        email: email,
-        user : [{email : email}],
-        userId : result[0].id,
-        role: result[0].role,
-        token: jwt.sign(
-          { email: email },
-          process.env.KEY_TOKEN,
-          { expiresIn: '24h' }
-        )
-        });
-        })
-    }
-  })
-};*/
 exports.login = async(req, res) => {
   // handles errors
   if(!req.body.email || !req.body.password) {
@@ -187,4 +110,21 @@ exports.login = async(req, res) => {
     }
   });
 }
+
+exports.delete = (req, res) => {
+  User.delete(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found user with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete user with id " + req.params.id
+        });
+      }
+    } else res.send({ message: `User was deleted successfully!` });
+  });
+};
+
   
