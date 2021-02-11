@@ -1,18 +1,16 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-//const cryptojs = require('crypto-js');
 require('dotenv').config();
 
 const User = require('../models/User');
 const  passwordValidator = require('password-validator');
-//const { Connection } = require('mongoose');
-/*const mysql = require('mysql');
+const mysql = require('mysql');
 var connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_DATABASE,
-})*/
+})
 var schema = new passwordValidator();
 
 schema
@@ -23,7 +21,7 @@ schema
 .has().digits(2)                                // Must have at least 2 digits
 .has().not().spaces();                          // no space
 
-exports.signup = (req, res) => {
+/*exports.signup = (req, res) => {
   var newUser = new User(req.body);
   // handles null errors
   if(!newUser.email || !newUser.password || !newUser.firstname || !newUser.lastname) {
@@ -43,6 +41,7 @@ exports.signup = (req, res) => {
   bcrypt.hash(req.body.password, 10)
   .then(hash => {
     newUser.password = hash;
+    newUser.role = 'user';
   })
   .then(
     User.signup(newUser, function(err, user) {
@@ -50,92 +49,36 @@ exports.signup = (req, res) => {
       res.send(err);
     res.json(user);
   }));
+}*/
+exports.signup = async(req, res) => {
+
+  // handles null errors
+  if(!req.body.email || !req.body.password || !req.body.firstname || !req.body.lastname) {
+    res.status(400).json({ error: true, message: 'formulaire incomplet'});
+  }
+  var user = {...req.body};
+  //checks 
+  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
+  if (!mailRegex.test(user.email) || user.email.length > 50) {
+    console.log('error: ', 'adresse email invalide');
+    res.status(400).json({ error: true, message: 'formulaire incomplet'});
+  }
+  if (!schema.validate(user.password)) {
+    res.status(400).json({ error: true, message: 'formulaire incomplet'});
+  }
+
+  const hash = await bcrypt.hash(user.password, 10);
+  user.password = hash;
+  user.role = 'user';
+
+  User.signup(user, function(err, user) {
+    if (err)
+      res.send(err);
+    res.json(user);
+  })
 }
 
-/*
-exports.signup = (req, res) => {
-  const data = {
-    'error': 1,
-    'signup': null
-  };
-  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
-  if (!mailRegex.test(req.body.email) || req.body.email.length > 50) {
-    return res.status(400).json({message: 'adresse email invalide'});
-  }
-  const firstname = req.body.firstname;
-  const lastname = req.body.lastname;
-
-  if (schema.validate(req.body.password)) {
-    //const cipherEmail = cryptojs.HmacSHA512(req.body.email, process.env.KEY_CRYPTOJS).toString();
-    const email = req.body.email;
-    bcrypt.hash(req.body.password, 10)
-    .then(hash => {
-      console.log(hash);
-      console.log(email);
-      connection.query("INSERT INTO user VALUES('',?,?,?,?,'')",[email, hash, firstname, lastname], function(err, rows, fields){
-        if (!!err){
-          console.log('insert ok');
-          data['signup'] = err.sqlMessage;
-        } else {
-          data['error'] = 0;
-          data['signup'] = 'user added successfully';
-        }
-        //res.json(data);
-        res.status(201).json({ message: 'Utilisateur créé !' });
-      })
-    })
-    .catch(error => res.status(500).json({ error }));
-  } else {
-    return(res.status(400).json({error: 'mot de passe invalide'}));
-  }
-};
-*/
-
-/* //version de signup avec masquage adresse email en bdd
-exports.signup = (req, res, next) => {
-  console.log(req.body.email.length);
-  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
-  if (!mailRegex.test(req.body.email) || req.body.email.length > 50) {
-    return res.status(400).json({message: 'adresse email invalide'});
-  }
-  if (schema.validate(req.body.password)) {
-    const cipherEmail = cryptojs.HmacSHA512(req.body.email, process.env.KEY_CRYPTOJS).toString();
-    bcrypt.hash(req.body.password, 10)
-    .then(hash => {
-      const user = new User({
-      email: cipherEmail,
-      password: hash
-      });
-      user.save()
-      .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-      .catch(error => res.status(400).json({ error }));
-    })
-    .catch(error => res.status(500).json({ error }));
-  } else {
-    return(res.status(400).json({error: 'mot de passe invalide'}));
-  }
-};*/
-
-/*exports.getAllUsers = (req, res, next) => {
-  const data = {
-    'error': 1,
-    'users': ""
-  };
-
-  connection.query("SELECT * FROM users", function(err, rows, fields){
-    if (rows.length != 0){
-      data['error'] = 0;
-      data['users'] = rows;
-      console.log(data.users);
-      res.json(data);
-    } else {
-      data['users'] = 'No users found..';
-      res.json(data);
-    }
-  })
-}*/
-
-exports.getAllUsers = (req, res, next) => {
+exports.getAllUsers = (req, res) => {
   const data = {
     'error': 1,
     'users': []
@@ -154,7 +97,7 @@ exports.getAllUsers = (req, res, next) => {
   })
 }
 
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
   //console.log(req.body.email+req.body.password);
   const data = {
     'error': 1,
@@ -164,12 +107,11 @@ exports.login = (req, res, next) => {
   if (!mailRegex.test(req.body.email) && req.body.length < 50) {
     return res.status(400).json({message: 'adresse email invalide'});
   }
-  //const cipherEmail = cryptojs.HmacSHA512(req.body.email, process.env.KEY_CRYPTOJS).toString();
   const email = req.body.email;
   const password = req.body.password;
   console.log('email login : '+email);
 
-  connection.query(`SELECT email, password, id  FROM user WHERE email=?`,email, function(err, result){
+  connection.query(`SELECT email, password, id, role  FROM user WHERE email=?`,email, function(err, result){
     console.log('resultat req sql login : '+result);
     if (!result){
       console.log('erreur !!');
@@ -193,6 +135,7 @@ exports.login = (req, res, next) => {
         email: email,
         user : [{email : email}],
         userId : result[0].id,
+        role: result[0].role,
         token: jwt.sign(
           { email: email },
           process.env.KEY_TOKEN,
@@ -204,61 +147,8 @@ exports.login = (req, res, next) => {
   })
 };
 
-  /*User.findOne({ email: email })
-  .then(user => {
-    if (!user) {
-      return res.status(401).json({ error: 'Utilisateur non trouvé !' });
-    }
-    bcrypt.compare(req.body.password, user.password)
-    .then(valid => {
-      if (!valid) {
-        return res.status(401).json({ error: 'Mot de passe incorrect !' });
-      }
-    res.status(200).json({
-    userId: user._id,
-    token: jwt.sign(
-      { userId: user._id },
-      process.env.KEY_TOKEN,
-      { expiresIn: '24h' }
-    )
-    });
-    })
-    .catch(error => res.status(500).json({ error }));
-  })
-  .catch(error => res.status(500).json({ error }));
-};*/
 
 
 
-/*exports.login = (req, res, next) => {
-  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,7}$/i;
-  if (!mailRegex.test(req.body.email) && req.body.length < 50) {
-    return res.status(400).json({message: 'adresse email invalide'});
-  }
-  //const cipherEmail = cryptojs.HmacSHA512(req.body.email, process.env.KEY_CRYPTOJS).toString();
-  const email = req.body.email;
 
-  User.findOne({ email: email })
-  .then(user => {
-    if (!user) {
-      return res.status(401).json({ error: 'Utilisateur non trouvé !' });
-    }
-    bcrypt.compare(req.body.password, user.password)
-    .then(valid => {
-      if (!valid) {
-        return res.status(401).json({ error: 'Mot de passe incorrect !' });
-      }
-    res.status(200).json({
-    userId: user._id,
-    token: jwt.sign(
-      { userId: user._id },
-      process.env.KEY_TOKEN,
-      { expiresIn: '24h' }
-    )
-    });
-    })
-    .catch(error => res.status(500).json({ error }));
-  })
-  .catch(error => res.status(500).json({ error }));
-};*/
 

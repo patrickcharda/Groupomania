@@ -1,4 +1,5 @@
 var sql = require('./db.js');
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const  passwordValidator = require('password-validator');
@@ -9,6 +10,7 @@ var User = function(user) {
     this.password = user.password;
     this.firstname = user.firstname;
     this.lastname = user.lastname;
+    this.role = user.role;
 }
 
 User.signup = function(newUser, result) {
@@ -23,16 +25,24 @@ User.signup = function(newUser, result) {
   })
 }
 
+User.delete = (id, result) => {
+  sql.query("DELETE FROM user WHERE id = ?", id, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    if (res.affectedRows == 0) {
+      // not found user with the id
+      result({ kind: "not_found" }, null);
+      return;
+    }
+
+    console.log("deleted user with id: ", id);
+    result(null, res);
+  });
+};
+
 module.exports= User;
 
-/*const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
-
-const userSchema = mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
-});
-
-userSchema.plugin(uniqueValidator);
-
-module.exports = mongoose.model('User', userSchema);*/

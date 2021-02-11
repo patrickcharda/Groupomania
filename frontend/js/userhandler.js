@@ -20,6 +20,7 @@ class Userhandler {
             let apiUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' )? "http://localhost:3000/api/auth/login": "https://bckend.herokuapp.com/api/furniture";
             var response = await Ajax.post(apiUrl, mail, password);
             console.log(response.token);
+            console.log(response);
             sessionStorage.setItem('bearer', response.token);
             sessionStorage.setItem('userId', response.userId);
             document.location = './index.html';
