@@ -30,7 +30,7 @@ module.exports = (req, res, next) => {
       throw 'Invalid user ID';
     } else { 
       console.log('ELSE');
-      connection.query(`SELECT email,role  FROM user WHERE email=? AND role=?`,[email, 'admin'], function(err, result){
+      connection.query(`SELECT email,role,id  FROM user WHERE email=? AND role=?`,[email, 'admin'], function(err, result){
         if (result == 0){
           console.log('user not in db');
           data['err'] = 'user not found';
@@ -38,7 +38,11 @@ module.exports = (req, res, next) => {
           //res.status(401).json({ error: 'Utilisateur non trouvé !' });
           return res.status(401).json({ error: 'login incorrect !', user: [{email : 'Utilisateur non trouvé'}] });
           //res.json(data);
-        } else {console.log('verif ok');next();}
+        } else {
+          console.log('verif ok');
+          console.log(result[0].id);
+          next();
+        }
       });
     }}
     catch {

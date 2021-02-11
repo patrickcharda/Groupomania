@@ -112,19 +112,26 @@ exports.login = async(req, res) => {
 }
 
 exports.delete = (req, res) => {
-  User.delete(req.params.id, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found user with id ${req.params.id}.`
-        });
-      } else {
-        res.status(500).send({
-          message: "Could not delete user with id " + req.params.id
-        });
-      }
-    } else res.send({ message: `User was deleted successfully!` });
-  });
+  console.log('loggedId '+req.body.userLoggedId);
+  if (req.body.userLoggedId == req.params.id) {
+    User.delete(req.params.id, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found user with id ${req.params.id}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Could not delete user with id " + req.params.id
+          });
+        }
+      } else res.send({ message: `User was deleted successfully!` });
+    });
+  } else {
+    res.status(500).send({
+      message: "Could not delete a user that is not you " + req.params.id
+    });
+  }
 };
 
   
