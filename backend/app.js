@@ -6,6 +6,7 @@ const adminRoutes = require('./routes/admin');
 const postRoutes = require('./routes/post');
 const dbAdmin = require('./key');
 const dbKey = dbAdmin.dbKey;
+
 //const mongoSanitize = require('express-mongo-sanitize');
 
 const cors = require("cors");
@@ -34,7 +35,6 @@ conn.connect(function(err) {
     if (err) throw err;
 });
 
-
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -44,8 +44,9 @@ app.use((req, res, next) => {
 
 /*app.use(cors());*/
 
-//app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({limit: '2Mb'}));
+
 
 /* app.use((req, res, next) => {
   var data = req.params;

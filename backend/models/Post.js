@@ -40,4 +40,16 @@ Post.delete = (postId, publisherId,  result) => {
     });
   };
 
+Post.create = (post, result) => {
+  sql.query("INSERT INTO post set?", post, function (err, res) {
+    if(err) {
+      console.log("error: ", err);
+      result(err, null);
+    }
+    else {
+      console.log(res.insertId);
+      result(null, res.insertId);
+    }
+  });
+}
 module.exports= Post;

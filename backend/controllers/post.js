@@ -1,6 +1,7 @@
 require('dotenv').config();
 const fs = require('fs');
 const Post = require('../models/Post');
+const uploadFile = require('../middleware/multer-config');
 
 
 /*const mysql = require('mysql');
@@ -19,26 +20,6 @@ exports.getAllPosts = (req, res) => {
     res.json(posts);
   });
 };
-/*exports.getAllPosts = (req, res, next) => {
-  const data = {
-    'error': 1,
-    'posts':[]
-  };
-  console.log('toto');
-  connection.query("select p.content, p.date_creation, p.id, p.user_id, u.firstname, u.lastname from post as p inner join user as u on p.user_id = u.id order by p.id desc", function(err, rows, fields){
-    if (rows.length != 0){
-      data['error'] = 0;
-      data['posts'] = rows;
-      console.log(data.posts);
-      console.log(rows);
-      res.json(data);
-    } else {
-      data['posts'] = 'No post found..';
-      console.log(data.posts);
-      res.json(data);
-    }
-  })
-}*/
 
 exports.delete = (req, res) => {
   console.log('loggedId '+req.body.userLoggedId);
@@ -85,34 +66,108 @@ exports.deleteByAdmin = (req, res) => {
   });
 };
 
-exports.newPost = (req, res) => {
-  const data = {
-    'error': 1,
-    'created':true
-  };
+/*exports.create = async (req, res) => {
+  //validate request
+  try {
+    
+    await uploadFile(req, res);
 
-  console.log(req.body);
-  /*const userId = req.body.userId;
-  const content = req.body.content;
-  const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;*/
-  //const userId = '8';
-  //const content = 'test';
-  //const date = String.toStringDate.now();
-  //console.log(date);
-  //const imageUrl = 'http://blabla/images/test.jpg';
-  //console.log(imageUrl+' '+req.body.content+' '+userId);
+    console.log('req.body :'+req.body);
+    const prePost = undefined;
 
-  /*connection.query(`INSERT INTO post VALUES('',?,?,?,?)`,[userId, date, content, imageUrl], function(err, rows, fields){
-    if (!!err){
-      console.log('insert ok');
-      data['newPost'] = err.sqlMessage;
-    } else {
-      data['error'] = err.sqlMessage;;
-      data['newPost'] = 'user added successfully';
+    if (req.file == undefined && req.body == undefined) {
+      return res.status(400).send({ message: "Empty post!" });
+      //prePost.image_url = '';
     }
-  });*/
-    res.json(data); 
+
+    console.log('body content :'+req.body.content);
+    if (!req.body) {
+      console.log('vide');
+      prePost.content ='';
+      prePost.image_url = req.file.originalname;
+    } else {
+      prePost.content = req.body.content;
+      prePost.image_url = '';
+    }
+    prePost.user_id = req.body.userLoggedId;
+
+    //const post = new Post(prePost);
+    Post.create(prePost, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while creating the Post."
+        });
+      else res.send(data);
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: `Could not create post / ${err}`,
+    });
+  }
+}*/
+exports.create = async (req, res) => {
+
+  if (req.body.userLoggedId === undefined || req.body.userLoggedId === null) {
+    res.status(400).send({
+      message: `no user id in req`
+    });
+  } else {
+    req.body.user_id = req.body.userLoggedId;
+    console.log('mycontent :'+req.body.content);
+    var prePost = {
+      'user_id': req.body.user_id
+    }
+    console.log('prepostcontent :'+prePost.content+' prepostid :'+prePost.user_id);
+    try {
+      await uploadFile(req, res);
+      prePost.image_url = req.file.filename;
+      console.log('mycontent2 :'+req.body.content);
+      prePost.content = req.body.content;
+      
+      Post.create(prePost, function (err, post) {
+        if (err)
+          res.send(err);
+        res.json(post);
+      });
+    }
+    catch (err) {
+      res.status(500).send({
+        message: `Could not create post / ${err}`,
+      });
+    }
+  }
 }
+
+
+exports.createSauce = (req, res, next) => {
+  let scriptRegex = /<|>/;
+  if (scriptRegex.test(req.body.sauce)) {
+    //console.log(req.body.sauce);
+    return res.status(401).json({message: `signes < et > interdits`});
+  };
+  console.log(req.body.sauce);
+  const sauceObject = JSON.parse(req.body.sauce);
+  if (sauceObject.name.length > 50 || sauceObject.manufacturer.length > 30 || 
+    sauceObject.description.length > 1000 || sauceObject.mainPepper.length > 100 ) {
+      return res.status(401).json({message: `name 50 caracteres max, manufacturer 30, description 1000, et mainpepper 100`});
+    }
+
+    if (sauceObject._id) {
+      delete sauceObject._id;
+    }
+    const sauce = new Sauce({
+      ...sauceObject,
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+      likes: 0,
+      dislikes: 0,
+      usersLiked: [],
+      usersDisliked: []
+    });
+    sauce.save()
+    .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
+    .catch(error => res.status(400).json({ error }));
+};
 
 
 
