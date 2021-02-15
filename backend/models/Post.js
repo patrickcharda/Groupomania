@@ -52,4 +52,19 @@ Post.create = (post, result) => {
     }
   });
 }
+
+Post.update = async (post, result) => {
+  console.log(post.content+ ' '+post.image_url+' '+post.user_id+' '+post.id);
+  sql.query(" UPDATE post SET content=?, image_url=?, user_id=? WHERE id=?", [post.content, post.image_url, post.user_id, post.id], function (err, res) {
+    if(err) {
+      console.log("error: ", err);
+      result(err, null);
+    }
+    else {
+      console.log('affected rows :'+res.affectedRows);
+      result(null, res.affectedRows);
+    }
+  });
+}
+
 module.exports= Post;

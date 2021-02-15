@@ -2,15 +2,42 @@ require('dotenv').config();
 const fs = require('fs');
 const Post = require('../models/Post');
 const uploadFile = require('../middleware/multer-config');
+const util = require("util");
 
-
-/*const mysql = require('mysql');
+const mysql = require('mysql');
+const { resolve } = require('path');
 var connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_DATABASE,
-})*/
+})
+
+var prePost = {};
+var postInDB = {};
+function getAPostQuery(sql, postInDB) {
+  return new Promise(resolve => {
+    //let foundPostBeforeUpdate = getAPostQuery(sql, postBeforeUpdate);
+  connection.query(sql,[postInDB.id, postInDB.user_id], (error, results) => {
+    if (error) {
+      return(error);
+    } else {
+      if (results.length === 1) {
+        console.log(results[0].content);
+        console.log(results[0].image_url);
+        console.log('foundpost content + image_url:'+ results[0].content+' '+ results[0].image_url);
+        postInDB.content = results[0].content;
+        postInDB.image_url = results[0].image_url;
+        prePost.user_id = postInDB.user_id;
+        prePost.id = postInDB.id;
+        console.log('prePost user_id :'+prePost.user_id);
+        console.log('prePost id :'+prePost.id);
+        resolve(postInDB, prePost);
+        }
+      }
+    }); 
+  })
+}
 
 exports.getAllPosts = (req, res) => {
   Post.getAllPosts(function(err, posts) {
@@ -119,17 +146,35 @@ exports.create = async (req, res) => {
       'user_id': req.body.user_id
     }
     console.log('prepostcontent :'+prePost.content+' prepostid :'+prePost.user_id);
+    
     try {
       await uploadFile(req, res);
-      prePost.image_url = req.file.filename;
-      console.log('mycontent2 :'+req.body.content);
-      prePost.content = req.body.content;
+      if (req.file !== undefined) {
+        console.log(req.file);
+        prePost.image_url = req.file.filename;
+      } else { 
+        console.log('no file');
+        prePost.image_url = '';
+      }
       
-      Post.create(prePost, function (err, post) {
-        if (err)
-          res.send(err);
-        res.json(post);
-      });
+      console.log('mycontent2 :'+req.body.content);
+      if (req.body.content !== undefined) {
+        prePost.content = req.body.content;
+      } else {
+        prePost.content = '';
+      }
+     
+      if (prePost.image_url === '' && prePost.content === '') {
+        res.status(400).send({
+          message: `Un post doit contenir au moins une image ou un texte`
+        });
+      } else {
+        Post.create(prePost, function (err, post) {
+          if (err)
+            res.send(err);
+          res.json(post);
+        });
+      }
     }
     catch (err) {
       res.status(500).send({
@@ -139,38 +184,93 @@ exports.create = async (req, res) => {
   }
 }
 
-
-exports.createSauce = (req, res, next) => {
-  let scriptRegex = /<|>/;
-  if (scriptRegex.test(req.body.sauce)) {
-    //console.log(req.body.sauce);
-    return res.status(401).json({message: `signes < et > interdits`});
-  };
-  console.log(req.body.sauce);
-  const sauceObject = JSON.parse(req.body.sauce);
-  if (sauceObject.name.length > 50 || sauceObject.manufacturer.length > 30 || 
-    sauceObject.description.length > 1000 || sauceObject.mainPepper.length > 100 ) {
-      return res.status(401).json({message: `name 50 caracteres max, manufacturer 30, description 1000, et mainpepper 100`});
-    }
-
-    if (sauceObject._id) {
-      delete sauceObject._id;
-    }
-    const sauce = new Sauce({
-      ...sauceObject,
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-      likes: 0,
-      dislikes: 0,
-      usersLiked: [],
-      usersDisliked: []
+exports.update = async (req, res) => {
+  // on récupère le user id depuis auth
+  if (req.body.userLoggedId === undefined || req.body.userLoggedId === null) {
+    res.status(400).send({
+      message: `pb de user id`
     });
-    sauce.save()
-    .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
-    .catch(error => res.status(400).json({ error }));
-};
+  } else {
+  req.body.user_id = req.body.userLoggedId;
+  console.log('post publisher id :'+req.body.user_id);
+  // on paramètre la requête pour retrouver le post
+  postInDB.user_id = req.body.user_id;
+  postInDB.id = req.params.id;
+  console.log('post id :' +postInDB.id+' post user id :'+postInDB.user_id);
+  const sql = `SELECT * FROM post WHERE post.id=? and post.user_id=? LIMIT 1`;
+  
+  await getAPostQuery(sql, postInDB);
+    console.log('toto le héros');
+  await uploadFile(req, res);
+    console.log(req.body.content);
+    if (req.file !== undefined) {
+    console.log(req.file.filename);
+    prePost.image_url = req.file.filename;
+    console.log('prePost.image_ulr : '+prePost.image_url);
+  } else { 
+    console.log('no file');
+    prePost.image_url = postInDB.image_url;
+    console.log('prePost.image_ulr : '+prePost.image_url);
+  }
+    console.log('body content :' +req.body.content);
+  if (req.body.content !== postInDB.content) {
+    prePost.content = req.body.content;
+    console.log('prePost.content :'+prePost.content);
+  }   
+  await Post.update(prePost, function(err, post) {
+    if (err)
+      res.send(err);
+        res.json(post);
+    });
+  }
+}
+ 
+            
+
+
+/*var getAPostQueryPromise = util.promisify(this.getAPostQuery);*/
 
 
 
+    //console.log('prepostcontent :'+prePost.content+' prepostid :'+prePost.user_id);
+    
 
-
+/*
+    try {
+      await uploadFile(req, res);
+      if (req.file !== undefined) {
+        console.log(req.file);
+        prePost.image_url = req.file.filename;
+      } else { 
+        console.log('no file');
+        prePost.image_url = '';
+      }
+      
+      console.log('mycontent2 :'+req.body.content);
+      if (req.body.content !== undefined) {
+        prePost.content = req.body.content;
+      } else {
+        prePost.content = '';
+      }
+     
+      if (prePost.image_url === '' && prePost.content === '') {
+        res.status(400).send({
+          message: `Un post doit contenir au moins une image ou un texte`
+        });
+      } else {
+        Post.update(prePost, function (err, post) {
+          if (err)
+            res.send(err);
+          res.json(post);
+        });
+      }
+    }
+    catch (err) {
+      res.status(500).send({
+        message: `Could not create post / ${err}`,
+      });
+    }
+  }
+}
+*/
 

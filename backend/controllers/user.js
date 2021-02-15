@@ -58,9 +58,10 @@ exports.getAllUsers = (req, res) => {
   console.log('authentif token ok');
   connection.query("SELECT * FROM user", function(err, rows, fields){
     if (rows.length != 0){
-      data['error'] = 0;
+      data['error'] = err;
       data['users'] = rows;
       console.log(data.users);
+      console.log(fields);
       res.json(data);
     } else {
       data['users'] = 'No users found..';
