@@ -205,7 +205,7 @@ class Display {
         formGroupDiv4.setAttribute('class', 'formGroup');
         
         const label4 = document.createElement('label');
-        label4.setAttribute('for', 'userFistname');
+        label4.setAttribute('for', 'userFirstname');
         label4.textContent = ' Prénom : '
         formGroupDiv4.appendChild(label4);
 
