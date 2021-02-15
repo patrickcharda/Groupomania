@@ -32,7 +32,11 @@ function getAPostQuery(sql, postInDB) {
         prePost.id = postInDB.id;
         console.log('prePost user_id :'+prePost.user_id);
         console.log('prePost id :'+prePost.id);
-        resolve(postInDB, prePost);
+        const response = {
+          'postInDB':postInDB,
+          'prePost':prePost
+        }
+        resolve(response);
         }
       }
     }); 
@@ -199,78 +203,69 @@ exports.update = async (req, res) => {
   console.log('post id :' +postInDB.id+' post user id :'+postInDB.user_id);
   const sql = `SELECT * FROM post WHERE post.id=? and post.user_id=? LIMIT 1`;
   
-  await getAPostQuery(sql, postInDB);
-    console.log('toto le héros');
+  var test = await getAPostQuery(sql, postInDB);
+
   await uploadFile(req, res);
     console.log(req.body.content);
     if (req.file !== undefined) {
-    console.log(req.file.filename);
+      console.log(req.file.filename);
+    //suppression ancien fichier image
+      if (test.postInDB.image_url !== undefined || test.postInDB.image_url !== '') {
+        console.log('fic a suppr :'+ test.postInDB.image_url);
+        fs.unlink(`images/${test.postInDB.image_url}`, (err => {
+          if (err) console.log(err);
+          else {
+            console.log('Deleted file : '+test.postInDB.image_url);
+          }
+        }));
+      }
     prePost.image_url = req.file.filename;
     console.log('prePost.image_ulr : '+prePost.image_url);
-  } else { 
-    console.log('no file');
-    prePost.image_url = postInDB.image_url;
-    console.log('prePost.image_ulr : '+prePost.image_url);
-  }
+    } else { 
+      if (req.body.img_remove != 'true') {
+        console.log('no file');
+        prePost.image_url = postInDB.image_url;
+        console.log('prePost.image_ulr : '+prePost.image_url);
+      } else {
+        prePost.image_url ='';
+        if (test.postInDB.image_url !='') {
+          fs.unlink(`images/${test.postInDB.image_url}`, (err => {
+            if (err) console.log(err);
+            else {
+              console.log('Deleted file : '+test.postInDB.image_url);
+            }
+          }));
+        }
+      }
+    }
     console.log('body content :' +req.body.content);
-  if (req.body.content !== postInDB.content) {
-    prePost.content = req.body.content;
-    console.log('prePost.content :'+prePost.content);
-  }   
-  await Post.update(prePost, function(err, post) {
-    if (err)
-      res.send(err);
-        res.json(post);
-    });
+    if (req.body.content !== postInDB.content) {
+      prePost.content = req.body.content;
+      console.log('prePost.content :'+prePost.content);
+    }
+    if ((prePost.content == undefined || prePost.content =='') && (prePost.image_url =='' || prePost.image_url == undefined)) {
+      Post.delete(prePost.id, prePost.user_id, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Not found post with id ${req.params.id}.`
+            });
+          } else {
+            res.status(500).send({
+              message: "Could not delete user with id " + req.params.id
+            });
+          }
+        } else res.send({ message: `Post was deleted successfully!` });
+      });
+    } else {
+      await Post.update(prePost, function(err, post) {
+        if (err)
+          res.send(err);
+            res.json(post);
+        });
+    }
   }
 }
  
-            
 
-
-/*var getAPostQueryPromise = util.promisify(this.getAPostQuery);*/
-
-
-
-    //console.log('prepostcontent :'+prePost.content+' prepostid :'+prePost.user_id);
-    
-
-/*
-    try {
-      await uploadFile(req, res);
-      if (req.file !== undefined) {
-        console.log(req.file);
-        prePost.image_url = req.file.filename;
-      } else { 
-        console.log('no file');
-        prePost.image_url = '';
-      }
-      
-      console.log('mycontent2 :'+req.body.content);
-      if (req.body.content !== undefined) {
-        prePost.content = req.body.content;
-      } else {
-        prePost.content = '';
-      }
-     
-      if (prePost.image_url === '' && prePost.content === '') {
-        res.status(400).send({
-          message: `Un post doit contenir au moins une image ou un texte`
-        });
-      } else {
-        Post.update(prePost, function (err, post) {
-          if (err)
-            res.send(err);
-          res.json(post);
-        });
-      }
-    }
-    catch (err) {
-      res.status(500).send({
-        message: `Could not create post / ${err}`,
-      });
-    }
-  }
-}
-*/
 

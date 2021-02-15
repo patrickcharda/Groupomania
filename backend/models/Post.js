@@ -21,7 +21,7 @@ Post.getAllPosts = function(result) {
     });   
 };
 
-Post.delete = (postId, publisherId,  result) => {
+Post.delete = (postId, publisherId, result) => {
     sql.query(`DELETE FROM post WHERE id = ? AND user_id = ?`,[postId, publisherId], (err, res) => {
       if (err) {
         console.log("error: ", err);
