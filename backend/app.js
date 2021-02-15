@@ -4,6 +4,7 @@ const path = require('path');
 const userRoutes = require('./routes/user');
 const adminRoutes = require('./routes/admin');
 const postRoutes = require('./routes/post');
+const commentRoutes = require('./routes/comment');
 const dbAdmin = require('./key');
 const dbKey = dbAdmin.dbKey;
 
@@ -47,7 +48,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({limit: '2Mb'}));
 
-
 /* app.use((req, res, next) => {
   var data = req.params;
   console.log('typeof' +typeof data);
@@ -72,5 +72,6 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', userRoutes);
 app.use('/api/authadmin', adminRoutes);
 app.use('/api/post', postRoutes);
+app.use('/api/comment', commentRoutes);
 
 module.exports = app;

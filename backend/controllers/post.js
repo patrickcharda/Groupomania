@@ -46,7 +46,7 @@ function getAPostQuery(sql, postInDB) {
 function getAPostQueryByAdmin(sql, postInDB) {
   return new Promise(resolve => {
     //let foundPostBeforeUpdate = getAPostQuery(sql, postBeforeUpdate);
-  connection.query(sql,[postInDB.id], (error, results) => {
+  connection.query(sql,[postInDB.id, postInDB.user_id], (error, results) => {
     if (error) {
       return(error);
     } else {
@@ -373,6 +373,7 @@ exports.updateByAdmin = async (req, res) => {
     }
   }
 }
+
 
 
  
