@@ -1,44 +1,49 @@
+<!--
+
+    Installer le projet.
+    Penser à faire npm update / install
+
+    Pour lancer le serveur, aller dans server\JWDP5 et taper :
+    node server
+    Backend dispo ici : http://localhost:3000/api/teddies
+                        http://localhost:3000/api/teddies/5be9c8541c9d440000665243
+
+    Fronted dispo ici : file:///D:/Web/Wamp/www/OC/DWOrinoco/index.html
+
+-->
 <!DOCTYPE html>
-<html lang="fr">
-  <head>
-	  <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Forum Groupomania">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Raleway&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap" rel="stylesheet">
-    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
-    <link rel="stylesheet" type="text/css" href="./scss/style.css">
-    <title>Groupomania</title>
-  </head>
-  <body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Orinoco</title>
+    <link rel="stylesheet" href="./scss/style.css">
+    <script src="js/config.js"></script>
+    <script src="js/model.js"></script>
+    <script src="js/views/abstractView.js"></script>
+    <script src="js/views/viewFactory.js"></script>
+    <script src="js/views/errorView.js"></script>
+    <script src="js/views/listProductView.js"></script>
+    <script src="js/views/DetailProductView.js"></script>
+    <script src="js/views/cartView.js"></script>
+    <script src="js/views/loginView.js"></script>
+    <script src="js/controller.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body>
     <header>
-      <br>
-      My beautiful header !
-      <br><br>
+        <a href="index.html">
+            <img src="img/groupomania.png" alt="Groupomania logo">
+        </a>
+        <!--<a onclick="router.execute('showCart')" class="canBeClicked">Panier</a>-->
     </header>
-
-    <main id='main'>
-
-
+    
+    <main>
+        <div id="container">
+        </div>
     </main>
 
-    <footer>
-      <br>
-      My beautiful footer !
-
-    </footer>
-    
-    
-    <script src="https://kit.fontawesome.com/8c9711250f.js" crossorigin="anonymous"></script>
-    <script src="./js/ajax.js"></script>
-    <script src="./js/userhandler.js"></script>
-    <script src="./js/posthandler.js"></script>
-    <script src="./js/display.js"></script>
-    <script>
-      let display = new Display();
-      display.welcome();
-    </script>
-  </body>
+</body>
 </html>
