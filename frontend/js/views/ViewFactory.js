@@ -1,8 +1,8 @@
 // Ici, on transforme la vue en abstract view qui va contenir la base
-// De quoi stocker les variables, de quoi faire le rempalcement 
+// De quoi stocker les variables, de quoi faire le remplacement 
 // automatique, ainsi que la methode render. 
 // Puis chaque vue (une par page) aura le détail du contenu.
-// Une foisl e systeme mis en place, ca devrait aller vite...
+// Une fois le systeme mis en place, ca devrait aller vite...
 
 class ViewFactory {
 
@@ -18,10 +18,12 @@ class ViewFactory {
                 return new DetailProductView();
             case "cart":
                 return new CartView();
-            case "login":
-                return new LoginView();
             case "error":
                 return new ErrorView();
+            case "login":
+                return new LoginView();
+            case "allPostsView":
+                return new AllPostsView();
             default:
                 throw new TypeError(`La vue (${viewName} n'existe pas.`);
         }

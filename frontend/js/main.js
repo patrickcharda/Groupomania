@@ -6,8 +6,13 @@
 const router = new Router();
 
 // Lancement de la premiere page. 
-    //router.execute("showListProduct");
-router.execute("showLogin");
+
+let isLogged = localStorage.getItem('token');
+if (!isLogged) {
+    router.execute("showLogin");
+} else {
+    router.execute("showRecentPosts")
+}
 
 
 // Astuce : pour afficher un console.log en couleur. 

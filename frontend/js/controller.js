@@ -8,9 +8,27 @@ class Controller {
         this.panier = [];
     }
 
-    async showLogin() {
+    showLogin() {
         let loginView = ViewFactory.getView("login");
         loginView.render();
+    }
+
+    async showLogged() {
+        // Amélioration : passer un nom pour reconnaitre l'arg qui va bien ? 
+        let email = this.args[0];
+        console.log(email);
+        let password = this.args[1];
+        console.log(password);
+        let userLogged = await Model.login(BASE_URL + "/auth/login", email, password);
+        this.showPosts(userLogged);
+    }
+
+    async showPosts(userLogged) {
+        let token = userLogged.token;
+        let postsView = ViewFactory.getView("allPostsView");
+        postsView.addVariable("token", userLogged.token);
+        postsView.addVariable("role", userLogged.role);
+        postsView.render();
     }
 
     /**

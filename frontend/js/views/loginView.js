@@ -1,29 +1,56 @@
 class LoginView extends AbstractView {
 
+    constructor() {
+        super();
+        this.container = document.getElementById(CONTAINER_ID); 
+    }
+
     render() {
+
+        this.cleanContainer();
         
-        let content = 
-            `<form id='loginForm' method='post'>
+        let content = `<form id="loginForm" method="post">
                 <div class='formGroup'>
-                    <label for='userEmail'>
+                    <label for="userEmail">
                         Adresse de messagerie
                     </label>
-                    <input type='email' id='userEmail' required maxlength="50" minlenght="8">
+                    <input type="email" id="userEmail" required maxlength="50" minlenght="8">
                 </div>
-                <div class='formGroup'>
-                    <label for='userPassword'>
+                <div class="formGroup">
+                    <label for="userPassword">
                         Mot de passe
                     </label>
-                    <input type='password' id='userPassword' required maxlength="16" minlength="8">
+                    <input type="password" id="userPassword" required maxlength="16" minlength="8">
                 </div>
-                <div class='formGroup'>
-                    <button id="btnNewUser">
+                <div class="formGroup">
+                    <button type="submit" id="btnNewUser" form='loginForm'>
                         ok
                     </button>
                 </div>
-            </form> `;
+            </form>`;
         
         this.display(content);
+
+        this.formSubmit();
     }
+
+    display(content) {
+        this.container.innerHTML += content;
+    }
+
+    formSubmit() {
+        const form = document.getElementById('loginForm');
+        console.log(form.id);
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const email = document.getElementById('userEmail');
+            console.log(email.value)
+            const password = document.getElementById('userPassword');
+            console.log(password.value);
+            router.execute('showLogged', email.value, password.value);
+        })
+    }
+   
 
 }

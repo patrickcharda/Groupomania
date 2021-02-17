@@ -1,7 +1,7 @@
 /**
  * Le routeur de l'application. 
  * 
- * C'est lui qui décide quel controlleur lancer en fonction de la page qu'on lui a demandé d'afficher. 
+ * C'est lui qui décide quel controleur lancer en fonction de la page qu'on lui a demandé d'afficher. 
  */
 class Router {
 
@@ -22,13 +22,17 @@ class Router {
         // Try catch global pour bien attraper les erreurs/exceptions qui peuvent se produire dans le model. 
         try {
             switch (page) {
+                case "showListProduct":
+                    // A noter la présence du "await" pour permettre au "catch" de fonctionner. 
+                    await controller.showListProduct();
+                    break;
+
                 case "showLogin":
                     await controller.showLogin();
                     break;
 
-                /*case "showListProduct":
-                    // A noter la présence du "await" pour permettre au "catch" de fonctionner. 
-                    await controller.showListProduct();
+                case "showLogged":
+                    await controller.showLogged();
                     break;
 
                 case "showDetail":
@@ -49,7 +53,7 @@ class Router {
 
                 case "command":
                     await controller.command();
-                    break;*/
+                    break;
 
                 default:
                     controller.showError("Route inconnue : " + page);
