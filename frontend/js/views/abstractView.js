@@ -35,7 +35,7 @@ class AbstractView {
     }
 
     /**
-     * Cette méthode est celle a appeler pour générer l'affichage. 
+     * Cette méthode est celle à appeler pour générer l'affichage. 
      * 
      * Doit être évidement être appelée uniquement depuis les classes filles. 
      */

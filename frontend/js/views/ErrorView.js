@@ -1,14 +1,21 @@
 class ErrorView extends AbstractView {
 
+    constructor() {
+        super();
+        this.container = document.getElementById(CONTAINER_ID); 
+    }
     /**
      * Affichage des messages d'erreur. 
      */
     render() {
+
+        this.cleanContainer();
+
         let errorMessage = this.getVariable("errorMessage");
         
         let content = `
             <div class="erreur">
-                <div>Un problème s'est produit, veuillez ressayer utlérieurment.</div>
+                <div>Un problème s'est produit, veuillez ressayer ultérieurment.</div>
                 <div class="erreurMessage">${errorMessage}</div>
             </div>
         `;

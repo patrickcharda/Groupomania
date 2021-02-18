@@ -62,4 +62,46 @@ class Model {
             throw new Error(`Fetch catch : ${error}`);
         });
     }
+
+    static getPosts(url, user) {
+        return fetch(url,
+            { 
+                method: 'GET',
+                headers: { 
+                    "Content-type": "application/json; charset=UTF-8",
+                    "Authorization": "Bearer "+ user.token
+                }    
+            })
+            .then(function(httpBodyResponse) {
+                if (httpBodyResponse.ok) {
+                    return httpBodyResponse.json();
+                } else {
+                    throw new Error(`${httpBodyResponse.status} - ${httpBodyResponse.statusText}`);
+                }
+            })
+            .catch((error) => {
+                throw new Error(`Fetch catch : ${error}`);
+            });
+    }
+
+    static deletePost(url, user) {
+        return fetch(url,
+            { 
+                method: 'DELETE',
+                headers: { 
+                    "Content-type": "application/json; charset=UTF-8",
+                    "Authorization": "Bearer "+ user.token
+                }    
+            })
+            .then(function(httpBodyResponse) {
+                if (httpBodyResponse.ok) {
+                    return httpBodyResponse.json();
+                } else {
+                    throw new Error(`${httpBodyResponse.status} - ${httpBodyResponse.statusText}`);
+                }
+            })
+            .catch((error) => {
+                throw new Error(`Fetch catch : ${error}`);
+            });
+    }
 }

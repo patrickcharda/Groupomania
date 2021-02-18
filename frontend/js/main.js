@@ -7,11 +7,15 @@ const router = new Router();
 
 // Lancement de la premiere page. 
 
-let isLogged = localStorage.getItem('token');
-if (!isLogged) {
+let isLogged = JSON.parse(localStorage.getItem('user'));
+//console.log('isLogged :'+isLogged);
+//console.log('email :'+isLogged.email+' password: '+isLogged.password);
+if (isLogged == null) {
     router.execute("showLogin");
 } else {
-    router.execute("showRecentPosts")
+    console.log('email :'+isLogged.email+' token: '+isLogged.token
+                +' id:'+isLogged.userId+' role :'+isLogged.role);
+    router.execute("showPosts");
 }
 
 

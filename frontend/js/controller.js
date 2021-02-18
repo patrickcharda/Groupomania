@@ -16,19 +16,85 @@ class Controller {
     async showLogged() {
         // Amélioration : passer un nom pour reconnaitre l'arg qui va bien ? 
         let email = this.args[0];
-        console.log(email);
+        console.log('arg1 :'+email); 
         let password = this.args[1];
-        console.log(password);
+        console.log('arg2 :'+password);
+        try {
         let userLogged = await Model.login(BASE_URL + "/auth/login", email, password);
+        console.log('retour login bck :' +userLogged.token);
         this.showPosts(userLogged);
+        }
+        catch {
+            let errorView = ViewFactory.getView("error");
+            errorView.render();
+        }
     }
 
     async showPosts(userLogged) {
-        let token = userLogged.token;
-        let postsView = ViewFactory.getView("allPostsView");
-        postsView.addVariable("token", userLogged.token);
-        postsView.addVariable("role", userLogged.role);
-        postsView.render();
+        var user = '';
+        if (userLogged == undefined) {
+            console.log('undefined');
+            user = JSON.parse(localStorage.getItem("user"));
+            console.log(user);
+        }
+        else {
+            let token = userLogged.token;
+            let role = userLogged.role;
+            let userId = userLogged.userId;
+            let email = userLogged.email;
+            console.log(token);
+            user = {
+            "userId": userId,
+            "role": role,
+            "token": token,
+            "email": email
+            }
+            localStorage.setItem('user', JSON.stringify(user));
+        }
+        try {
+            let allPosts = await Model.getPosts(BASE_URL + "/post/all", user);
+            /*console.log('hasStorage :'+isLogged.hasStorage);
+            if (isLogged.hasStorage == undefined) {
+                localStorage.setItem('user', JSON.stringify(user));
+            }*/
+            //localStorage.setItem('user', JSON.stringify(user));
+            //console.log(allposts);
+            let allPostsView = ViewFactory.getView("allPostsView");
+
+            allPostsView.addVariable("allPosts", allPosts);
+            //allPostsView.addVariable("token", token);
+            //allPostsView.addVariable("role", userLogged.role);
+            //allPostsView.addVariable("userId", userLogged.userId);
+
+            allPostsView.render();
+            }
+            catch {
+                let errorView = ViewFactory.getView("error");
+                errorView.render();
+            }
+        
+    }
+
+    async showDeletePost() {
+        let postId = this.args[0];
+        let userId = this.args[1];
+        let user = JSON.parse(localStorage.getItem('user'));
+        console.log('post to delete'+postId);
+        console.log('publisher of the post to delete :'+userId);
+        console.log('user from storage, role :'+user.role);
+        try {
+            let messageResult = await Model.deletePost(BASE_URL +`/post/${postId}/${userId}/delete`, user);
+            console.log(messageResult);
+            if (messageResult.message === "Post was deleted successfully!") {
+                console.log('oyé');
+                let nodeToDelete = document.getElementById("card"+postId);
+                nodeToDelete.parentNode.removeChild(nodeToDelete);
+            }
+        }
+        catch {
+            let errorView = ViewFactory.getView("error");
+            errorView.render();
+        }
     }
 
     /**

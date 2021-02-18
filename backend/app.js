@@ -15,13 +15,6 @@ require('dotenv').config();
 
 const app = express();
 
-/*mongoose.connect(`mongodb+srv://${dbKey.login}:${dbKey.password}@${process.env.DB_CLUSTER}/${process.env.DB_NAME}?retryWrites=true&w=majority`,  
-    { useNewUrlParser: true,
-    useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
-*/
-
 const mysql = require('mysql');
 require('dotenv').config();
 

@@ -34,6 +34,14 @@ class Router {
                 case "showLogged":
                     await controller.showLogged();
                     break;
+                
+                case "showPosts":
+                    await controller.showPosts();
+                    break;
+                
+                case "showDeletePost":
+                    await controller.showDeletePost();
+                    break;
 
                 case "showDetail":
                     await controller.showDetail();
