@@ -27,10 +27,11 @@ class AllPostsView extends AbstractView {
         
         await this.display(content);
         
-        for (let i = 0; i < this.eventsTab.length; i++) {
+        this.addPostDeleteEvents();
+        /*for (let i = 0; i < this.eventsTab.length; i++) {
             console.log(this.eventsTab[i].postId);
             this.addPostDeleteEvent(this.eventsTab[i].postId, this.eventsTab[i].userId);
-        }
+        }*/
     } 
 
     renderOnePost(currentPost, user) {
@@ -59,14 +60,32 @@ class AllPostsView extends AbstractView {
         this.container.innerHTML += content;
     }
 
+    addPostDeleteEvents () {
+
+        for (let i = 0; i < this.eventsTab.length; i++) {
+            console.log(this.eventsTab[i].postId);
+            this.addPostDeleteEvent(this.eventsTab[i].postId, this.eventsTab[i].userId);
+        }
+    } 
+
+
     addPostDeleteEvent(postId, userId) {
         const link = document.getElementById(postId);
-        console.log(link.getAttribute('admin'));
-        console.log('link id :'+link.id);
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            router.execute('showDeletePost', postId, userId);
-        });
+        console.log(link);
+        let isAdmin = link.getAttribute('admin');
+        console.log('link admin :'+ isAdmin);
+        if (isAdmin == "false") {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                router.execute('showDeletePost', postId, userId);
+            })
+        } else {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                router.execute('showDeletePostByAdmin', postId, userId);
+            })
+        }
     }
 }

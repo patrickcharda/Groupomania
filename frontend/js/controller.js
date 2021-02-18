@@ -97,6 +97,28 @@ class Controller {
         }
     }
 
+    async showDeletePostByAdmin() {
+        let postId = this.args[0];
+        let userId = this.args[1];
+        let user = JSON.parse(localStorage.getItem('user'));
+        console.log('post to delete'+postId);
+        console.log('publisher of the post to delete :'+userId);
+        console.log('user from storage, role :'+user.role);
+        try {
+            let messageResult = await Model.deletePost(BASE_URL +`/post/${postId}/${userId}/deleteByAdmin`, user);
+            console.log(messageResult);
+            if (messageResult.message === "Post was deleted successfully!") {
+                console.log('oyo');
+                let nodeToDelete = document.getElementById("card"+postId);
+                nodeToDelete.parentNode.removeChild(nodeToDelete);
+            }
+        }
+        catch {
+            let errorView = ViewFactory.getView("error");
+            errorView.render();
+        }
+    }
+
     /**
      * Méthode qui gère la page de la liste des produits
      */

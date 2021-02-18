@@ -24,7 +24,7 @@ module.exports = (req, res, next) => {
     console.log('decodedtokenemail : '+email);
     console.log('req.body.email :'+ req.body.email);
     //console.log('req.body.userId :'+ req.body.login);
-    console.log('req.params.email'+ req.params.email);
+    //console.log('req.params.email'+ req.params.email);
 
     if (req.body.email && req.body.email !== email) {
       throw 'Invalid user ID';
