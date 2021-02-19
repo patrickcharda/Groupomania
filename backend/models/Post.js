@@ -47,6 +47,7 @@ Post.create = (post, result) => {
       result(err, null);
     }
     else {
+      //console.log(res);
       console.log(res.insertId);
       result(null, res.insertId);
     }

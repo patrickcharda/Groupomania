@@ -14,7 +14,7 @@ class AllPostsView extends AbstractView {
         //const role = this.getVariable("role");
         //const userId = this.getVariable("userId");
         const allPosts = this.getVariable("allPosts");
-        const user = JSON.parse(localStorage.getItem('user'));
+        var user = JSON.parse(localStorage.getItem('user'));
         console.log(user);
 
         //let content = `test ${token} ${role} ${userId} ${allPosts.length} ${user.role}`;
@@ -22,15 +22,13 @@ class AllPostsView extends AbstractView {
         `<div id="newPost"> ${user.firstname} ${user.lastname}
             <form id="newPostForm" enctype="multipart/form-data" method="post">
                 <div class='formGroup'>
-                    <label for="content">
-                    </label>
                     <input type="text" id="content" name="content" maxlength="254" placeholder="Exprimez-vous !">
                 </div>
                 <div class="formGroup">
                     <input type="file" id="image" name="image">
                 </div>
                 <div class="formGroup">
-                    <button type="submit" id="btnNewPost" form='newPostForm';>
+                    <button type="submit" id="btnNewPost" form='newPostForm'>
                         ok
                     </button>
                 </div>
@@ -46,7 +44,7 @@ class AllPostsView extends AbstractView {
         
         await this.display(content);
         
-        this.addPostDeleteEvents();
+        this.addPostEvents(user);
         /*for (let i = 0; i < this.eventsTab.length; i++) {
             console.log(this.eventsTab[i].postId);
             this.addPostDeleteEvent(this.eventsTab[i].postId, this.eventsTab[i].userId);
@@ -65,19 +63,61 @@ class AllPostsView extends AbstractView {
                 <span>${currentPost.firstname} ${currentPost.lastname}</span>`;
 
         if (user.role == 'admin') {
+
             content+= `<a href='#' id='${currentPost.id}' admin='true'>
             supprimer</a>`;
-            this.eventsTab.push({"postId":postId , "userId":userId}) ;
-        } else if (currentPost.user_id === user.userId) {
-            content+= `<a href='#' id='${currentPost.id}' admin='false' >
-            supprimer</a>`;
-            this.eventsTab.push({"postId":postId , "userId":userId}) ; 
-        }
-        content += `<p>${currentPost.content}</p>
-        <div class="imgPost">
+            
+            content += `<form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='true'>
+            <div class='formGroup'>
+                <input type="text" id="content" name="content" maxlength="254" value="${currentPost.content}">
+            </div>`;
+            if (currentPost.image_url != '') {
+            content +=`<div class="imgPost">
             <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
-        </div>
-        </div>`;
+            </div>`;
+            }
+            content += `
+            <div class="formGroup">
+                <input type="file" id="image" name="image">
+            </div>`;
+            content += `
+            <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
+            modifier</button></form>`;
+            this.eventsTab.push({"postId":postId , "userId":userId}) ;
+
+        } else if (currentPost.user_id === user.userId) {
+
+            content+= `<a href='#' id='${currentPost.id}' admin='false' >
+            supprimer</a>`
+            
+            content += `<form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin="false">
+            <div class='formGroup'>
+                <input type="text" id="content" name="content" maxlength="254" value="${currentPost.content}">
+            </div>`;
+            if (currentPost.image_url != '') {
+            content +=`<div class="imgPost">
+            <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
+            </div>`;
+            }
+            content += `
+            <div class="formGroup">
+                <input type="file" id="image" name="image">
+            </div>`;
+            content += `
+            <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
+            modifier</button></form>`;
+            this.eventsTab.push({"postId":postId , "userId":userId}) ; 
+        } else {
+
+            content += `<p>${currentPost.content}</p>`;
+            if (currentPost.image_url != '') {
+            content +=`<div class="imgPost">
+            <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
+            </div>`;
+            }
+
+        }
+        content += `</div>`;
         return content;
     }
 
@@ -85,14 +125,39 @@ class AllPostsView extends AbstractView {
         this.container.innerHTML += content;
     }
 
-    addPostDeleteEvents () {
+    addPostEvents (user) {
 
         for (let i = 0; i < this.eventsTab.length; i++) {
             console.log(this.eventsTab[i].postId);
             this.addPostDeleteEvent(this.eventsTab[i].postId, this.eventsTab[i].userId);
+            this.addPostModifyEvent(this.eventsTab[i].postId, this.eventsTab[i].userId, user);
         }
+    
+
     } 
 
+    addPostModifyEvent(postId, userId, user) {
+        const frmUpdate = document.getElementById('post'+postId);
+        console.log(frmUpdate);
+        let isAdmin = frmUpdate.getAttribute('admin');
+        console.log('frmUpdate admin :'+ isAdmin);
+        if (isAdmin == "false") {
+            frmUpdate.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const formData = new FormData(frmUpdate);
+                router.execute('showModifyPost', user, formData, postId);
+            })
+        } else {
+            frmUpdate.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const formData = new FormData(frmUpdate);
+                router.execute('showModifyPostByAdmin',  user, formData, postId);
+            })
+        }
+
+    }
 
     addPostDeleteEvent(postId, userId) {
         const link = document.getElementById(postId);

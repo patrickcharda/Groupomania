@@ -32,12 +32,10 @@ class Controller {
     
     async showNewPost() {
         let token = this.args[0].token;
-        //let userId = this.args[0].userId;
-        //let image = this.args[1];
-        //let content = this.args[2];
         let formData = this.args[1];
         try {
-            let isPostCreated = await Model.newPost(BASE_URL + "/post/create", token, formData);
+            let createdPost = await Model.newPost(BASE_URL + "/post/create", token, formData);
+            console.log(createdPost);
         }
         catch {
             let errorView = ViewFactory.getView("error");
@@ -92,6 +90,39 @@ class Controller {
                 let errorView = ViewFactory.getView("error");
                 errorView.render();
             }
+        
+    }
+
+    async showModifyPostByAdmin() {
+        let token = this.args[0].token;
+        console.log(token);
+        let formData = this.args[1];
+        let postId = this.args[2];
+        try {
+            let createdPost = await Model.updatePostByAdmin(BASE_URL + "/post/" +postId+ "/updateByAdmin", token, formData);
+            console.log(createdPost);
+        }
+        catch {
+            let errorView = ViewFactory.getView("error");
+            errorView.render();
+        }
+
+    }
+
+    async showModifyPost() {
+        console.log('toto');
+        let token = this.args[0].token;
+        console.log(token);
+        let formData = this.args[1];
+        let postId = this.args[2];
+        try {
+            let updatedPost = await Model.updatePost(BASE_URL + "/post/" +postId, token, formData);
+            console.log(updatedPost);
+        }
+        catch {
+            let errorView = ViewFactory.getView("error");
+            errorView.render();
+        }
         
     }
 

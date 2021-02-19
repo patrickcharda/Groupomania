@@ -135,6 +135,66 @@ class Model {
         });
     }
 
+    static updatePostByAdmin(url, token, formData) {
+        console.log(url);
+        console.log(token);
+        return fetch(url,
+        { 
+            method: 'PUT',
+            headers: { 
+                "Authorization": "Bearer "+ token
+            },
+            body: formData     
+        })
+        .then(function(httpBodyResponse) {
+            // httpBodyResponse contient la réponse dans son entièreté, avec le header & le reste. 
+            // Du coup, avec .json, on récupère la partie "json" de la réponse, qui est ce dont
+            // on a réellement besoin. 
+            if (httpBodyResponse.ok) {
+                // si le fetch a fonctionné (url correcte), alors on retourne le json. 
+                // si le body ne contient pas de json, alors la méthode json() renverra aussi une 
+                // exception qui sera attrapée dans le routeur. 
+                return httpBodyResponse.json();
+            } else {
+                // Sinon, envoie une erreur (qui sera attrapée dans le routeur)
+                throw new Error(`${httpBodyResponse.status} - ${httpBodyResponse.statusText}`);
+            }
+        })
+        .catch((error) => {
+            throw new Error(`Fetch catch : ${error}`);
+        });
+    }
+
+    static updatePost(url, token, formData) {
+        console.log(url);
+        console.log(token);
+        return fetch(url,
+        { 
+            method: 'PUT',
+            headers: { 
+                "Authorization": "Bearer "+ token
+            },
+            body: formData     
+        })
+        .then(function(httpBodyResponse) {
+            // httpBodyResponse contient la réponse dans son entièreté, avec le header & le reste. 
+            // Du coup, avec .json, on récupère la partie "json" de la réponse, qui est ce dont
+            // on a réellement besoin. 
+            if (httpBodyResponse.ok) {
+                // si le fetch a fonctionné (url correcte), alors on retourne le json. 
+                // si le body ne contient pas de json, alors la méthode json() renverra aussi une 
+                // exception qui sera attrapée dans le routeur. 
+                return httpBodyResponse.json();
+            } else {
+                // Sinon, envoie une erreur (qui sera attrapée dans le routeur)
+                throw new Error(`${httpBodyResponse.status} - ${httpBodyResponse.statusText}`);
+            }
+        })
+        .catch((error) => {
+            throw new Error(`Fetch catch : ${error}`);
+        });
+    }
+
 
 
 }
