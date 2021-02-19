@@ -14,7 +14,7 @@ class Controller {
     }
 
     async showLogged() {
-        // Amélioration : passer un nom pour reconnaitre l'arg qui va bien ? 
+        
         let email = this.args[0];
         console.log('arg1 :'+email); 
         let password = this.args[1];
@@ -29,6 +29,22 @@ class Controller {
             errorView.render();
         }
     }
+    
+    async showNewPost() {
+        let token = this.args[0].token;
+        //let userId = this.args[0].userId;
+        //let image = this.args[1];
+        //let content = this.args[2];
+        let formData = this.args[1];
+        try {
+            let isPostCreated = await Model.newPost(BASE_URL + "/post/create", token, formData);
+        }
+        catch {
+            let errorView = ViewFactory.getView("error");
+            errorView.render();
+        }
+        
+    }
 
     async showPosts(userLogged) {
         var user = '';
@@ -42,12 +58,16 @@ class Controller {
             let role = userLogged.role;
             let userId = userLogged.userId;
             let email = userLogged.email;
+            let firstname = userLogged.firstname;
+            let lastname = userLogged.lastname;
             console.log(token);
             user = {
             "userId": userId,
             "role": role,
             "token": token,
-            "email": email
+            "email": email,
+            "firstname": firstname,
+            "lastname": lastname
             }
             localStorage.setItem('user', JSON.stringify(user));
         }

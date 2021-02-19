@@ -42,6 +42,10 @@ class Router {
                 case "showDeletePost":
                     await controller.showDeletePost();
                     break;
+                
+                case "showNewPost":
+                    await controller.showNewPost();
+                    break;
 
                 case "showDeletePostByAdmin":
                     await controller.showDeletePostByAdmin();

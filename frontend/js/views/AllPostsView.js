@@ -18,7 +18,26 @@ class AllPostsView extends AbstractView {
         console.log(user);
 
         //let content = `test ${token} ${role} ${userId} ${allPosts.length} ${user.role}`;
-        let content = '';
+        let content =
+        `<div id="newPost"> ${user.firstname} ${user.lastname}
+            <form id="newPostForm" enctype="multipart/form-data" method="post">
+                <div class='formGroup'>
+                    <label for="content">
+                    </label>
+                    <input type="text" id="content" name="content" maxlength="254" placeholder="Exprimez-vous !">
+                </div>
+                <div class="formGroup">
+                    <input type="file" id="image" name="image">
+                </div>
+                <div class="formGroup">
+                    <button type="submit" id="btnNewPost" form='newPostForm';>
+                        ok
+                    </button>
+                </div>
+            </form>
+        </div>`
+        ;
+     
 
         for (let i = 0; i < allPosts.length; i++) {
             content += this.renderOnePost(allPosts[i], user);
@@ -32,6 +51,9 @@ class AllPostsView extends AbstractView {
             console.log(this.eventsTab[i].postId);
             this.addPostDeleteEvent(this.eventsTab[i].postId, this.eventsTab[i].userId);
         }*/
+
+        this.formSubmit(user); 
+
     } 
 
     renderOnePost(currentPost, user) {
@@ -46,13 +68,16 @@ class AllPostsView extends AbstractView {
             content+= `<a href='#' id='${currentPost.id}' admin='true'>
             supprimer</a>`;
             this.eventsTab.push({"postId":postId , "userId":userId}) ;
-            //this.postDeleteEvent(currentPost.id, currentPost.user_id);
         } else if (currentPost.user_id === user.userId) {
             content+= `<a href='#' id='${currentPost.id}' admin='false' >
             supprimer</a>`;
             this.eventsTab.push({"postId":postId , "userId":userId}) ; 
         }
-        content += `<p>${currentPost.content}</p></div>`;
+        content += `<p>${currentPost.content}</p>
+        <div class="imgPost">
+            <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
+        </div>
+        </div>`;
         return content;
     }
 
@@ -87,5 +112,16 @@ class AllPostsView extends AbstractView {
                 router.execute('showDeletePostByAdmin', postId, userId);
             })
         }
+    }
+
+    formSubmit(user) {
+        const form = document.getElementById('newPostForm');
+        console.log(form.getAttribute('id'));
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const formData = new FormData(form);
+            router.execute('showNewPost', user, formData);
+        })
     }
 }

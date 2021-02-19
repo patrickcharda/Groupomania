@@ -173,16 +173,16 @@ exports.create = async (req, res) => {
     });
   } else {
     req.body.user_id = req.body.userLoggedId;
-    console.log('mycontent :'+req.body.content);
+    //console.log('mycontent :'+req.body.content);
     var prePost = {
       'user_id': req.body.user_id
     }
-    console.log('prepostcontent :'+prePost.content+' prepostid :'+prePost.user_id);
+    console.log('prepostid :'+prePost.user_id);
     
     try {
       await uploadFile(req, res);
       if (req.file !== undefined) {
-        console.log(req.file);
+        console.log(req.file.filename);
         prePost.image_url = req.file.filename;
       } else { 
         console.log('no file');
@@ -197,18 +197,24 @@ exports.create = async (req, res) => {
       }
      
       if (prePost.image_url === '' && prePost.content === '') {
+        console.log('pas de son pas d image');
         res.status(400).send({
           message: `Un post doit contenir au moins une image ou un texte`
         });
       } else {
         Post.create(prePost, function (err, post) {
-          if (err)
+          if (err) {
+            console.log('pb crea post ds model?');
             res.send(err);
+          } else {
           res.json(post);
+          }
         });
       }
     }
     catch (err) {
+      console.log('pbcrea post');
+      console.log(err);
       res.status(500).send({
         message: `Could not create post / ${err}`,
       });

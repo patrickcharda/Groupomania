@@ -98,7 +98,9 @@ exports.login = async(req, res) => {
         //console.log('pass ok');
         res.status(200).json({
           email: userFound[0].email,
-          user : [{email : userFound[0].email}],
+          //user : [{email : userFound[0].email}],
+          firstname: userFound[0].firstname,
+          lastname: userFound[0].lastname,
           userId : userFound[0].id,
           role: userFound[0].role,
           token: jwt.sign(

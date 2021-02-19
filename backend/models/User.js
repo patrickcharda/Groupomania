@@ -26,7 +26,7 @@ User.signup = function(newUser, result) {
 }
 
 User.login = function(user, result) {
-  sql.query(`SELECT email, password, id, role  FROM user WHERE email=?`, user.email, function(err, res) {
+  sql.query(`SELECT firstname, lastname, email, password, id, role  FROM user WHERE email=?`, user.email, function(err, res) {
     if(err) {
       console.log("error: ", err);
       result(err, null);
