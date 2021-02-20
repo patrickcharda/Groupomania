@@ -256,6 +256,8 @@ exports.update = async (req, res) => {
     prePost.image_url = req.file.filename;
     console.log('prePost.image_ulr : '+prePost.image_url);
     } else { 
+      console.log(req.file);
+      //pas de nouvelle image
       if (req.body.img_remove != 'true') {
         console.log('no file');
         prePost.image_url = postInDB.image_url;
@@ -273,7 +275,8 @@ exports.update = async (req, res) => {
       }
     }
     console.log('body content :' +req.body.content);
-    if (req.body.content !== postInDB.content) {
+    console.log('la '+test.postInDB.content);
+    if (req.body.content != test.postInDB.content) {
       prePost.content = req.body.content;
       console.log('prePost.content :'+prePost.content);
     }

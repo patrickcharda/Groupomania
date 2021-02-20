@@ -107,22 +107,26 @@ class AllPostsView extends AbstractView {
             content+= `<a href='#' id='${currentPost.id}' admin='true'>
             supprimer</a>`;
             
-            content += `<form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='true'>
-            <div class='formGroup'>
+            content += `
+            <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='true'>
+                <div class='formGroup'>
                 <input type="text" id="content" name="content" maxlength="254" value="${currentPost.content}">
-            </div>`;
+                </div>`;
             if (currentPost.image_url != '') {
-            content +=`<div class="imgPost">
-            <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
-            </div>`;
+            content +=`
+                <div class="imgPost">
+                    <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
+                    Retirer l'image? <input type="checkbox" name="img_remove">
+                </div>`;
             }
             content += `
-            <div class="formGroup">
-                <input type="file" id="image" name="image">
-            </div>`;
+                <div class="formGroup">
+                    <input type="file" id="image" name="image">
+                </div>`;
             content += `
-            <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
-            modifier</button></form>`;
+                <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
+                modifier</button>
+            </form>`;
             this.eventsTab.push({"postId":postId , "userId":userId}) ;
 
         } else if (currentPost.user_id === user.userId) {
@@ -130,29 +134,34 @@ class AllPostsView extends AbstractView {
             content+= `<a href='#' id='${currentPost.id}' admin='false' >
             supprimer</a>`
             
-            content += `<form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin="false">
-            <div class='formGroup'>
-                <input type="text" id="content" name="content" maxlength="254" value="${currentPost.content}">
-            </div>`;
+            content += `
+            <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin="false">
+                <div class='formGroup'>
+                    <input type="text" id="content" name="content" maxlength="254" value="${currentPost.content}">
+                </div>`;
             if (currentPost.image_url != '') {
-            content +=`<div class="imgPost">
-            <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
-            </div>`;
+            content +=`
+                <div class="imgPost">
+                    <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
+                    Retirer l'image? <input type="checkbox" name="img_remove">
+                </div>`;
             }
             content += `
-            <div class="formGroup">
-                <input type="file" id="image" name="image">
-            </div>`;
+                <div class="formGroup">
+                    <input type="file" id="image" name="image">
+                </div>`;
             content += `
-            <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
-            modifier</button></form>`;
+                <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
+                modifier</button>
+            </form>`;
             this.eventsTab.push({"postId":postId , "userId":userId}) ; 
         } else {
 
             content += `<p>${currentPost.content}</p>`;
             if (currentPost.image_url != '') {
-            content +=`<div class="imgPost">
-            <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
+            content +=`
+            <div class="imgPost">
+                <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
             </div>`;
             }
 
@@ -186,6 +195,7 @@ class AllPostsView extends AbstractView {
                 e.preventDefault();
                 e.stopPropagation();
                 const formData = new FormData(frmUpdate);
+                //console.log(formData.get('img_remove'));
                 router.execute('showModifyPost', user, formData, postId);
             })
         } else {
