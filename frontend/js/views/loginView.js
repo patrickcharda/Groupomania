@@ -8,6 +8,22 @@ class LoginView extends AbstractView {
     render() {
 
         this.cleanContainer();
+
+        this.cleanDivAccount();
+
+        const divAccount = document.getElementById(DIV_ACCOUNT_ID);
+        const signup = document.createElement('a');
+        signup.setAttribute('href','#');
+        signup.textContent = "S'inscrire";
+        divAccount.appendChild(signup);
+        signup.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            divAccount.removeChild(signup);
+            router.execute('showSignup');
+        })
+
+
         
         let content = `<form id="loginForm" method="post">
                 <div class='formGroup'>
@@ -32,6 +48,13 @@ class LoginView extends AbstractView {
         this.display(content);
 
         this.formSubmit();
+    }
+
+    cleanDivAccount() {
+        const divAccount = document.getElementById(DIV_ACCOUNT_ID);
+        while (divAccount.firstChild) {
+            this.container.removeChild(this.container.firstChild);
+        }
     }
 
     display(content) {

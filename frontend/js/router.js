@@ -34,6 +34,10 @@ class Router {
                 case "showLogged":
                     await controller.showLogged();
                     break;
+
+                case "showUserRecord":
+                    await controller.showUserRecord();
+                    break;
                 
                 case "showPosts":
                     await controller.showPosts();
@@ -61,6 +65,10 @@ class Router {
 
                 case "showDetail":
                     await controller.showDetail();
+                    break;
+                
+                case "showSignup":
+                    await controller.showSignup();
                     break;
 
                 case "showCart": 

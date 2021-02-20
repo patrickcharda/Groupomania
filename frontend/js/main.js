@@ -8,6 +8,7 @@ const router = new Router();
 // Lancement de la premiere page. 
 
 let isLogged = JSON.parse(localStorage.getItem('user'));
+
 //console.log('isLogged :'+isLogged);
 //console.log('email :'+isLogged.email+' password: '+isLogged.password);
 if (isLogged == null) {
@@ -15,9 +16,17 @@ if (isLogged == null) {
 } else {
     console.log('email :'+isLogged.email+' token: '+isLogged.token
                 +' id:'+isLogged.userId+' role :'+isLogged.role);
-    router.execute("showPosts");
+
+    loggedFrom = isLogged.loggedFrom;
+    console.log(loggedFrom);
+    now = new Date().getTime();
+    console.log(now);
+    oneDayInMilliseconds = 1000*60*60*24;
+    //expiration du localStorage au bout de 24h
+    if ( (now - loggedFrom) >= oneDayInMilliseconds ) {
+        localStorage.removeItem('user');
+        router.execute("showLogin");
+    } else {router.execute("showPosts");}
+    
 }
 
-
-// Astuce : pour afficher un console.log en couleur. 
-// console.log("%c test", "background:green; color:white");

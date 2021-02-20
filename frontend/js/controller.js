@@ -44,6 +44,29 @@ class Controller {
         
     }
 
+    async showUserRecord() {
+        //console.log(this.args[0]);
+        try {
+            let createdUser = await Model.newUser(BASE_URL + "/auth/signup",
+            this.args[0],
+            this.args[1],
+            this.args[2],
+            this.args[3]);
+            console.log(createdUser);
+            this.showLogin()
+        }
+        catch {
+            let errorView = ViewFactory.getView("error");
+            errorView.render();
+        }
+
+    }
+
+    async showSignup() {
+        let signupView = ViewFactory.getView("signup");
+        signupView.render();
+    }
+
     async showPosts(userLogged) {
         var user = '';
         if (userLogged == undefined) {
@@ -65,7 +88,8 @@ class Controller {
             "token": token,
             "email": email,
             "firstname": firstname,
-            "lastname": lastname
+            "lastname": lastname,
+            "loggedFrom": new Date().getTime()
             }
             localStorage.setItem('user', JSON.stringify(user));
         }
