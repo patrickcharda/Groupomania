@@ -15,7 +15,7 @@ class ErrorView extends AbstractView {
         
         let content = `
             <div class="erreur">
-                <div>Un problème s'est produit, veuillez ressayer ultérieurment.</div>
+                <div>Un problème s'est produit, veuillez ressayer ultérieurement.</div>
                 <div class="erreurMessage">${errorMessage}</div>
             </div>
         `;

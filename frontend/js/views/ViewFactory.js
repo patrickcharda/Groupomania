@@ -26,6 +26,8 @@ class ViewFactory {
                 return new AllPostsView();
             case "signup":
                 return new SignupView();
+            case "users":
+                return new UsersView();
             default:
                 throw new TypeError(`La vue (${viewName} n'existe pas.`);
         }

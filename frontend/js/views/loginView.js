@@ -21,8 +21,7 @@ class LoginView extends AbstractView {
             e.stopPropagation();
             divAccount.removeChild(signup);
             router.execute('showSignup');
-        })
-
+        });
 
         
         let content = `<form id="loginForm" method="post">
@@ -53,7 +52,7 @@ class LoginView extends AbstractView {
     cleanDivAccount() {
         const divAccount = document.getElementById(DIV_ACCOUNT_ID);
         while (divAccount.firstChild) {
-            this.container.removeChild(this.container.firstChild);
+            divAccount.removeChild(divAccount.firstChild);
         }
     }
 

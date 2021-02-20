@@ -71,6 +71,18 @@ class Router {
                     await controller.showSignup();
                     break;
 
+                case "showUsers":
+                    await controller.showUsers();
+                    break;
+                
+                case "showDeleteUser":
+                    await controller.showUserDelete();
+                    break;
+                
+                case "showUserDeleteByAdmin":
+                    await controller.showUserDeleteByAdmin();
+                    break;
+
                 case "showCart": 
                     await controller.showCart();
                     break;

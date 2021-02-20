@@ -13,6 +13,9 @@ class AllPostsView extends AbstractView {
 
         this.cleanDivAccount();
 
+        var user = JSON.parse(localStorage.getItem('user'));
+        console.log(user);
+
         const divAccount = document.getElementById(DIV_ACCOUNT_ID);
         const logout = document.createElement('a');
         logout.setAttribute('href','#');
@@ -22,14 +25,37 @@ class AllPostsView extends AbstractView {
             e.preventDefault();
             e.stopPropagation();
             localStorage.removeItem('user');
-            divAccount.removeChild(logout);
             router.execute('showLogin');
+        });
+
+        const deleteAccount = document.createElement('a');
+        deleteAccount.setAttribute('href','#');
+        deleteAccount.textContent = 'Supprimer';
+        divAccount.appendChild(deleteAccount);
+        deleteAccount.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            router.execute('showDeleteUser', user);
         })
+
+
+
+
+        if (user.role === 'admin') {
+            const users = document.createElement('a');
+            users.setAttribute('href', '#');
+            users.textContent = "Utilisateurs";
+            divAccount.appendChild(users);
+            users.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                //console.log(user.token);
+                router.execute('showUsers', user.token);
+            })
+        }
         
 
         const allPosts = this.getVariable("allPosts");
-        var user = JSON.parse(localStorage.getItem('user'));
-        console.log(user);
 
         //let content = `test ${token} ${role} ${userId} ${allPosts.length} ${user.role}`;
         let content =
@@ -56,7 +82,7 @@ class AllPostsView extends AbstractView {
         }
 
         
-        await this.display(content);
+        this.display(content);
         
         this.addPostEvents(user);
         /*for (let i = 0; i < this.eventsTab.length; i++) {

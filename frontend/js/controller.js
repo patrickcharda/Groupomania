@@ -8,9 +8,25 @@ class Controller {
         this.panier = [];
     }
 
-    showLogin() {
+    async showLogin() {
         let loginView = ViewFactory.getView("login");
         loginView.render();
+    }
+
+    async showUsers() {
+        let token = this.args[0];
+        console.log(token);
+        try {
+            let allUsers = await Model.getAllUsers(BASE_URL + "/auth/getAllUsers", token);
+            console.log(allUsers.users);
+            let usersView = ViewFactory.getView("users");
+            usersView.addVariable('allUsers', allUsers.users);
+            usersView.render();
+            }
+            catch {
+                let errorView = ViewFactory.getView("error");
+                errorView.render();
+            }
     }
 
     async showLogged() {
@@ -65,6 +81,53 @@ class Controller {
     async showSignup() {
         let signupView = ViewFactory.getView("signup");
         signupView.render();
+    }
+
+    async showUserDelete() {
+        let user = this.args[0];
+        let token = user.token;
+        console.log(token);
+        let userIdToDelete = user.userId;
+        console.log(userIdToDelete);
+        //let user = JSON.parse(localStorage.getItem('user'));
+        //console.log('user to delete'+userId);
+        //console.log('user from storage, role :'+user.role);
+        try {
+            let messageResult = await Model.deleteUser(BASE_URL +`/auth/user/${userIdToDelete}/delete`, user);
+            console.log(messageResult);
+            if (messageResult.message === "User was deleted successfully!") {
+                console.log('oyé');
+                this.showLogin();
+            }
+        }
+        catch {
+            let errorView = ViewFactory.getView("error");
+            errorView.render();
+        }
+    }
+
+    async showUserDeleteByAdmin() {
+        let user = this.args[0];
+        let token = user.token;
+        console.log(token);
+        let userIdToDelete = this.args[1];
+        console.log(userIdToDelete);
+        //let user = JSON.parse(localStorage.getItem('user'));
+        //console.log('user to delete'+userId);
+        //console.log('user from storage, role :'+user.role);
+        try {
+            let messageResult = await Model.deleteUser(BASE_URL +`/auth/user/${userIdToDelete}/deleteByadmin`, user);
+            console.log(messageResult);
+            if (messageResult.message === "User was deleted successfully!") {
+                console.log('oyé');
+                let nodeToDelete = document.getElementById("user"+userIdToDelete);
+                nodeToDelete.parentNode.removeChild(nodeToDelete);
+            }
+        }
+        catch {
+            let errorView = ViewFactory.getView("error");
+            errorView.render();
+        }
     }
 
     async showPosts(userLogged) {
