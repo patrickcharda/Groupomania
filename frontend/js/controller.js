@@ -282,6 +282,7 @@ class Controller {
         let postId = postRef.postId;
         console.log('post id :' +postId);
         let user = JSON.parse(localStorage.getItem('user'));
+        postRef.token = user.token;
         console.log(user.token);
         //récupérer tous les commentaires de ce post
         try {
@@ -299,6 +300,23 @@ class Controller {
 
         
 
+    }
+
+    async showCommentUpdate() {
+        let user = JSON.parse(localStorage.getItem('user'));
+        console.log(user.token);
+        let commentId = this.args[0];
+        let content = this.args[1];
+        let isAdmin = this.args[2];
+        console.log(isAdmin);
+        if (isAdmin == 'false') {
+            let updatedComment = await Model.updateComment(BASE_URL +"/comment/"+commentId+"/update", content, user.token);
+            console.log(updatedComment);
+        } else {
+            let updatedComment = await Model.updateCommentByAdmin(BASE_URL +"/comment/"+commentId+"/updateByAdmin", content, user.token);
+            console.log(updatedComment);
+        }
+        
     }
 
     /**

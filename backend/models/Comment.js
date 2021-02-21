@@ -9,7 +9,7 @@ var Comment = function(comment) {
 }
 
 Comment.getPostComments = function(postId,result) {
-    sql.query("select u.firstname, u.lastname, c.content from user as u inner join comment as c on c.user_id = u.id where c.post_id=?", postId, function(err, res){
+    sql.query("select u.firstname, u.lastname, c.content, c.id, c.user_id from user as u inner join comment as c on c.user_id = u.id where c.post_id=?", postId, function(err, res){
         if(err) {
             console.log("error: ", err);
             result(null, err);

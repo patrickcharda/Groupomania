@@ -71,6 +71,10 @@ class Router {
                     await controller.showComment();
                     break;
                 
+                case "showCommentUpdate":
+                    await controller.showCommentUpdate();
+                    break;
+                
                 case "showSignup":
                     await controller.showSignup();
                     break;

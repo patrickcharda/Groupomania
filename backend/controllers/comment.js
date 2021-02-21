@@ -53,7 +53,7 @@ function getCommentQueryByAdmin(sql, commentInDB) {
         console.log(results[0].content);
         console.log('foundcomment content :'+ results[0].content);
         commentInDB.content = results[0].content;
-        preComment.user_id = commentInDB.user_id;
+        preComment.user_id = results[0].user_id;
         preComment.id = commentInDB.id;
         console.log('preComment user_id :'+preComment.user_id);
         console.log('preComment id :'+preComment.id);
@@ -177,6 +177,7 @@ exports.update = async(req, res) => {
       message: `pb de user id`
     });
   } else {
+    console.log('test today :'+ req.body);
     req.body.user_id = req.body.userLoggedId;
     console.log('comment publisher id :'+req.body.user_id);
     // on paramètre la requête pour retrouver le post
@@ -214,6 +215,8 @@ exports.update = async(req, res) => {
       });
     }
   }
+commentInDB.length = 0;
+preComment.length = 0;
 };
 
 exports.updateByAdmin = async(req, res) => {
@@ -226,9 +229,9 @@ exports.updateByAdmin = async(req, res) => {
     req.body.user_id = req.body.userLoggedId;
     console.log('comment publisher id :'+req.body.user_id);
     // on paramètre la requête pour retrouver le post
-    commentInDB.user_id = req.body.user_id;
+    //commentInDB.user_id = req.body.user_id;
     commentInDB.id = req.params.id;
-    console.log('comment id :' +commentInDB.id+' comment user id :'+commentInDB.user_id);
+    //console.log('comment id :' +commentInDB.id+' comment user id :'+commentInDB.user_id);
 
     const sql = `SELECT * FROM comment WHERE comment.id=? LIMIT 1`;
     var test = await getCommentQueryByAdmin(sql, commentInDB);
@@ -260,6 +263,8 @@ exports.updateByAdmin = async(req, res) => {
       });
     }
   }
+  commentInDB.length = 0;
+  preComment.length = 0;
 };
 
 

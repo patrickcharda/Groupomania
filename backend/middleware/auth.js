@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
   try {
     //console.log('yop'+req.body);
     //console.log('yap'+req.params);
-    console.log('body content :'+ req.body.content);
+    console.log('body content by auth:'+ req.body.content);
     console.log('authorization' +req.authorization);
     console.log('headers' +req.headers);
     const token = req.headers.authorization.split(' ')[1];

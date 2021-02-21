@@ -251,7 +251,7 @@ class AllPostsView extends AbstractView {
             'image_url': postImage,
             'postId': postId,
             'userId': userId,
-            'admin': isAdmin,
+            'isAdmin': isAdmin
         }
         
         const commentLink = document.querySelector(`#post${postId} a[id="comment${postId}"]`);

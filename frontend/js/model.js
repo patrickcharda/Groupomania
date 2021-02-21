@@ -144,6 +144,74 @@ class Model {
             });
     }
 
+    static updateComment(url, newcontent, token) {
+        console.log(newcontent);
+        let data = {
+            content: newcontent
+        }
+        return fetch(url,
+        { 
+            method: 'PUT',
+            headers: { 
+                "Authorization": "Bearer "+ token,
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify(data)    
+        })
+        .then(function(httpBodyResponse) {
+            // httpBodyResponse contient la réponse dans son entièreté, avec le header & le reste. 
+            // Du coup, avec .json, on récupère la partie "json" de la réponse, qui est ce dont
+            // on a réellement besoin. 
+            if (httpBodyResponse.ok) {
+                // si le fetch a fonctionné (url correcte), alors on retourne le json. 
+                // si le body ne contient pas de json, alors la méthode json() renverra aussi une 
+                // exception qui sera attrapée dans le routeur. 
+                return httpBodyResponse.json();
+            } else {
+                // Sinon, envoie une erreur (qui sera attrapée dans le routeur)
+                throw new Error(`${httpBodyResponse.status} - ${httpBodyResponse.statusText}`);
+            }
+        })
+        .catch((error) => {
+            throw new Error(`Fetch catch : ${error}`);
+        });
+
+    }
+
+    static updateCommentByAdmin(url, newcontent, token) {
+        console.log(newcontent);
+        let data = {
+            content: newcontent
+        }
+        return fetch(url,
+        { 
+            method: 'PUT',
+            headers: { 
+                "Authorization": "Bearer "+ token,
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify(data)    
+        })
+        .then(function(httpBodyResponse) {
+            // httpBodyResponse contient la réponse dans son entièreté, avec le header & le reste. 
+            // Du coup, avec .json, on récupère la partie "json" de la réponse, qui est ce dont
+            // on a réellement besoin. 
+            if (httpBodyResponse.ok) {
+                // si le fetch a fonctionné (url correcte), alors on retourne le json. 
+                // si le body ne contient pas de json, alors la méthode json() renverra aussi une 
+                // exception qui sera attrapée dans le routeur. 
+                return httpBodyResponse.json();
+            } else {
+                // Sinon, envoie une erreur (qui sera attrapée dans le routeur)
+                throw new Error(`${httpBodyResponse.status} - ${httpBodyResponse.statusText}`);
+            }
+        })
+        .catch((error) => {
+            throw new Error(`Fetch catch : ${error}`);
+        });
+
+    }
+
     static getAllUsers(url, token) {
         return fetch(url,
             { 
