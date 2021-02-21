@@ -312,9 +312,19 @@ class Controller {
         if (isAdmin == 'false') {
             let updatedComment = await Model.updateComment(BASE_URL +"/comment/"+commentId+"/update", content, user.token);
             console.log(updatedComment);
+            if (updatedComment.message == 'Comment was deleted successfully!') {
+                console.log('disparu');
+                const divCommentToDelete = document.getElementById('div'+commentId);
+                divCommentToDelete.parentNode.removeChild(divCommentToDelete);
+            }
         } else {
             let updatedComment = await Model.updateCommentByAdmin(BASE_URL +"/comment/"+commentId+"/updateByAdmin", content, user.token);
             console.log(updatedComment);
+            if (updatedComment.message == 'Comment was deleted successfully!') {
+                console.log('disparu');
+                const divCommentToDelete = document.getElementById('div'+commentId);
+                divCommentToDelete.parentNode.removeChild(divCommentToDelete);
+            }
         }
         
     }

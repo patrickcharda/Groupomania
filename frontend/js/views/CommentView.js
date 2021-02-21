@@ -53,7 +53,7 @@ class CommentView extends AbstractView {
         console.log("post user id :"+postref.userId);
         console.log('admin? :'+postref.isAdmin);
         let content =
-            `<div class="comment">${currentComment.firstname} &nbsp ${currentComment.lastname}
+            `<div class="comment" id="div${currentComment.id}">${currentComment.firstname} &nbsp ${currentComment.lastname}
                 <form id="comment${currentComment.id}">`;
                     if (postref.isAdmin == 'true') {
                         content += `
