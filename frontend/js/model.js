@@ -123,6 +123,27 @@ class Model {
             });
     }
 
+    static getComments(url, token) {
+        return fetch(url,
+            { 
+                method: 'GET',
+                headers: { 
+                    "Content-type": "application/json; charset=UTF-8",
+                    "Authorization": "Bearer "+ token
+                }    
+            })
+            .then(function(httpBodyResponse) {
+                if (httpBodyResponse.ok) {
+                    return httpBodyResponse.json();
+                } else {
+                    throw new Error(`${httpBodyResponse.status} - ${httpBodyResponse.statusText}`);
+                }
+            })
+            .catch((error) => {
+                throw new Error(`Fetch catch : ${error}`);
+            });
+    }
+
     static getAllUsers(url, token) {
         return fetch(url,
             { 

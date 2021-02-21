@@ -245,6 +245,7 @@ class AllPostsView extends AbstractView {
         console.log(postImage);
         const isAdmin = document.getElementById(`post${postId}`).getAttribute('admin');
         console.log(isAdmin);
+        console.log('POST ID :' +postId);
         const postRef = {
             'content': postContent,
             'image_url': postImage,

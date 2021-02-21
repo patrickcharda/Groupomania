@@ -278,9 +278,26 @@ class Controller {
 
     async showComment() {
         let postRef = this.args[0];
-        let commentView = ViewFactory.getView("comment");
-        commentView.addVariable('postRef', postRef);
-        commentView.render();
+        //console.log(postRef);
+        let postId = postRef.postId;
+        console.log('post id :' +postId);
+        let user = JSON.parse(localStorage.getItem('user'));
+        console.log(user.token);
+        //récupérer tous les commentaires de ce post
+        try {
+            let allComments = await Model.getComments(BASE_URL + "/comment/" +postId+ "/view", user.token);
+            let commentView = ViewFactory.getView("comment");
+            commentView.addVariable('postRef', postRef);
+            commentView.addVariable('allComments', allComments);
+            commentView.render();
+            }
+            catch {
+                let errorView = ViewFactory.getView("error");
+                errorView.render();
+            }
+
+
+        
 
     }
 

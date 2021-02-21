@@ -11,30 +11,35 @@ class CommentView extends AbstractView {
 
         this.cleanDivAccount();
 
+        let postRef = this.getVariable('postRef');
+        let allComments = this.getVariable('allComments');
+
+        console.log(postRef);
+        console.log(allComments);
         
-        let content = `<form id="loginForm" method="post">
-                <div class='formGroup'>
-                    <label for="userEmail">
-                        Adresse de messagerie
-                    </label>
-                    <input type="email" id="userEmail" required maxlength="50" minlenght="8">
+        let content = `
+            <div>
+                <div>
+                    ${postRef.content}
                 </div>
-                <div class="formGroup">
-                    <label for="userPassword">
-                        Mot de passe
-                    </label>
-                    <input type="password" id="userPassword" required maxlength="16" minlength="8">
+                <div>
+                    `
+                    if (postRef.image_url !='') {
+                        content += `
+                        <img src="${postRef.image_url}" width="75" height="130">
+                        `;
+                    }
+        content +=`
                 </div>
-                <div class="formGroup">
-                    <button type="submit" id="btnNewUser" form='loginForm'>
-                        ok
-                    </button>
-                </div>
-            </form>`;
+            </div>`;
+
+            for (let i = 0; i < allComments.length; i++) {
+                content += this.renderOneComment(allComments[i], user);
+            }
         
         this.display(content);
 
-        this.formSubmit();
+        //this.formSubmit();
     }
 
     cleanDivAccount() {
@@ -48,7 +53,7 @@ class CommentView extends AbstractView {
         this.container.innerHTML += content;
     }
 
-    formSubmit() {
+    /*formSubmit() {
         const form = document.getElementById('loginForm');
         console.log(form.id);
         form.addEventListener('submit', function(e) {
@@ -60,7 +65,6 @@ class CommentView extends AbstractView {
             console.log(password.value);
             router.execute('showLogged', email.value, password.value);
         })
-    }
+    }*/
    
-
 }
