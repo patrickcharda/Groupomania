@@ -24,6 +24,8 @@ class ViewFactory {
                 return new LoginView();
             case "allPostsView":
                 return new AllPostsView();
+            case "comment":
+                return new CommentView();
             case "signup":
                 return new SignupView();
             case "users":

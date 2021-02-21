@@ -66,6 +66,10 @@ class Router {
                 case "showDetail":
                     await controller.showDetail();
                     break;
+
+                case "showComment":
+                    await controller.showComment();
+                    break;
                 
                 case "showSignup":
                     await controller.showSignup();

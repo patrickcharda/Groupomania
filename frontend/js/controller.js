@@ -276,6 +276,14 @@ class Controller {
         }
     }
 
+    async showComment() {
+        let postRef = this.args[0];
+        let commentView = ViewFactory.getView("comment");
+        commentView.addVariable('postRef', postRef);
+        commentView.render();
+
+    }
+
     /**
      * Méthode qui gère la page de la liste des produits
      */

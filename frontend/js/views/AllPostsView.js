@@ -90,6 +90,8 @@ class AllPostsView extends AbstractView {
             this.addPostDeleteEvent(this.eventsTab[i].postId, this.eventsTab[i].userId);
         }*/
 
+        this.addCommentEvents(user);
+
         this.formSubmit(user); 
 
     } 
@@ -102,6 +104,7 @@ class AllPostsView extends AbstractView {
             <div id="card${currentPost.id}" class="postCard">
                 <span>${currentPost.firstname} ${currentPost.lastname}</span>`;
 
+        // si c'est un admin qui s'est loggé, il peut tout faire ("modérer" par suppr ou modif)
         if (user.role == 'admin') {
 
             content+= `<a href='#' id='${currentPost.id}' admin='true'>
@@ -110,7 +113,7 @@ class AllPostsView extends AbstractView {
             content += `
             <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='true'>
                 <div class='formGroup'>
-                <input type="text" id="content" name="content" maxlength="254" value="${currentPost.content}">
+                <input type="text" name="content" maxlength="254" value="${currentPost.content}">
                 </div>`;
             if (currentPost.image_url != '') {
             content +=`
@@ -121,15 +124,21 @@ class AllPostsView extends AbstractView {
             }
             content += `
                 <div class="formGroup">
-                    <input type="file" id="image" name="image">
+                    <input type="file" name="image">
                 </div>`;
             content += `
                 <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
                 modifier</button>
+                <div>
+                    <a href="#" id="comment${currentPost.id}" admin="true">commentaires</a>
+                </div>
             </form>`;
-            this.eventsTab.push({"postId":postId , "userId":userId}) ;
+            this.postEventsTab.push({"postId":postId , "userId":userId});
+            this.commentEventsTab.push({"postId":postId , "userId":userId}); 
 
         } else if (currentPost.user_id === user.userId) {
+
+            // c'est un user qui s'est loggé, il peut modifier ses propres posts
 
             content+= `<a href='#' id='${currentPost.id}' admin='false' >
             supprimer</a>`
@@ -137,7 +146,7 @@ class AllPostsView extends AbstractView {
             content += `
             <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin="false">
                 <div class='formGroup'>
-                    <input type="text" id="content" name="content" maxlength="254" value="${currentPost.content}">
+                    <input type="text" name="content" maxlength="254" value="${currentPost.content}">
                 </div>`;
             if (currentPost.image_url != '') {
             content +=`
@@ -148,23 +157,38 @@ class AllPostsView extends AbstractView {
             }
             content += `
                 <div class="formGroup">
-                    <input type="file" id="image" name="image">
+                    <input type="file" name="image">
                 </div>`;
             content += `
                 <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
                 modifier</button>
+                <div>
+                    <a href="#" id="comment${currentPost.id}" admin="false">commentaires</a>
+                </div>
             </form>`;
-            this.eventsTab.push({"postId":postId , "userId":userId}) ; 
+            this.postEventsTab.push({"postId":postId , "userId":userId});
+            this.commentEventsTab.push({"postId":postId , "userId":userId}); 
+
         } else {
-            //ni admin ni proprietaire du post
-            content += `<p>${currentPost.content}</p>`;
+
+            //le user ne peut modifier les posts des autres
+
+            content += `
+            <div id="post${currentPost.id}" admin="false">
+                <div>
+                    <input type="texte" value="${currentPost.content}" name="content" readonly>
+                </div>`;
             if (currentPost.image_url != '') {
             content +=`
-            <div class="imgPost">
-                <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
+                <div class="imgPost">
+                    <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
+                </div>
+                <div>
+                    <a href="#" id="comment${currentPost.id}" admin="false">commentaires</a>
+                </div>
             </div>`;
             }
-
+            this.commentEventsTab.push({"postId":postId , "userId":userId}); 
         }
         content += `</div>`;
         return content;
@@ -175,14 +199,18 @@ class AllPostsView extends AbstractView {
     }
 
     addPostEvents (user) {
-
-        for (let i = 0; i < this.eventsTab.length; i++) {
-            console.log(this.eventsTab[i].postId);
-            this.addPostDeleteEvent(this.eventsTab[i].postId, this.eventsTab[i].userId);
-            this.addPostModifyEvent(this.eventsTab[i].postId, this.eventsTab[i].userId, user);
+        for (let i = 0; i < this.postEventsTab.length; i++) {
+            console.log(this.postEventsTab[i].postId);
+            this.addPostDeleteEvent(this.postEventsTab[i].postId, this.postEventsTab[i].userId);
+            this.addPostModifyEvent(this.postEventsTab[i].postId, this.postEventsTab[i].userId, user);
         }
+    }
     
-
+    addCommentEvents (user) {
+        for (let i = 0; i < this.commentEventsTab.length; i++) {
+            console.log(this.commentEventsTab[i].postId);
+            this.addCommentHandleEvent(this.commentEventsTab[i].postId, this.commentEventsTab[i].userId, user);
+        }
     } 
 
     addPostModifyEvent(postId, userId, user) {
@@ -209,6 +237,31 @@ class AllPostsView extends AbstractView {
 
     }
 
+    addCommentHandleEvent(postId, userId, user) {
+        //récupérer les infos du post
+        const postContent = document.querySelector(`#post${postId} input[name="content"]`).value;
+        console.log(postContent);
+        const postImage = document.querySelector(`#post${postId} img`) == null?'':document.querySelector(`#post${postId} img`).getAttribute('src');
+        console.log(postImage);
+        const isAdmin = document.getElementById(`post${postId}`).getAttribute('admin');
+        console.log(isAdmin);
+        const postRef = {
+            'content': postContent,
+            'image_url': postImage,
+            'postId': postId,
+            'userId': userId,
+            'admin': isAdmin,
+        }
+        
+        const commentLink = document.querySelector(`#post${postId} a[id="comment${postId}"]`);
+        console.log(commentLink);
+        commentLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            router.execute('showComment', postRef);
+        })
+    }
+
     addPostDeleteEvent(postId, userId) {
         const link = document.getElementById(postId);
         console.log(link);
@@ -228,6 +281,8 @@ class AllPostsView extends AbstractView {
             })
         }
     }
+
+
 
     formSubmit(user) {
         const form = document.getElementById('newPostForm');
