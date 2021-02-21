@@ -9,7 +9,8 @@ class AbstractView {
 
     constructor() {
         this.container = document.getElementById(CONTAINER_ID);
-        this.listVariables = [];    
+        this.listVariables = [];
+        this.eventsTab = [];    
     }
     
     /**
@@ -57,5 +58,6 @@ class AbstractView {
         while (this.container.firstChild) {
             this.container.removeChild(this.container.firstChild);
         }
+        this.eventsTab = [];
     }
 }

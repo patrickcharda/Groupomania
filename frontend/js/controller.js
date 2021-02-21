@@ -186,10 +186,19 @@ class Controller {
         let token = this.args[0].token;
         console.log(token);
         let formData = this.args[1];
+        console.log(formData.get('image'));
+        console.log(formData.get('content'));
+        if (formData.get('img_remove') === 'on') {
+            formData.set('img_remove', 'true');
+        } else {
+            formData.set('img_remove', 'false');
+        }
+        console.log(formData.get('img_remove'));
         let postId = this.args[2];
         try {
-            let createdPost = await Model.updatePostByAdmin(BASE_URL + "/post/" +postId+ "/updateByAdmin", token, formData);
+            let createdPost = await Model.updatePost(BASE_URL + "/post/" +postId+ "/updateByAdmin", token, formData);
             console.log(createdPost);
+            this.showPosts();
         }
         catch {
             let errorView = ViewFactory.getView("error");
@@ -199,7 +208,6 @@ class Controller {
     }
 
     async showModifyPost() {
-        console.log('toto');
         let token = this.args[0].token;
         console.log(token);
         let formData = this.args[1];
@@ -213,7 +221,7 @@ class Controller {
         console.log(formData.get('img_remove'));
         let postId = this.args[2];
         try {
-            let updatedPost = await Model.updatePost(BASE_URL + "/post/" +postId, token, formData);
+            let updatedPost = await Model.updatePost(BASE_URL + "/post/"+postId, token, formData);
             console.log(updatedPost);
             this.showPosts();
         }

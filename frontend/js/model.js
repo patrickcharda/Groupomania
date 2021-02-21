@@ -219,7 +219,7 @@ class Model {
         });
     }
 
-    static updatePostByAdmin(url, token, formData) {
+    /*static updatePostByAdmin(url, token, formData) {
         console.log(url);
         console.log(token);
         return fetch(url,
@@ -247,7 +247,7 @@ class Model {
         .catch((error) => {
             throw new Error(`Fetch catch : ${error}`);
         });
-    }
+    }*/
 
     static updatePost(url, token, formData) {
         console.log(url);

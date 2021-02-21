@@ -3,7 +3,7 @@ class AllPostsView extends AbstractView {
     constructor() {
         super();
         this.container = document.getElementById(CONTAINER_ID);
-        this.eventsTab = []; 
+        //this.eventsTab = []; 
     }
 
     async render() {
@@ -156,7 +156,7 @@ class AllPostsView extends AbstractView {
             </form>`;
             this.eventsTab.push({"postId":postId , "userId":userId}) ; 
         } else {
-
+            //ni admin ni proprietaire du post
             content += `<p>${currentPost.content}</p>`;
             if (currentPost.image_url != '') {
             content +=`

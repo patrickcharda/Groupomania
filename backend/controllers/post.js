@@ -46,7 +46,7 @@ function getAPostQuery(sql, postInDB) {
 function getAPostQueryByAdmin(sql, postInDB) {
   return new Promise(resolve => {
     //let foundPostBeforeUpdate = getAPostQuery(sql, postBeforeUpdate);
-  connection.query(sql,[postInDB.id, postInDB.user_id], (error, results) => {
+  connection.query(sql, postInDB.id, (error, results) => {
     if (error) {
       return(error);
     } else {
@@ -56,8 +56,8 @@ function getAPostQueryByAdmin(sql, postInDB) {
         console.log('foundpost content + image_url:'+ results[0].content+' '+ results[0].image_url);
         postInDB.content = results[0].content;
         postInDB.image_url = results[0].image_url;
-        prePost.user_id = postInDB.user_id;
-        prePost.id = postInDB.id;
+        prePost.user_id = results[0].user_id;
+        prePost.id = results[0].id;
         console.log('prePost user_id :'+prePost.user_id);
         console.log('prePost id :'+prePost.id);
         const response = {
@@ -253,8 +253,8 @@ exports.update = async (req, res) => {
           }
         }));
       }
-    prePost.image_url = req.file.filename;
-    console.log('prePost.image_ulr : '+prePost.image_url);
+      prePost.image_url = req.file.filename;
+      console.log('prePost.image_ulr : '+prePost.image_url);
     } else { 
       console.log(req.file);
       //pas de nouvelle image
@@ -276,10 +276,13 @@ exports.update = async (req, res) => {
     }
     console.log('body content :' +req.body.content);
     console.log('la '+test.postInDB.content);
-    if (req.body.content != test.postInDB.content) {
+    //si nouveau contenu texte
+    /*if (req.body.content != test.postInDB.content) {
       prePost.content = req.body.content;
       console.log('prePost.content :'+prePost.content);
-    }
+    } */
+    prePost.content = req.body.content;
+    //si post complètement vidé
     if ((prePost.content == undefined || prePost.content =='') && (prePost.image_url =='' || prePost.image_url == undefined)) {
       Post.delete(prePost.id, prePost.user_id, (err, data) => {
         if (err) {
@@ -300,6 +303,8 @@ exports.update = async (req, res) => {
           res.send(err);
             res.json(post);
         });
+      prePost = {};
+      postInDB = {};
     }
   }
 }
@@ -311,8 +316,8 @@ exports.updateByAdmin = async (req, res) => {
       message: `pb de user id`
     });
   } else {
-  req.body.user_id = req.body.userLoggedId;
-  console.log('admin id :'+req.body.user_id);
+  //req.body.user_id = req.body.userLoggedId;
+  //console.log('admin id :'+req.body.user_id);
   // on paramètre la requête pour retrouver le post
   //postInDB.user_id = req.body.user_id;
   postInDB.id = req.params.id;
@@ -335,9 +340,11 @@ exports.updateByAdmin = async (req, res) => {
           }
         }));
       }
-    prePost.image_url = req.file.filename;
-    console.log('prePost.image_ulr : '+prePost.image_url);
+      prePost.image_url = req.file.filename;
+      console.log('prePost.image_ulr : '+prePost.image_url);
     } else { 
+      console.log(req.file);
+      //pas de nouvelle image
       if (req.body.img_remove != 'true') {
         console.log('no file');
         prePost.image_url = postInDB.image_url;
@@ -355,10 +362,13 @@ exports.updateByAdmin = async (req, res) => {
       }
     }
     console.log('body content :' +req.body.content);
-    if (req.body.content !== postInDB.content) {
+    console.log('la '+test.postInDB.content);
+    /*if (req.body.content != test.postInDB.content) {
       prePost.content = req.body.content;
       console.log('prePost.content :'+prePost.content);
-    }
+    } */
+    prePost.content = req.body.content;
+    //si post complètement vidé
     if ((prePost.content == undefined || prePost.content =='') && (prePost.image_url =='' || prePost.image_url == undefined)) {
       Post.delete(prePost.id, prePost.user_id, (err, data) => {
         if (err) {
@@ -379,6 +389,9 @@ exports.updateByAdmin = async (req, res) => {
           res.send(err);
             res.json(post);
         });
+        console.log('tototo');
+        prePost = {};
+        postInDB = {};
     }
   }
 }
