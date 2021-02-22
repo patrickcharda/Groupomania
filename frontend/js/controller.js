@@ -344,13 +344,16 @@ class Controller {
             btnUpdate.setAttribute('name', 'button'+newCommentId);
             btnUpdate.setAttribute('form', 'comment'+newCommentId);
             btnUpdate.textContent = 'modifier';
+            let delLink = document.createElement('a');
+            delLink.setAttribute('href', '#');
+            delLink.setAttribute('id', 'delLink'+newCommentId);
+            delLink.setAttribute('admin', isAdmin);
+            delLink.textContent = "supprimer";
             commentForm.appendChild(btnUpdate);
+            commentForm.appendChild(delLink);
 
-            //ajouter le gestionnaire d'evenements 
-
-            //const frmComment = document.getElementById('comment'+commentId);
-            //const isAdmin = frmComment.querySelector('input[name="content"]').getAttribute('admin');
-            //console.log(isAdmin.getAttribute('admin'));
+            //ajouter les gestionnaires d'evenements 
+            
             console.log('TEST IS ADMIN :'+isAdmin);
             commentForm.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -358,6 +361,12 @@ class Controller {
                 const content = commentForm.querySelector('input[name="content"').value;
                 console.log(content);
                 router.execute('showCommentUpdate', newCommentId, content, isAdmin);
+            });
+
+            delLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                router.execute('showDeleteComment', newCommentId, isAdmin);
             })
 
         }
