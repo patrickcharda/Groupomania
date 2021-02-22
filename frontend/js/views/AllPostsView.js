@@ -21,12 +21,16 @@ class AllPostsView extends AbstractView {
         const allPosts = this.getVariable("allPosts");
 
         let content = this.addNewPostForm(user);
+
+        
         
         for (let i = 0; i < allPosts.length; i++) {
             content += this.renderOnePost(allPosts[i], user);
         }
         
         this.display(content);
+
+        this.addImagePreloadEvent();
         
         this.addPostEvents(user);
 
@@ -35,6 +39,8 @@ class AllPostsView extends AbstractView {
         this.formSubmit(user); 
 
     } 
+
+    
 
     addNewPostForm(user) {
         let content = 
@@ -45,7 +51,9 @@ class AllPostsView extends AbstractView {
                 </div>
                 <div class="formGroup">
                     <input type="file" id="image" name="image">
+                    <span id="preview"><img id="imgPreview"></span>
                 </div>
+
                 <div class="formGroup">
                     <button type="submit" id="btnNewPost" form='newPostForm'>
                         ok
@@ -55,6 +63,43 @@ class AllPostsView extends AbstractView {
         </div>`
         ;
         return content;
+    }
+
+    addImagePreloadEvent() {
+        let imgInput = document.querySelector(`input[id="image"]`);
+        imgInput.addEventListener('change', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                let img = document.getElementById('imgPreview');
+                img.setAttribute('width','75');
+                img.setAttribute('heigth','130');
+                img.src=e.target.result;
+            };
+            
+            reader.readAsDataURL(this.files[0]);
+
+            /*var imageType = /^image\//;
+            var preview = document.getElementById('preview');
+            for (let i = 0; i < files.length; i++) {
+                var file = files[i];
+                if (!imageType.test(file.type)) {
+                    alert("Veuillez sélectionner une image");
+                    preview.innerHTML = '';
+                } else {
+                    if(i == 0){
+                        preview.innerHTML = '';
+                    }
+                    var img= document.createElement('img');
+                    img.classList.add('obj');
+                    img.file = file;
+                    preview.appendChild(img);
+                    
+                }
+            } */ 
+   
+        });
     }
 
     newDivAccount(user) {
@@ -289,8 +334,6 @@ class AllPostsView extends AbstractView {
             })
         }
     }
-
-
 
     formSubmit(user) {
         const form = document.getElementById('newPostForm');
