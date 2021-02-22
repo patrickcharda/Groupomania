@@ -70,6 +70,10 @@ class Router {
                 case "showComment":
                     await controller.showComment();
                     break;
+
+                case "showNewComment":
+                    await controller.showNewComment();
+                    break;
                 
                 case "showCommentUpdate":
                     await controller.showCommentUpdate();

@@ -302,6 +302,71 @@ class Controller {
 
     }
 
+    async showNewComment() {
+        let user = this.args[0];
+        let token = this.args[0].token;
+        let content = this.args[1];
+        let postId = this.args[2];
+        let postRef = this.args[3];
+        console.log(token);
+        console.log(content);
+        console.log(postId);
+
+        try {
+            let newCommentId = await Model.newComment(BASE_URL + "/comment/new", token, content, postId);
+            console.log(newCommentId);
+
+            //remettre le champ de formulaire à vide
+            document.querySelector(`#newComment input[name="${postId}"]`).value='';
+
+            //insérer ds la page le nouveau commentaire
+            let divAllComments = document.getElementById('allComments');
+            let divNewComment = document.createElement('div');
+            divAllComments.appendChild(divNewComment);
+            divNewComment.setAttribute('class','comment');
+            divNewComment.setAttribute('id',`div${newCommentId}`);
+            divNewComment.textContent = user.firstname+' '+user.lastname; 
+            let commentForm = document.createElement('form');
+            commentForm.setAttribute('id', 'comment'+newCommentId);
+            divNewComment.appendChild(commentForm);
+            let inputContent = document.createElement('input');
+            inputContent.setAttribute('type', 'text');
+            inputContent.setAttribute('name', 'content');
+            let isAdmin ='';
+            if (user.role == 'admin') {
+                isAdmin = 'true';
+            } else { isAdmin = 'false'}
+            inputContent.setAttribute('admin', isAdmin);
+            inputContent.setAttribute('value', content);
+            commentForm.appendChild(inputContent);
+            let btnUpdate = document.createElement('button');
+            btnUpdate.setAttribute('type', 'submit');
+            btnUpdate.setAttribute('name', 'button'+newCommentId);
+            btnUpdate.setAttribute('form', 'comment'+newCommentId);
+            btnUpdate.textContent = 'modifier';
+            commentForm.appendChild(btnUpdate);
+
+            //ajouter le gestionnaire d'evenements 
+
+            //const frmComment = document.getElementById('comment'+commentId);
+            //const isAdmin = frmComment.querySelector('input[name="content"]').getAttribute('admin');
+            //console.log(isAdmin.getAttribute('admin'));
+            console.log('TEST IS ADMIN :'+isAdmin);
+            commentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const content = commentForm.querySelector('input[name="content"').value;
+                console.log(content);
+                router.execute('showCommentUpdate', newCommentId, content, isAdmin);
+            })
+
+        }
+        catch {
+            let errorView = ViewFactory.getView("error");
+            errorView.render();
+        }
+    }
+
     async showCommentUpdate() {
         let user = JSON.parse(localStorage.getItem('user'));
         console.log(user.token);

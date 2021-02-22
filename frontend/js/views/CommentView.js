@@ -11,50 +11,115 @@ class CommentView extends AbstractView {
 
         this.cleanDivAccount();
 
+        this.newDivAccount();
+ 
         var postRef = this.getVariable('postRef');
-        //var userId = postRef.userId;
-        //console.log(userId);
+        let postId = postRef.postId;
+
         let allComments = this.getVariable('allComments');
 
-        console.log(postRef);
-        console.log(allComments);
-        
-        let content = `
-            <div>
-                <div>
-                    `
-                    if (postRef.content!='') {
-                        content+= postRef.content;
-                    };
-                    `
-                </div>
-                <div>
-                    `
-                    if (postRef.image_url !='') {
-                        content += `
-                        <img src="${postRef.image_url}" width="75" height="130">
-                        `;
-                    }
-                    content +=`
-                </div>
-            </div>`;
+        var user = JSON.parse(localStorage.getItem('user'));
+        //console.log(user);
 
-            for (let i = 0; i < allComments.length; i++) {
-                content += this.renderOneComment(allComments[i], postRef); 
-            }
+        console.log(postRef);
+        //console.log(allComments);
+
+        let content = this.addPostRef(postRef);
+
+        content += this.addNewCommentForm(user, postId);
+
+        content += `<div id="allComments">`;
+
+        for (let i = 0; i < allComments.length; i++) {
+            content += this.renderOneComment(allComments[i], postRef, user.userId); 
+        }
+
+        content += `</div>`;
         
         this.display(content);
 
         this.addCommentsEvents();
+
+        this.formSubmit(user, postRef); 
     }
 
-    renderOneComment(currentComment, postref) {
+    addNewCommentForm(user, postId) {
+        let content = 
+        `<div id="newComment"> ${user.firstname} ${user.lastname}
+            <form id="newCommentForm" method="post">
+                <div class='formGroup'>
+                    <input type="text" id="newcomment" name="${postId}" maxlength="254" placeholder="Exprimez-vous !">
+                </div>
+                <div class="formGroup">
+                    <button type="submit" id="btnNewComment" form='newCommentForm'>
+                        ok
+                    </button>
+                </div>
+            </form>
+        </div>`
+        ;
+        return content;
+    }
+
+    newDivAccount() {
+        var user = JSON.parse(localStorage.getItem('user'));
+        console.log(user);
+
+        const divAccount = document.getElementById(DIV_ACCOUNT_ID);
+        const logout = document.createElement('a');
+        logout.setAttribute('href','#');
+        logout.textContent = 'Se déconnecter';
+        divAccount.appendChild(logout);
+        logout.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            localStorage.removeItem('user');
+            router.execute('showLogin');
+        });
+
+        const deleteAccount = document.createElement('a');
+        deleteAccount.setAttribute('href','#');
+        deleteAccount.textContent = 'Supprimer';
+        divAccount.appendChild(deleteAccount);
+        deleteAccount.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            router.execute('showDeleteUser', user);
+        })
+    }
+
+    addPostRef(postRef) {
+        let content = `
+        <div>
+            ${postRef.firstname} &nbsp; ${postRef.lastname}
+            <div>
+                `
+                if (postRef.content!='') {
+                    content+= postRef.content;
+                };
+                `
+            </div>
+            <div>
+                `
+                if (postRef.image_url !='') {
+                    content += `
+                    <img src="${postRef.image_url}" width="75" height="130">
+                    `;
+                }
+                content +=`
+            </div>
+        </div>`;
+        return content;
+    }
+
+    renderOneComment(currentComment, postref, userId) {
         console.log("current comment user_id:"+currentComment.user_id);
         console.log("post user id :"+postref.userId);
         console.log('admin? :'+postref.isAdmin);
         let content =
             `<div class="comment" id="div${currentComment.id}">${currentComment.firstname} &nbsp ${currentComment.lastname}
                 <form id="comment${currentComment.id}">`;
+                    // l'admin peut modifier tous les commentaires
                     if (postref.isAdmin == 'true') {
                         content += `
                         <input type="text" name="content" value="${currentComment.content}" admin="true">
@@ -62,7 +127,8 @@ class CommentView extends AbstractView {
                             modifier
                         </button>`;
                         this.commentEventsTab.push(currentComment.id);
-                    } else if (postref.userId == currentComment.user_id) {
+                    // le rédacteur d'un commentaire peut le modifier
+                    } else if (userId == currentComment.user_id) {
                         content += `
                         <input type="text" name="content" value="${currentComment.content}" admin="false">
                         <button type="submit" name='button${currentComment.id}' form='comment${currentComment.id}'>
@@ -78,7 +144,6 @@ class CommentView extends AbstractView {
             </div>`;
         return content;
     }
-
 
     cleanDivAccount() {
         const divAccount = document.getElementById(DIV_ACCOUNT_ID);
@@ -114,20 +179,22 @@ class CommentView extends AbstractView {
         })
     }
 
-
-    
-    /*formSubmit() {
-        const form = document.getElementById('loginForm');
-        console.log(form.id);
+    formSubmit(user, postRef) {
+        const form = document.getElementById('newCommentForm');
+        console.log(form.getAttribute('id'));
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            const email = document.getElementById('userEmail');
-            console.log(email.value)
-            const password = document.getElementById('userPassword');
-            console.log(password.value);
-            router.execute('showLogged', email.value, password.value);
+            let content = document.getElementById('newcomment');
+            const postId = content.getAttribute('name');
+            console.log(postId);
+            content = content.value;
+            console.log(content);
+            if (content !='') {
+                router.execute('showNewComment', user, content, postId, postRef);
+            }
+            
         })
-    }*/
+    }
    
 }

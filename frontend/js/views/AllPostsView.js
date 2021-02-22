@@ -16,6 +16,48 @@ class AllPostsView extends AbstractView {
         var user = JSON.parse(localStorage.getItem('user'));
         console.log(user);
 
+        this.newDivAccount(user);
+
+        const allPosts = this.getVariable("allPosts");
+
+        let content = this.addNewPostForm(user);
+        
+        for (let i = 0; i < allPosts.length; i++) {
+            content += this.renderOnePost(allPosts[i], user);
+        }
+        
+        this.display(content);
+        
+        this.addPostEvents(user);
+
+        this.addCommentEvents(user);
+
+        this.formSubmit(user); 
+
+    } 
+
+    addNewPostForm(user) {
+        let content = 
+        `<div id="newPost"> ${user.firstname} ${user.lastname}
+            <form id="newPostForm" enctype="multipart/form-data" method="post">
+                <div class='formGroup'>
+                    <input type="text" id="content" name="content" maxlength="254" placeholder="Exprimez-vous !">
+                </div>
+                <div class="formGroup">
+                    <input type="file" id="image" name="image">
+                </div>
+                <div class="formGroup">
+                    <button type="submit" id="btnNewPost" form='newPostForm'>
+                        ok
+                    </button>
+                </div>
+            </form>
+        </div>`
+        ;
+        return content;
+    }
+
+    newDivAccount(user) {
         const divAccount = document.getElementById(DIV_ACCOUNT_ID);
         const logout = document.createElement('a');
         logout.setAttribute('href','#');
@@ -38,9 +80,6 @@ class AllPostsView extends AbstractView {
             router.execute('showDeleteUser', user);
         })
 
-
-
-
         if (user.role === 'admin') {
             const users = document.createElement('a');
             users.setAttribute('href', '#');
@@ -53,48 +92,7 @@ class AllPostsView extends AbstractView {
                 router.execute('showUsers', user.token);
             })
         }
-        
-
-        const allPosts = this.getVariable("allPosts");
-
-        //let content = `test ${token} ${role} ${userId} ${allPosts.length} ${user.role}`;
-        let content =
-        `<div id="newPost"> ${user.firstname} ${user.lastname}
-            <form id="newPostForm" enctype="multipart/form-data" method="post">
-                <div class='formGroup'>
-                    <input type="text" id="content" name="content" maxlength="254" placeholder="Exprimez-vous !">
-                </div>
-                <div class="formGroup">
-                    <input type="file" id="image" name="image">
-                </div>
-                <div class="formGroup">
-                    <button type="submit" id="btnNewPost" form='newPostForm'>
-                        ok
-                    </button>
-                </div>
-            </form>
-        </div>`
-        ;
-     
-
-        for (let i = 0; i < allPosts.length; i++) {
-            content += this.renderOnePost(allPosts[i], user);
-        }
-
-        
-        this.display(content);
-        
-        this.addPostEvents(user);
-        /*for (let i = 0; i < this.eventsTab.length; i++) {
-            console.log(this.eventsTab[i].postId);
-            this.addPostDeleteEvent(this.eventsTab[i].postId, this.eventsTab[i].userId);
-        }*/
-
-        this.addCommentEvents(user);
-
-        this.formSubmit(user); 
-
-    } 
+    }
 
     renderOnePost(currentPost, user) {
         let postId = currentPost.id;
@@ -134,7 +132,8 @@ class AllPostsView extends AbstractView {
                 </div>
             </form>`;
             this.postEventsTab.push({"postId":postId , "userId":userId});
-            this.commentEventsTab.push({"postId":postId , "userId":userId}); 
+            this.commentEventsTab.push({"postId":postId , "userId":userId,
+             "postUserFirstname":currentPost.firstname, "postUserLastname":currentPost.lastname}); 
 
         } else if (currentPost.user_id === user.userId) {
 
@@ -167,7 +166,8 @@ class AllPostsView extends AbstractView {
                 </div>
             </form>`;
             this.postEventsTab.push({"postId":postId , "userId":userId});
-            this.commentEventsTab.push({"postId":postId , "userId":userId}); 
+            this.commentEventsTab.push({"postId":postId , "userId":userId,
+             "postUserFirstname":currentPost.firstname, "postUserLastname":currentPost.lastname}); 
 
         } else {
 
@@ -188,7 +188,8 @@ class AllPostsView extends AbstractView {
                 </div>
             </div>`;
             }
-            this.commentEventsTab.push({"postId":postId , "userId":userId}); 
+            this.commentEventsTab.push({"postId":postId , "userId":userId,
+             "postUserFirstname":currentPost.firstname, "postUserLastname":currentPost.lastname});  
         }
         content += `</div>`;
         return content;
@@ -209,7 +210,11 @@ class AllPostsView extends AbstractView {
     addCommentEvents (user) {
         for (let i = 0; i < this.commentEventsTab.length; i++) {
             console.log(this.commentEventsTab[i].postId);
-            this.addCommentHandleEvent(this.commentEventsTab[i].postId, this.commentEventsTab[i].userId, user);
+            this.addCommentHandleEvent(
+                this.commentEventsTab[i].postId,
+                this.commentEventsTab[i].userId,
+                this.commentEventsTab[i].postUserFirstname,
+                this.commentEventsTab[i].postUserLastname);
         }
     } 
 
@@ -237,7 +242,7 @@ class AllPostsView extends AbstractView {
 
     }
 
-    addCommentHandleEvent(postId, userId, user) {
+    addCommentHandleEvent(postId, userId, postUserFirstname, postUserLastname) {
         //récupérer les infos du post
         const postContent = document.querySelector(`#post${postId} input[name="content"]`).value;
         console.log(postContent);
@@ -251,7 +256,9 @@ class AllPostsView extends AbstractView {
             'image_url': postImage,
             'postId': postId,
             'userId': userId,
-            'isAdmin': isAdmin
+            'isAdmin': isAdmin,
+            'firstname': postUserFirstname,
+            'lastname': postUserLastname
         }
         
         const commentLink = document.querySelector(`#post${postId} a[id="comment${postId}"]`);
