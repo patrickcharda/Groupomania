@@ -394,6 +394,33 @@ class Controller {
         
     }
 
+    async showDeleteComment() {
+        let commentId = this.args[0];
+        console.log(commentId);
+        let isAdmin = this.args[1];
+        console.log(isAdmin);
+        let token = JSON.parse(localStorage.getItem('user')).token;
+        console.log('token');
+        
+        try {
+            var deletedComment='';
+            if (isAdmin == 'false') {
+                deletedComment = await Model.deleteComment(BASE_URL+'/comment/'+commentId+'/delete', token);
+            } else {
+                deletedComment = await Model.deleteComment(BASE_URL+'/comment/'+commentId+'/deleteByAdmin', token);
+            }
+            console.log(deletedComment.message);
+            if (deletedComment.message === 'Comment was deleted successfully!') {
+                let divCommentToDelete = document.getElementById('div'+commentId);
+                divCommentToDelete.parentNode.removeChild(divCommentToDelete);
+            }
+        }
+        catch {
+            let errorView = ViewFactory.getView("error");
+            errorView.render();
+        }
+    }
+
     /**
      * Méthode qui gère la page de la liste des produits
      */

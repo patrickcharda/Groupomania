@@ -343,6 +343,30 @@ class Model {
         });
     }
 
+    static deleteComment(url, token) {
+        console.log(url);
+        console.log(token);
+        return fetch (url,
+            { 
+            method: 'DELETE',
+            headers: { 
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": "Bearer "+ token
+            }    
+        })
+        .then(function(httpBodyResponse) {
+            if (httpBodyResponse.ok) {
+                return httpBodyResponse.json();
+            } else {
+                throw new Error(`${httpBodyResponse.status} - ${httpBodyResponse.statusText}`);
+            }
+        })
+        .catch((error) => {
+            throw new Error(`Fetch catch : ${error}`);
+        });
+
+    }
+
     /*static updatePostByAdmin(url, token, formData) {
         console.log(url);
         console.log(token);

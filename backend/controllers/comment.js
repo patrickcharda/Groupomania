@@ -145,7 +145,10 @@ exports.deleteByAdmin = (req, res) => {
             message: "Could not delete comment with id " + req.params.comment_id
           });
         }
-      } else res.send({ message: `Comment was deleted successfully!` });
+      } else {
+        console.log('message : comment deleted');
+        res.send({ message: `Comment was deleted successfully!` });
+      }
     });
 };
 

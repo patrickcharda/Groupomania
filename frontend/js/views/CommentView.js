@@ -125,7 +125,8 @@ class CommentView extends AbstractView {
                         <input type="text" name="content" value="${currentComment.content}" admin="true">
                         <button type="submit" name='button${currentComment.id}' form='comment${currentComment.id}'>
                             modifier
-                        </button>`;
+                        </button>
+                        <a href="#" id="delLink${currentComment.id}" admin="true">supprimer</a>`;
                         this.commentEventsTab.push(currentComment.id);
                     // le rédacteur d'un commentaire peut le modifier
                     } else if (userId == currentComment.user_id) {
@@ -133,7 +134,8 @@ class CommentView extends AbstractView {
                         <input type="text" name="content" value="${currentComment.content}" admin="false">
                         <button type="submit" name='button${currentComment.id}' form='comment${currentComment.id}'>
                             modifier
-                        </button>`;
+                        </button>
+                        <a href="#" id="delLink${currentComment.id}" admin="false">supprimer</a>`;
                         this.commentEventsTab.push(currentComment.id);
                     } else {
                         content += `
@@ -161,6 +163,7 @@ class CommentView extends AbstractView {
             console.log(this.commentEventsTab[i]);
             //this.addCommentDeleteEvent(this.commentEventsTab[i].id);
             this.addCommentModifyEvent(this.commentEventsTab[i]);
+            this.addCommentDeleteEvent(this.commentEventsTab[i]);
         }
     }
 
@@ -194,6 +197,19 @@ class CommentView extends AbstractView {
                 router.execute('showNewComment', user, content, postId, postRef);
             }
             
+        })
+    }
+
+    addCommentDeleteEvent(commentId) {
+        const delLink = document.getElementById('delLink'+commentId);
+        console.log(delLink);
+        let isAdmin = delLink.getAttribute('admin');
+        console.log(typeof(isAdmin));
+        console.log('link admin :'+ isAdmin);
+        delLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            router.execute('showDeleteComment', commentId, isAdmin);
         })
     }
    
