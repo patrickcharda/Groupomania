@@ -1,25 +1,12 @@
-* {
-    box-sizing: border-box;
-}
+@import './base.scss';
+@import './header.scss';
+@import './container.scss';
+@import './footer.scss';
 
-.titres {
-    font-size: 1.2rem;
-    font-weight: 700;
-}
-body {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Playfair Display', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 400;
-    min-height: 100vh;
-    background: #181818;
-    color: white;
-}
 
 a {
-    color:yellowgreen;
+    color:lime;
+    
 }
 
 .postCard {

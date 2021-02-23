@@ -2,25 +2,58 @@
   box-sizing: border-box;
 }
 
-.titres {
-  font-size: 1.2rem;
-  font-weight: 700;
+body {
+  display: grid;
+  font-family: "Raleway", sans-serif;
+  font-size: 1.2em;
+  font-weight: 400;
+  background-color: #241f1f;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
 }
 
-body {
-  margin: 0;
+label {
+  color: lime;
+}
+
+#header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#logo img, #account {
+  flex-basis: 50%;
+}
+
+#logo img {
+  max-width: 200px;
+  max-height: 250px;
+  text-align: left;
+}
+
+#account {
+  text-align: right;
+}
+
+#container {
   display: flex;
   flex-direction: column;
-  font-family: "Playfair Display", sans-serif;
-  font-size: 1.1rem;
-  font-weight: 400;
-  min-height: 100vh;
-  background: #181818;
-  color: white;
+  align-items: center;
+  justify-content: stretch;
+  text-align: center;
+}
+
+#footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 a {
-  color: yellowgreen;
+  color: lime;
 }
 
 .postCard {

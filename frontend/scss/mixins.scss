@@ -1,0 +1,91 @@
+
+/*smartphone*/
+@mixin mobile-only {
+    @media only screen and (max-width: map-get($breakpoints , "mobile" )) {
+        @content;
+    }
+}
+
+/*middle*/
+@mixin middle {
+    @media only screen and (max-width: map-get($breakpoints, "middle")) {
+        @content;
+    }
+}
+
+/*large*/
+@mixin large {
+    @media only screen and (max-width: map-get($breakpoints, "large")) {
+        @content;
+    }
+}
+
+/*xlarge*/
+@mixin xlarge {
+    @media only screen and (max-width: map-get($breakpoints, "xlarge")) {
+        @content;
+    }
+}
+
+/*photos hébergements ville*/
+@mixin photos($photos__v) {
+    @each $key,$value in $photos__v {
+        & #{$key} {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: URL($value);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            border-top-right-radius: 15px;
+            border-top-left-radius: 15px;
+            border: 4px solid #ffffff;
+        }
+    }
+}
+/*photos hébergements les plus populaires*/
+@mixin photospop($photos_p) {
+    @each $key,$value in $photos_p {
+        & #{$key} {
+            position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        background-image: URL($value);
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-size: cover;
+                        border-top-left-radius: 15px;
+                        border-bottom-left-radius: 15px;
+                        border: 4px solid #ffffff;
+        }
+    }
+}
+/*photos activités*/
+
+@mixin photosactivites_m($photo_m,$key_m) {
+    @each $key,$value in $photo_m {
+        @if ($key == $key_m) {
+            background-image: URL($value);
+        }
+    }
+}
+
+@mixin photosactivites($photo_a) {
+    @each $key,$value in $photo_a {
+        & #{$key} {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: URL($value);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            @include mobile-only {
+                @include photosactivites_m($photos__activites_m,$key);
+            }
+        }
+    }
+}
