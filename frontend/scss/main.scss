@@ -1,0 +1,20 @@
+@import './base.scss';
+@import './header.scss';
+@import './container.scss';
+@import './footer.scss';
+
+
+a {
+    color:lime;
+    
+}
+
+.postCard {
+    border: 1px solid lightgreen;
+}
+
+#newPost {
+    border: 1px solid orangered;
+}
+
+

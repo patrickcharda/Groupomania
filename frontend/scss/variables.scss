@@ -1,0 +1,35 @@
+//variables
+$color-primary: #0065FC;
+$color-activelink: #237AFC;
+$color-unactivelink: #727272;
+$color-unactiveborder: #F2F2F2;
+$color-activeborder: #0065FC;
+$color-secondary: #DEEBFF;
+$color-background: #F2F2F2;
+$breakpoints: ("mobile":"620px","middle":"920px","large":"1200px", "xlarge":"1440");
+$photos__ville: ("#img1":"./../images/hebergements/4_small/marcus-loke-WQJvWU_HZFo-unsplash.jpg",
+"#img2":"./../images/hebergements/4_small/fred-kleber-gTbaxaVLvsg-unsplash.jpg",
+"#img3":"./../images/hebergements/4_small/reisetopia-B8WIgxA_PFU-unsplash.jpg",
+"#img4":"./../images/hebergements/4_small/annie-spratt-Eg1qcIitAuA-unsplash.jpg",
+"#img5":"./../images/hebergements/4_small/nicate-lee-kT-ZyaiwBe0-unsplash.jpg",
+"#img6":"./../images/hebergements/4_small/febrian-zakaria-M6S1WvfW68A-unsplash.jpg",
+"#img11":"./../images/hebergements/4_small/annie-spratt-Eg1qcIitAuA-unsplash.jpg"
+);
+$photos__populaires: ("#img8":"./../images/hebergements/4_small/emile-guillemot-Bj_rcSC5XfE-unsplash.jpg",
+"#img9":"./../images/hebergements/4_small/aw-creative-VGs8z60yT2c-unsplash.jpg",
+"#img10":"./../images/hebergements/4_small/febrian-zakaria-sjvU0THccQA-unsplash.jpg"
+);
+$photos__activites: ("#img12":"./../images/activites/4_small/reno-laithienne-QUgJhdY5Fyk-unsplash.jpg",
+"#img13":"./../images/activites/4_small/paul-hermann-QFTrLdQIRhI-unsplash.jpg",
+"#img14":"./../images/activites/4_small/kevin-hikari-rV_Qd1l-VXg-unsplash.jpg",
+"#img15":"./../images/activites/4_small/kilyan-sockalingum-NR8-cBCN3aI-unsplash.jpg",
+"#img16":"./../images/activites/4_small/florian-wehde-xW9e8gdotxI-unsplash.jpg",
+"#img17":"./../images/activites/4_small/lena-paulin-wH2-EJoDcV0-unsplash.jpg"
+);
+$photos__activites_m: ("#img12":"./../images/activites/3_medium/reno-laithienne-QUgJhdY5Fyk-unsplash.jpg",
+"#img13":"./../images/activites/3_medium/paul-hermann-QFTrLdQIRhI-unsplash.jpg",
+"#img14":"./../images/activites/3_medium/kevin-hikari-rV_Qd1l-VXg-unsplash.jpg",
+"#img15":"./../images/activites/3_medium/kilyan-sockalingum-NR8-cBCN3aI-unsplash.jpg",
+"#img16":"./../images/activites/3_medium/florian-wehde-xW9e8gdotxI-unsplash.jpg",
+"#img17":"./../images/activites/3_medium/lena-paulin-wH2-EJoDcV0-unsplash.jpg"
+);
