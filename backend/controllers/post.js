@@ -2,7 +2,7 @@ require('dotenv').config();
 const fs = require('fs');
 const Post = require('../models/Post');
 const uploadFile = require('../middleware/multer-config');
-const util = require("util");
+//const util = require("util");
 
 const mysql = require('mysql');
 const { resolve } = require('path');
@@ -17,7 +17,6 @@ var prePost = {};
 var postInDB = {};
 function getAPostQuery(sql, postInDB) {
   return new Promise(resolve => {
-    //let foundPostBeforeUpdate = getAPostQuery(sql, postBeforeUpdate);
   connection.query(sql,[postInDB.id, postInDB.user_id], (error, results) => {
     if (error) {
       return(error);
@@ -45,7 +44,6 @@ function getAPostQuery(sql, postInDB) {
 
 function getAPostQueryByAdmin(sql, postInDB) {
   return new Promise(resolve => {
-    //let foundPostBeforeUpdate = getAPostQuery(sql, postBeforeUpdate);
   connection.query(sql, postInDB.id, (error, results) => {
     if (error) {
       return(error);

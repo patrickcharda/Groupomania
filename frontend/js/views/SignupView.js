@@ -58,9 +58,7 @@ class SignupView extends AbstractView {
             e.preventDefault();
             e.stopPropagation();
             const email = document.getElementById('userEmail');
-            console.log(email.value)
             const password = document.getElementById('userPassword');
-            console.log(password.value);
             const firstname = document.getElementById('firstname');
             const lastname = document.getElementById('lastname');
             router.execute('showUserRecord', email.value, password.value, firstname.value, lastname.value);

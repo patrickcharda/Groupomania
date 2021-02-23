@@ -1,8 +1,8 @@
 require('dotenv').config();
-const fs = require('fs');
+//const fs = require('fs');
 const Comment = require('../models/Comment');
 const uploadFile = require('../middleware/multer-config');
-const util = require("util");
+//const util = require("util");
 
 const mysql = require('mysql');
 const { resolve } = require('path');
@@ -44,7 +44,6 @@ function getCommentQuery(sql, commentInDB) {
 
 function getCommentQueryByAdmin(sql, commentInDB) {
   return new Promise(resolve => {
-    //let foundPostBeforeUpdate = getAPostQuery(sql, postBeforeUpdate);
   connection.query(sql,commentInDB.id, (error, results) => {
     if (error) {
       return(error);
@@ -67,34 +66,6 @@ function getCommentQueryByAdmin(sql, commentInDB) {
     }); 
   })
 }
-
-/*function getAPostQueryByAdmin(sql, postInDB) {
-  return new Promise(resolve => {
-    //let foundPostBeforeUpdate = getAPostQuery(sql, postBeforeUpdate);
-  connection.query(sql,[postInDB.id], (error, results) => {
-    if (error) {
-      return(error);
-    } else {
-      if (results.length === 1) {
-        console.log(results[0].content);
-        console.log(results[0].image_url);
-        console.log('foundpost content + image_url:'+ results[0].content+' '+ results[0].image_url);
-        postInDB.content = results[0].content;
-        postInDB.image_url = results[0].image_url;
-        prePost.user_id = postInDB.user_id;
-        prePost.id = postInDB.id;
-        console.log('prePost user_id :'+prePost.user_id);
-        console.log('prePost id :'+prePost.id);
-        const response = {
-          'postInDB':postInDB,
-          'prePost':prePost
-        }
-        resolve(response);
-        }
-      }
-    }); 
-  })
-}*/
 
 exports.getPostComments = (req, res) => {
   const postId = req.params.post_id;
@@ -269,86 +240,6 @@ exports.updateByAdmin = async(req, res) => {
   commentInDB.length = 0;
   preComment.length = 0;
 };
-
-
-/*exports.updateByAdmin = async (req, res) => {
-  // on récupère le user id depuis auth
-  if (req.body.userLoggedId === undefined || req.body.userLoggedId === null) {
-    res.status(400).send({
-      message: `pb de user id`
-    });
-  } else {
-  req.body.user_id = req.body.userLoggedId;
-  console.log('admin id :'+req.body.user_id);
-  // on paramètre la requête pour retrouver le post
-  //postInDB.user_id = req.body.user_id;
-  postInDB.id = req.params.id;
-  console.log('post id :' +postInDB.id);
-  const sql = `SELECT * FROM post WHERE post.id=? LIMIT 1`;
-  
-  var test = await getAPostQueryByAdmin(sql, postInDB);
-
-  await uploadFile(req, res);
-    console.log(req.body.content);
-    if (req.file !== undefined) {
-      console.log(req.file.filename);
-    //suppression ancien fichier image
-      if (test.postInDB.image_url !== undefined || test.postInDB.image_url !== '') {
-        console.log('fic a suppr :'+ test.postInDB.image_url);
-        fs.unlink(`images/${test.postInDB.image_url}`, (err => {
-          if (err) console.log(err);
-          else {
-            console.log('Deleted file : '+test.postInDB.image_url);
-          }
-        }));
-      }
-    prePost.image_url = req.file.filename;
-    console.log('prePost.image_ulr : '+prePost.image_url);
-    } else { 
-      if (req.body.img_remove != 'true') {
-        console.log('no file');
-        prePost.image_url = postInDB.image_url;
-        console.log('prePost.image_ulr : '+prePost.image_url);
-      } else {
-        prePost.image_url ='';
-        if (test.postInDB.image_url !='') {
-          fs.unlink(`images/${test.postInDB.image_url}`, (err => {
-            if (err) console.log(err);
-            else {
-              console.log('Deleted file : '+test.postInDB.image_url);
-            }
-          }));
-        }
-      }
-    }
-    console.log('body content :' +req.body.content);
-    if (req.body.content !== postInDB.content) {
-      prePost.content = req.body.content;
-      console.log('prePost.content :'+prePost.content);
-    }
-    if ((prePost.content == undefined || prePost.content =='') && (prePost.image_url =='' || prePost.image_url == undefined)) {
-      Post.delete(prePost.id, prePost.user_id, (err, data) => {
-        if (err) {
-          if (err.kind === "not_found") {
-            res.status(404).send({
-              message: `Not found post with id ${req.params.id}.`
-            });
-          } else {
-            res.status(500).send({
-              message: "Could not delete user with id " + req.params.id
-            });
-          }
-        } else res.send({ message: `Post was deleted successfully!` });
-      });
-    } else {
-      await Post.update(prePost, function(err, post) {
-        if (err)
-          res.send(err);
-            res.json(post);
-        });
-    }
-  }
-}*/
 
 
  

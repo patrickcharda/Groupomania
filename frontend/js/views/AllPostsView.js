@@ -3,13 +3,11 @@ class AllPostsView extends AbstractView {
     constructor() {
         super();
         this.container = document.getElementById(CONTAINER_ID);
-        //this.eventsTab = []; 
     }
 
     async render() {
 
         this.cleanContainer();
-        //const token = this.getVariable("token");
 
         this.cleanDivAccount();
 
@@ -39,8 +37,6 @@ class AllPostsView extends AbstractView {
         this.formSubmit(user); 
 
     } 
-
-    
 
     addNewPostForm(user) {
         let content = 
@@ -76,29 +72,8 @@ class AllPostsView extends AbstractView {
                 img.setAttribute('width','75');
                 img.setAttribute('heigth','130');
                 img.src=e.target.result;
-            };
-            
+            };           
             reader.readAsDataURL(this.files[0]);
-
-            /*var imageType = /^image\//;
-            var preview = document.getElementById('preview');
-            for (let i = 0; i < files.length; i++) {
-                var file = files[i];
-                if (!imageType.test(file.type)) {
-                    alert("Veuillez sélectionner une image");
-                    preview.innerHTML = '';
-                } else {
-                    if(i == 0){
-                        preview.innerHTML = '';
-                    }
-                    var img= document.createElement('img');
-                    img.classList.add('obj');
-                    img.file = file;
-                    preview.appendChild(img);
-                    
-                }
-            } */ 
-   
         });
     }
 
@@ -246,7 +221,6 @@ class AllPostsView extends AbstractView {
 
     addPostEvents (user) {
         for (let i = 0; i < this.postEventsTab.length; i++) {
-            console.log(this.postEventsTab[i].postId);
             this.addPostDeleteEvent(this.postEventsTab[i].postId, this.postEventsTab[i].userId);
             this.addPostModifyEvent(this.postEventsTab[i].postId, this.postEventsTab[i].userId, user);
         }
@@ -254,7 +228,6 @@ class AllPostsView extends AbstractView {
     
     addCommentEvents (user) {
         for (let i = 0; i < this.commentEventsTab.length; i++) {
-            console.log(this.commentEventsTab[i].postId);
             this.addCommentHandleEvent(
                 this.commentEventsTab[i].postId,
                 this.commentEventsTab[i].userId,
@@ -265,15 +238,12 @@ class AllPostsView extends AbstractView {
 
     addPostModifyEvent(postId, userId, user) {
         const frmUpdate = document.getElementById('post'+postId);
-        console.log(frmUpdate);
         let isAdmin = frmUpdate.getAttribute('admin');
-        console.log('frmUpdate admin :'+ isAdmin);
         if (isAdmin == "false") {
             frmUpdate.addEventListener('submit', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 const formData = new FormData(frmUpdate);
-                //console.log(formData.get('img_remove'));
                 router.execute('showModifyPost', user, formData, postId);
             })
         } else {
@@ -290,12 +260,8 @@ class AllPostsView extends AbstractView {
     addCommentHandleEvent(postId, userId, postUserFirstname, postUserLastname) {
         //récupérer les infos du post
         const postContent = document.querySelector(`#post${postId} input[name="content"]`).value;
-        console.log(postContent);
         const postImage = document.querySelector(`#post${postId} img`) == null?'':document.querySelector(`#post${postId} img`).getAttribute('src');
-        console.log(postImage);
         const isAdmin = document.getElementById(`post${postId}`).getAttribute('admin');
-        console.log(isAdmin);
-        console.log('POST ID :' +postId);
         const postRef = {
             'content': postContent,
             'image_url': postImage,
@@ -337,7 +303,6 @@ class AllPostsView extends AbstractView {
 
     formSubmit(user) {
         const form = document.getElementById('newPostForm');
-        console.log(form.getAttribute('id'));
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             e.stopPropagation();

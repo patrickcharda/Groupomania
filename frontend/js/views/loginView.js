@@ -67,9 +67,7 @@ class LoginView extends AbstractView {
             e.preventDefault();
             e.stopPropagation();
             const email = document.getElementById('userEmail');
-            console.log(email.value)
             const password = document.getElementById('userPassword');
-            console.log(password.value);
             router.execute('showLogged', email.value, password.value);
         })
     }

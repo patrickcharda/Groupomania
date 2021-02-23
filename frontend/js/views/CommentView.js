@@ -19,10 +19,8 @@ class CommentView extends AbstractView {
         let allComments = this.getVariable('allComments');
 
         var user = JSON.parse(localStorage.getItem('user'));
-        //console.log(user);
 
         console.log(postRef);
-        //console.log(allComments);
 
         let content = this.addPostRef(postRef);
 
@@ -63,7 +61,6 @@ class CommentView extends AbstractView {
 
     newDivAccount() {
         var user = JSON.parse(localStorage.getItem('user'));
-        console.log(user);
 
         const divAccount = document.getElementById(DIV_ACCOUNT_ID);
         const logout = document.createElement('a');
@@ -113,9 +110,6 @@ class CommentView extends AbstractView {
     }
 
     renderOneComment(currentComment, postref, userId) {
-        console.log("current comment user_id:"+currentComment.user_id);
-        console.log("post user id :"+postref.userId);
-        console.log('admin? :'+postref.isAdmin);
         let content =
             `<div class="comment" id="div${currentComment.id}">${currentComment.firstname} &nbsp ${currentComment.lastname}
                 <form id="comment${currentComment.id}">`;
@@ -160,39 +154,31 @@ class CommentView extends AbstractView {
 
     addCommentsEvents() {
         for (let i = 0; i < this.commentEventsTab.length; i++) {
-            console.log(this.commentEventsTab[i]);
-            //this.addCommentDeleteEvent(this.commentEventsTab[i].id);
             this.addCommentModifyEvent(this.commentEventsTab[i]);
             this.addCommentDeleteEvent(this.commentEventsTab[i]);
         }
     }
 
     addCommentModifyEvent(commentId) {
-        console.log('event for comment :'+commentId);
         const frmComment = document.getElementById('comment'+commentId);
         const isAdmin = frmComment.querySelector('input[name="content"]').getAttribute('admin');
-        //console.log(isAdmin.getAttribute('admin'));
         console.log('TEST IS ADMIN :'+isAdmin);
         frmComment.addEventListener('submit', function(e) {
             e.preventDefault();
             e.stopPropagation();
             const content = frmComment.querySelector('input[name="content"').value;
-            console.log(content);
             router.execute('showCommentUpdate', commentId, content, isAdmin);
         })
     }
 
     formSubmit(user, postRef) {
         const form = document.getElementById('newCommentForm');
-        console.log(form.getAttribute('id'));
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             e.stopPropagation();
             let content = document.getElementById('newcomment');
             const postId = content.getAttribute('name');
-            console.log(postId);
             content = content.value;
-            console.log(content);
             if (content !='') {
                 router.execute('showNewComment', user, content, postId, postRef);
             }
@@ -202,10 +188,7 @@ class CommentView extends AbstractView {
 
     addCommentDeleteEvent(commentId) {
         const delLink = document.getElementById('delLink'+commentId);
-        console.log(delLink);
         let isAdmin = delLink.getAttribute('admin');
-        console.log(typeof(isAdmin));
-        console.log('link admin :'+ isAdmin);
         delLink.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();

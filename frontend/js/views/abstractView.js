@@ -1,7 +1,7 @@
 /**
- * Ceci est une classe "abtraite", donc elle n'est pas censée être instanciée
+ * Ceci est une classe "abstraite", donc elle n'est pas censée être instanciée
  * directement. 
- * Elle fourni des méthodes de bases pour chaque vue, comme la création des 
+ * Elle fournit des méthodes de base pour chaque vue, comme la création des 
  * variables que la vue pourra utiliser au besoin ou la méthode display
  * qui va s'occuper d'afficher ce que la vue a calculé, directement dans la page. 
  */

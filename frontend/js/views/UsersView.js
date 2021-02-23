@@ -28,8 +28,6 @@ class UsersView extends AbstractView {
         });
 
         const allUsers = this.getVariable("allUsers");
-        console.log(allUsers);
-        //console.log(allUsers[3].email);
 
         let content=`<h3>Liste des utilisateurs</h3>`;
 
