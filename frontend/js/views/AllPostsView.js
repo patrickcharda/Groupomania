@@ -18,7 +18,9 @@ class AllPostsView extends AbstractView {
 
         const allPosts = this.getVariable("allPosts");
 
-        let content = this.addNewPostForm(user);
+        let content = `<h1>Liste des publications</h1>`;
+        
+        content += this.addNewPostForm(user);
 
         
         

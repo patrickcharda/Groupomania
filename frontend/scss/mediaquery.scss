@@ -1,0 +1,138 @@
+@media only screen and (min-width:800px) {
+
+    #postRef {
+        width: 450px;
+        & #postRefContent {
+            & input {
+                width: 400px;
+                height: 100px;
+            }
+        }
+        & #postRefImg {
+            width: 400px;
+            height: 400px;
+            & img {
+                width: 400px;
+                height: 400px;
+            }
+        }
+    }
+
+    #newCommentForm {
+        & input[id=newcomment] {
+            width: 400px;
+            height: 100px;
+        }
+    }
+
+    #newPostForm {
+        & input[id=content]  {
+            width: 450px;
+        }
+
+        & #preview, #imgPreview {
+            width: 400px;
+            height: 400px;
+        }
+    } 
+
+    .commentFrm {
+        & input[name=content] {
+            width: 400px;
+            height: 100px;
+        }
+    }
+
+    #messageModif {
+        width: 440px;
+    }
+    .postCard {
+        & input[name=content] {
+            width: 450px;
+            margin-bottom: 10px;
+        }
+        & .imgPost {
+            width: 400px;
+            height: 400px;
+            & img {
+                width: 400px;
+                height: 400px;
+                margin-bottom: 5px;
+            }
+        }
+        & input[type=file] {
+            margin-top: 20px;
+        }
+    }
+
+}
+
+@media only screen and (min-width:1100px) {
+
+    #postRef {
+        width: 550px;
+        & #postRefContent {
+            & input {
+                width: 500px;
+                height: 100px;
+            }
+        }
+        & #postRefImg {
+            width: 500px;
+            height: 500px;
+            & img {
+                width: 500px;
+                height: 500px;
+            }
+        }
+    }
+
+    #newCommentForm {
+        & input[id=newcomment] {
+            width: 500px;
+            height: 100px;
+        }
+    }
+
+    .commentFrm {
+        & input[name=content] {
+            width: 500px;
+            height: 100px;
+        }
+    }
+
+    #newPostForm {
+        & input[id=content]  {
+            width: 550px;
+        }
+
+        & #preview, #imgPreview {
+            width: 500px;
+            height: 500px;
+        }
+    } 
+    #messageModif {
+        width: 540px;
+    }
+    .postCard {
+        & input[name=content] {
+            width: 550px;
+            margin-bottom: 10px;
+        }
+        & .imgPost {
+            width: 500px;
+            height: 500px;
+            & img {
+                width: 500px;
+                height: 500px;
+                margin-bottom: 5px;
+            }
+        }
+        & input[type=file] {
+            margin-top: 20px;
+        }
+    }
+}
+
+
+

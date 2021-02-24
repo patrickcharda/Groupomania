@@ -22,7 +22,9 @@ class CommentView extends AbstractView {
 
         console.log(postRef);
 
-        let content = this.addPostRef(postRef);
+        let content = `<h1>Liste des commentaires</h1>`;
+        
+        content += this.addPostRef(postRef);
 
         content += this.addNewCommentForm(user, postId);
 
