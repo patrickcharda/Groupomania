@@ -24,7 +24,7 @@ class AllPostsView extends AbstractView {
         
         for (let i = 0; i < allPosts.length; i++) {
             content += this.renderOnePost(allPosts[i], user);
-        }
+        };
         
         this.display(content);
 
@@ -43,19 +43,21 @@ class AllPostsView extends AbstractView {
         `<div id="newPost"> ${user.firstname} ${user.lastname}
             <form id="newPostForm" enctype="multipart/form-data" method="post">
                 <div class='formGroup'>
-                    <input type="text" id="content" name="content" maxlength="254" placeholder="Exprimez-vous !">
+                    <input type="text" id="content" name="content" maxlength="254" placeholder="Exprimez-vous !" autofocus >
                 </div>
                 <div class="formGroup">
-                    <input type="file" id="image" name="image">
-                    <span id="preview"><img id="imgPreview"></span>
+                    <input type="file" id="image" name="image" >
+                    <div id="preview">
+                     </div> 
                 </div>
-
-                <div class="formGroup">
-                    <button type="submit" id="btnNewPost" form='newPostForm'>
-                        ok
-                    </button>
-                </div>
+                <button type="submit" id="btnNewPost" form='newPostForm'>
+                    Valider
+                </button>           
             </form>
+        </div>
+        <div id="messageModif">
+            Modifiez directement vos publications en changeant le texte et/ou en chargeant une nouvelle image.
+            Puis cliquer 1 fois sur le bouton Modifier pour la prise en compte.
         </div>`
         ;
         return content;
@@ -68,10 +70,12 @@ class AllPostsView extends AbstractView {
             e.stopPropagation();
             var reader = new FileReader();
             reader.onload = function(e) {
-                let img = document.getElementById('imgPreview');
-                img.setAttribute('width','75');
-                img.setAttribute('heigth','130');
+                let preview = document.getElementById('preview');
+                let img = document.createElement('img');
+                img.setAttribute('id', 'imgPreview');
+                img.setAttribute('object-fit', 'cover');
                 img.src=e.target.result;
+                preview.appendChild(img);
             };           
             reader.readAsDataURL(this.files[0]);
         });
@@ -150,20 +154,23 @@ class AllPostsView extends AbstractView {
         // si c'est un admin qui s'est loggé, il peut tout faire ("modérer" par suppr ou modif)
         if (user.role == 'admin') {
 
-            content+= `<a href='#' id='${currentPost.id}' admin='true'>
-            supprimer</a>`;
+            //content+= `<a href='#' id='${currentPost.id}' admin='true'>
+            //supprimer</a>`;
             
             content += `
             <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='true'>
                 <div class='formGroup'>
-                <input type="text" name="content" maxlength="254" value="${currentPost.content}">
-                </div>`;
+                <input type="text" name="content" maxlength="254" value="${currentPost.content}" `;
+                if (currentPost.content == '') {
+                    content +=` placeholder="Exprimez-vous !">`
+                } else {content+=`>`}
+                content+=`</div>`;
             if (currentPost.image_url != '') {
             content +=`
                 <div class="imgPost">
                     <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
-                    Retirer l'image? <input type="checkbox" name="img_remove">
-                </div>`;
+                </div>
+                Retirer l'image? <input type="checkbox" name="img_remove">`;
             }
             content += `
                 <div class="formGroup">
@@ -172,6 +179,8 @@ class AllPostsView extends AbstractView {
             content += `
                 <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
                 modifier</button>
+                <a href='#' id='${currentPost.id}' admin='true'>
+                supprimer</a>
                 <div>
                     <a href="#" id="comment${currentPost.id}" admin="true">commentaires</a>
                 </div>
@@ -299,11 +308,11 @@ class AllPostsView extends AbstractView {
         
         const commentLink = document.querySelector(`#post${postId} a[id="comment${postId}"]`);
         console.log(commentLink);
-        commentLink.addEventListener('click', function(e) {
+        /*commentLink.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             router.execute('showComment', postRef);
-        })
+        })*/
     }
 
     addPostDeleteEvent(postId, userId) {

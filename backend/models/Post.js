@@ -15,7 +15,7 @@ Post.getAllPosts = function(result) {
             result(null, err);
         }
         else{
-            console.log('posts : ', res);  
+            //console.log('posts : ', res);  
             result(null, res);
         }
     });   
@@ -24,7 +24,7 @@ Post.getAllPosts = function(result) {
 Post.delete = (postId, publisherId, result) => {
     sql.query(`DELETE FROM post WHERE id = ? AND user_id = ?`,[postId, publisherId], (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        //console.log("error: ", err);
         result(null, err);
         return;
       }
