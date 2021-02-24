@@ -16,4 +16,20 @@
     text-align: right;
 }
 
+.divAccount {
+    display: flex;
+    flex-direction: column;
+}
+
+.navAccount {
+    color: red; 
+    & li {
+        list-style: none;
+    }
+}
+
+
+
+
+
 

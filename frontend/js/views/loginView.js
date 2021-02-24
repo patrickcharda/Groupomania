@@ -19,7 +19,7 @@ class LoginView extends AbstractView {
         signup.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            divAccount.removeChild(signup);
+            //divAccount.removeChild(signup);
             router.execute('showSignup');
         });
 
@@ -39,7 +39,7 @@ class LoginView extends AbstractView {
                 </div>
                 <div class="formGroup">
                     <button type="submit" id="btnNewUser" form='loginForm'>
-                        ok
+                        Valider
                     </button>
                 </div>
             </form>`;

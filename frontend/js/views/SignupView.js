@@ -8,6 +8,20 @@ class SignupView extends AbstractView {
     render() {
 
         this.cleanContainer();
+
+        this.cleanDivAccount();
+
+        const divAccount = document.getElementById(DIV_ACCOUNT_ID);
+        const signin = document.createElement('a');
+        signin.setAttribute('href','./../index.html');
+        signin.textContent = "Se connecter";
+        divAccount.appendChild(signin);
+        signin.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            router.execute('showLogin');
+        });
+        
   
         let content = 
         `<form id="signupForm" method="post">
@@ -37,7 +51,7 @@ class SignupView extends AbstractView {
             </div>
             <div class="formGroup">
                 <button type="submit" id="btnNewUser" form='signupForm'>
-                    ok
+                    Valider
                 </button>
             </div>
         </form>`;
@@ -49,6 +63,13 @@ class SignupView extends AbstractView {
 
     display(content) {
         this.container.innerHTML += content;
+    }
+
+    cleanDivAccount() {
+        const divAccount = document.getElementById(DIV_ACCOUNT_ID);
+        while (divAccount.firstChild) {
+            divAccount.removeChild(divAccount.firstChild);
+        }
     }
 
     formSubmit() {
