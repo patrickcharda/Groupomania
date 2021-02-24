@@ -59,7 +59,7 @@ class AbstractView {
         while (this.container.firstChild) {
             this.container.removeChild(this.container.firstChild);
         }
-        this.postEventsTab.length = 0;
-        this.commentEventsTab.length = 0;
+        this.postEventsTab = [];
+        this.commentEventsTab = [];
     }
 }
