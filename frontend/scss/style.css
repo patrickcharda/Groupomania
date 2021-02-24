@@ -12,6 +12,10 @@ body {
   grid-template-rows: auto 1fr auto;
 }
 
+h1 {
+  color: white;
+}
+
 #header {
   display: flex;
   justify-content: space-around;
@@ -93,6 +97,7 @@ body {
   margin-top: 20px;
   height: 300px;
   width: 300px;
+  border-radius: 25px;
 }
 #newPost #imgPreview {
   height: 300px;
@@ -155,6 +160,10 @@ input, button {
   padding: 5px;
 }
 
+input, img {
+  border-radius: 25px;
+}
+
 #messageModif {
   text-align: center;
   text-decoration: underline;
@@ -172,6 +181,187 @@ input[type=file] {
   margin: 0;
 }
 
+#postRef {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: red;
+  width: 340px;
+  border: 7px solid #312f2f;
+  border-radius: 25px;
+  margin-bottom: 20px;
+}
+
+#postRefImg {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 300px;
+  height: 300px;
+}
+#postRefImg img {
+  height: 300px;
+  width: 300px;
+  border-radius: 25 px;
+}
+
+#postRefContent {
+  padding-top: 10px;
+}
+#postRefContent input {
+  height: 100px;
+  width: 300px;
+}
+
+#newcomment {
+  height: 75px;
+  width: 300px;
+}
+
+#newComment {
+  color: red;
+}
+
+.comment {
+  color: red;
+}
+
+.commentFrm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.commentFrm input {
+  height: 75px;
+  width: 300px;
+  margin-bottom: 5px;
+}
+
+.darken {
+  background-color: #dab4b4;
+}
+
+.user {
+  width: 250px;
+  color: white;
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 2px solid;
+}
+
+@media only screen and (min-width: 800px) {
+  #postRef {
+    width: 450px;
+  }
+  #postRef #postRefContent input {
+    width: 400px;
+    height: 100px;
+  }
+  #postRef #postRefImg {
+    width: 400px;
+    height: 400px;
+  }
+  #postRef #postRefImg img {
+    width: 400px;
+    height: 400px;
+  }
+
+  #newCommentForm input[id=newcomment] {
+    width: 400px;
+    height: 100px;
+  }
+
+  #newPostForm input[id=content] {
+    width: 450px;
+  }
+  #newPostForm #preview, #newPostForm #imgPreview {
+    width: 400px;
+    height: 400px;
+  }
+
+  .commentFrm input[name=content] {
+    width: 400px;
+    height: 100px;
+  }
+
+  #messageModif {
+    width: 440px;
+  }
+
+  .postCard input[name=content] {
+    width: 450px;
+    margin-bottom: 10px;
+  }
+  .postCard .imgPost {
+    width: 400px;
+    height: 400px;
+  }
+  .postCard .imgPost img {
+    width: 400px;
+    height: 400px;
+    margin-bottom: 5px;
+  }
+  .postCard input[type=file] {
+    margin-top: 20px;
+  }
+}
+@media only screen and (min-width: 1100px) {
+  #postRef {
+    width: 550px;
+  }
+  #postRef #postRefContent input {
+    width: 500px;
+    height: 100px;
+  }
+  #postRef #postRefImg {
+    width: 500px;
+    height: 500px;
+  }
+  #postRef #postRefImg img {
+    width: 500px;
+    height: 500px;
+  }
+
+  #newCommentForm input[id=newcomment] {
+    width: 500px;
+    height: 100px;
+  }
+
+  .commentFrm input[name=content] {
+    width: 500px;
+    height: 100px;
+  }
+
+  #newPostForm input[id=content] {
+    width: 550px;
+  }
+  #newPostForm #preview, #newPostForm #imgPreview {
+    width: 500px;
+    height: 500px;
+  }
+
+  #messageModif {
+    width: 540px;
+  }
+
+  .postCard input[name=content] {
+    width: 550px;
+    margin-bottom: 10px;
+  }
+  .postCard .imgPost {
+    width: 500px;
+    height: 500px;
+  }
+  .postCard .imgPost img {
+    width: 500px;
+    height: 500px;
+    margin-bottom: 5px;
+  }
+  .postCard input[type=file] {
+    margin-top: 20px;
+  }
+}
 a {
   color: red;
 }

@@ -29,7 +29,7 @@ class UsersView extends AbstractView {
 
         const allUsers = this.getVariable("allUsers");
 
-        let content=`<h3>Liste des utilisateurs</h3>`;
+        let content=`<h1>Liste des utilisateurs</h1>`;
 
         for (let i = 0; i < allUsers.length; i++) {
 

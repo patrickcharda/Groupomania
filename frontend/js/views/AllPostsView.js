@@ -18,7 +18,9 @@ class AllPostsView extends AbstractView {
 
         const allPosts = this.getVariable("allPosts");
 
-        let content = this.addNewPostForm(user);
+        let content = `<h1>Liste des publications</h1>`;
+        
+        content += this.addNewPostForm(user);
 
         
         
@@ -229,7 +231,7 @@ class AllPostsView extends AbstractView {
             content += `
             <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='false'>
                 <div class="formGroup">
-                <input readonly name="content" maxlength="254" value="${currentPost.content}" `;
+                <input class="darken" readonly name="content" maxlength="254" value="${currentPost.content}" `;
                 if (currentPost.content == '') {
                     content +=` type="hidden">`
                 } else {content+=` type="text">`}
