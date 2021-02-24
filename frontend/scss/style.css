@@ -6,14 +6,10 @@ body {
   display: grid;
   font-family: "Raleway", sans-serif;
   font-size: 1.2em;
-  font-weight: 400;
+  font-weight: 600;
   background-color: #241f1f;
   min-height: 100vh;
   grid-template-rows: auto 1fr auto;
-}
-
-label {
-  color: lime;
 }
 
 #header {
@@ -36,6 +32,18 @@ label {
   text-align: right;
 }
 
+.divAccount {
+  display: flex;
+  flex-direction: column;
+}
+
+.navAccount {
+  color: red;
+}
+.navAccount li {
+  list-style: none;
+}
+
 #container {
   display: flex;
   flex-direction: column;
@@ -50,10 +58,34 @@ label {
   justify-content: center;
   align-items: center;
   text-align: center;
+  margin-top: 30px;
+}
+
+#loginForm, #signupForm {
+  padding: 30px;
+  border: 3px solid white;
+}
+
+label {
+  display: block;
+  color: red;
+  margin-bottom: 5px;
+  font-size: 1.1em;
+  font-weight: 700;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+input, button {
+  font-size: large;
+  font-weight: 600;
+  padding: 5px;
 }
 
 a {
-  color: lime;
+  color: red;
 }
 
 .postCard {

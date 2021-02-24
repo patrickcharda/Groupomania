@@ -79,10 +79,24 @@ class AllPostsView extends AbstractView {
 
     newDivAccount(user) {
         const divAccount = document.getElementById(DIV_ACCOUNT_ID);
+        divAccount.setAttribute('class', 'divAccount');
+
+        const navAccount = document.createElement('nav');
+
+        const divMonCompte = document.createElement('div');
+        divMonCompte.textContent = 'MON COMPTE';
+        navAccount.setAttribute('class', 'navAccount');
+        navAccount.appendChild(divMonCompte);
+        divAccount.appendChild(navAccount);
+
+        const ulMenuAccount = document.createElement('ul');
+        divMonCompte.appendChild(ulMenuAccount);
+        const liLogout = document.createElement('li');
+        ulMenuAccount.appendChild(liLogout);
         const logout = document.createElement('a');
         logout.setAttribute('href','#');
         logout.textContent = 'Se déconnecter';
-        divAccount.appendChild(logout);
+        liLogout.appendChild(logout);
         logout.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -90,10 +104,13 @@ class AllPostsView extends AbstractView {
             router.execute('showLogin');
         });
 
+        
+        const liDelete = document.createElement('li');
+        ulMenuAccount.appendChild(liDelete);
         const deleteAccount = document.createElement('a');
         deleteAccount.setAttribute('href','#');
         deleteAccount.textContent = 'Supprimer';
-        divAccount.appendChild(deleteAccount);
+        liDelete.appendChild(deleteAccount);
         deleteAccount.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -101,10 +118,18 @@ class AllPostsView extends AbstractView {
         })
 
         if (user.role === 'admin') {
+
+            const divAdmin = document.createElement('div');
+            divAdmin.textContent = 'ADMIN';
+            navAccount.appendChild(divAdmin);
+            const ulAdmin = document.createElement('ul');
+            const liAdmin = document.createElement('li');
+            ulAdmin.appendChild(liAdmin);
+            divAdmin.appendChild(ulAdmin);
             const users = document.createElement('a');
             users.setAttribute('href', '#');
             users.textContent = "Utilisateurs";
-            divAccount.appendChild(users);
+            liAdmin.appendChild(users);
             users.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
