@@ -153,10 +153,7 @@ class AllPostsView extends AbstractView {
 
         // si c'est un admin qui s'est loggé, il peut tout faire ("modérer" par suppr ou modif)
         if (user.role == 'admin') {
-
-            //content+= `<a href='#' id='${currentPost.id}' admin='true'>
-            //supprimer</a>`;
-            
+  
             content += `
             <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='true'>
                 <div class='formGroup'>
@@ -168,7 +165,7 @@ class AllPostsView extends AbstractView {
             if (currentPost.image_url != '') {
             content +=`
                 <div class="imgPost">
-                    <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
+                    <img src="${BASE_STATIC}/${currentPost.image_url}">
                 </div>
                 Retirer l'image? <input type="checkbox" name="img_remove">`;
             }
@@ -192,19 +189,19 @@ class AllPostsView extends AbstractView {
         } else if (currentPost.user_id === user.userId) {
 
             // c'est un user qui s'est loggé, il peut modifier ses propres posts
-
-            content+= `<a href='#' id='${currentPost.id}' admin='false' >
-            supprimer</a>`
             
             content += `
-            <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin="false">
+            <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='false'>
                 <div class='formGroup'>
-                    <input type="text" name="content" maxlength="254" value="${currentPost.content}">
-                </div>`;
+                <input type="text" name="content" maxlength="254" value="${currentPost.content}" `;
+                if (currentPost.content == '') {
+                    content +=` placeholder="Exprimez-vous !">`
+                } else {content+=`>`}
+                content+=`</div>`;
             if (currentPost.image_url != '') {
             content +=`
                 <div class="imgPost">
-                    <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
+                    <img src="${BASE_STATIC}/${currentPost.image_url}">
                     Retirer l'image? <input type="checkbox" name="img_remove">
                 </div>`;
             }
@@ -215,6 +212,8 @@ class AllPostsView extends AbstractView {
             content += `
                 <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
                 modifier</button>
+                <a href='#' id='${currentPost.id}' admin='false'>
+                supprimer</a>
                 <div>
                     <a href="#" id="comment${currentPost.id}" admin="false">commentaires</a>
                 </div>
@@ -228,19 +227,22 @@ class AllPostsView extends AbstractView {
             //le user ne peut modifier les posts des autres
 
             content += `
-            <div id="post${currentPost.id}" admin="false">
-                <div>
-                    <input type="texte" value="${currentPost.content}" name="content" readonly>
-                </div>`;
+            <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='false'>
+                <div class="formGroup">
+                <input readonly name="content" maxlength="254" value="${currentPost.content}" `;
+                if (currentPost.content == '') {
+                    content +=` type="hidden">`
+                } else {content+=` type="text">`}
+                content+=`</div>`;
             if (currentPost.image_url != '') {
             content +=`
                 <div class="imgPost">
-                    <img src="${BASE_STATIC}/${currentPost.image_url}" width="50" heigth="50">
+                    <img src="${BASE_STATIC}/${currentPost.image_url}">
                 </div>
                 <div>
                     <a href="#" id="comment${currentPost.id}" admin="false">commentaires</a>
                 </div>
-            </div>`;
+            </form>`;
             }
             this.commentEventsTab.push({"postId":postId , "userId":userId,
              "postUserFirstname":currentPost.firstname, "postUserLastname":currentPost.lastname});  
@@ -308,11 +310,11 @@ class AllPostsView extends AbstractView {
         
         const commentLink = document.querySelector(`#post${postId} a[id="comment${postId}"]`);
         console.log(commentLink);
-        /*commentLink.addEventListener('click', function(e) {
+        commentLink.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             router.execute('showComment', postRef);
-        })*/
+        })
     }
 
     addPostDeleteEvent(postId, userId) {

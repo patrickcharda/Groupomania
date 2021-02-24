@@ -70,7 +70,7 @@ body {
 }
 
 #newPost {
-  padding: 15px;
+  padding: 18px;
   border: 7px solid #312f2f;
   color: red;
   margin-bottom: 10px;
@@ -118,9 +118,8 @@ body {
 }
 .postCard .imgPost {
   text-align: center;
-  height: 300px;
+  height: 350px;
   width: 300px;
-  border: #312f2f 10px solid;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -158,14 +157,19 @@ input, button {
 
 #messageModif {
   text-align: center;
-  width: 364px;
-  border: #f0efb6 3px solid;
+  text-decoration: underline;
+  width: 340px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: white;
   margin-bottom: 10px;
+}
+
+input[type=file] {
+  font-size: 15px;
+  margin: 0;
 }
 
 a {
