@@ -328,6 +328,7 @@ class Controller {
             divNewComment.textContent = user.firstname+' '+user.lastname; 
             let commentForm = document.createElement('form');
             commentForm.setAttribute('id', 'comment'+newCommentId);
+            commentForm.setAttribute('class', 'commentFrm');
             divNewComment.appendChild(commentForm);
             let inputContent = document.createElement('input');
             inputContent.setAttribute('type', 'text');

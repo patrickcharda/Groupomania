@@ -93,6 +93,7 @@ body {
   margin-top: 20px;
   height: 300px;
   width: 300px;
+  border-radius: 25px;
 }
 #newPost #imgPreview {
   height: 300px;
@@ -155,6 +156,10 @@ input, button {
   padding: 5px;
 }
 
+input, img {
+  border-radius: 25px;
+}
+
 #messageModif {
   text-align: center;
   text-decoration: underline;
@@ -170,6 +175,67 @@ input, button {
 input[type=file] {
   font-size: 15px;
   margin: 0;
+}
+
+#postRef {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: red;
+  width: 340px;
+  border: 7px solid #312f2f;
+  border-radius: 25px;
+  margin-bottom: 20px;
+}
+
+#postRefImg {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 300px;
+  height: 300px;
+}
+#postRefImg img {
+  height: 300px;
+  width: 300px;
+  border-radius: 25 px;
+}
+
+#postRefContent {
+  padding-top: 10px;
+}
+#postRefContent input {
+  height: 100px;
+  width: 300px;
+}
+
+#newcomment {
+  height: 75px;
+  width: 300px;
+}
+
+#newComment {
+  color: red;
+}
+
+.comment {
+  color: red;
+}
+
+.commentFrm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.commentFrm input {
+  height: 75px;
+  width: 300px;
+  margin-bottom: 5px;
+}
+
+.darken {
+  background-color: #dab4b4;
 }
 
 a {

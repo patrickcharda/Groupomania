@@ -229,7 +229,7 @@ class AllPostsView extends AbstractView {
             content += `
             <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='false'>
                 <div class="formGroup">
-                <input readonly name="content" maxlength="254" value="${currentPost.content}" `;
+                <input class="darken" readonly name="content" maxlength="254" value="${currentPost.content}" `;
                 if (currentPost.content == '') {
                     content +=` type="hidden">`
                 } else {content+=` type="text">`}

@@ -50,7 +50,7 @@ class CommentView extends AbstractView {
                 </div>
                 <div class="formGroup">
                     <button type="submit" id="btnNewComment" form='newCommentForm'>
-                        ok
+                        Valider
                     </button>
                 </div>
             </form>
@@ -125,17 +125,21 @@ class CommentView extends AbstractView {
 
     addPostRef(postRef) {
         let content = `
-        <div>
+        <div id="postRef">
             ${postRef.firstname} &nbsp; ${postRef.lastname}
-            <div>
-                `
+            <div id="postRefContent"><input class="darken" readonly value="
+                `;
                 if (postRef.content!='') {
                     content+= postRef.content;
+                
+                content+=`" type="text">`;
+                } else {
+                content+= `" type="hidden">`;
                 };
-                `
-            </div>
-            <div>
-                `
+                
+            content+=`</div>
+            <div id="postRefImg">
+                `;
                 if (postRef.image_url !='') {
                     content += `
                     <img src="${postRef.image_url}" width="75" height="130">
@@ -150,7 +154,7 @@ class CommentView extends AbstractView {
     renderOneComment(currentComment, postref, userId) {
         let content =
             `<div class="comment" id="div${currentComment.id}">${currentComment.firstname} &nbsp ${currentComment.lastname}
-                <form id="comment${currentComment.id}">`;
+                <form id="comment${currentComment.id}" class="commentFrm">`;
                     // l'admin peut modifier tous les commentaires
                     if (postref.isAdmin == 'true') {
                         content += `
@@ -171,7 +175,7 @@ class CommentView extends AbstractView {
                         this.commentEventsTab.push(currentComment.id);
                     } else {
                         content += `
-                        <input type="text" name="content" value="${currentComment.content}" readonly>`;
+                        <input type="text" class="darken" name="content" value="${currentComment.content}" readonly>`;
                     }
                 content +=`
                 </form>
