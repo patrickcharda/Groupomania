@@ -43,18 +43,16 @@ class AllPostsView extends AbstractView {
         `<div id="newPost"> ${user.firstname} ${user.lastname}
             <form id="newPostForm" enctype="multipart/form-data" method="post">
                 <div class='formGroup'>
-                    <input type="text" id="content" name="content" maxlength="254" placeholder="Exprimez-vous !">
+                    <input type="text" id="content" name="content" maxlength="254" placeholder="Exprimez-vous !" pattern="[^<] title="texte autorisant tous les caractères sauf < " autofocus >
                 </div>
                 <div class="formGroup">
                     <input type="file" id="image" name="image">
-                    <span id="preview"><img id="imgPreview"></span>
+                    <div id="preview">
+                     </div> 
                 </div>
-
-                <div class="formGroup">
-                    <button type="submit" id="btnNewPost" form='newPostForm'>
-                        ok
-                    </button>
-                </div>
+                <button type="submit" id="btnNewPost" form='newPostForm'>
+                    Valider
+                </button>           
             </form>
         </div>`
         ;
@@ -68,10 +66,13 @@ class AllPostsView extends AbstractView {
             e.stopPropagation();
             var reader = new FileReader();
             reader.onload = function(e) {
-                let img = document.getElementById('imgPreview');
+                let preview = document.getElementById('preview');
+                let img = document.createElement('img');
+                img.setAttribute('id', 'imgPreview');
                 img.setAttribute('width','75');
-                img.setAttribute('heigth','130');
+                img.setAttribute('heigth','230');
                 img.src=e.target.result;
+                preview.appendChild(img);
             };           
             reader.readAsDataURL(this.files[0]);
         });

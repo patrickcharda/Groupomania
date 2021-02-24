@@ -61,9 +61,21 @@ body {
   margin-top: 30px;
 }
 
-#loginForm, #signupForm {
+#loginForm, #signupForm, #newPost {
   padding: 30px;
   border: 3px solid white;
+}
+
+#newPost {
+  color: red;
+  margin-bottom: 10px;
+}
+#newPost #newPostForm {
+  padding-top: 15px;
+}
+#newPost input {
+  height: 100px;
+  width: 300px;
 }
 
 label {
@@ -90,10 +102,6 @@ a {
 
 .postCard {
   border: 1px solid lightgreen;
-}
-
-#newPost {
-  border: 1px solid orangered;
 }
 
 /*# sourceMappingURL=style.css.map */
