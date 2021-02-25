@@ -48,7 +48,7 @@ class SignupView extends AbstractView {
                 <label for="userPassword">
                     Mot de passe
                 </label>
-                <input type="password" id="userPassword" required maxlength="16" minlength="8" placeholder="********">
+                <input type="password" id="userPassword" required maxlength="16" minlength="8" placeholder="********" title="Le mot de passe doit contenir entre 8 et 16 caractères, dont 2 chiffres, 1 minuscule au moins et 1 majuscule. Ni espace ni caractères spéciaux.">
             </div>
             <div class="formGroup">
                 <button type="submit" id="btnNewUser" form='signupForm' aria-label="valider">
@@ -58,6 +58,8 @@ class SignupView extends AbstractView {
         </form>`;
         
         this.display(content);
+
+        //this.setValidityPasswordEvent();
 
         this.formSubmit();
     }
@@ -86,6 +88,16 @@ class SignupView extends AbstractView {
             router.execute('showUserRecord', email.value, password.value, firstname.value, lastname.value);
         })
     }
-   
 
+    /*setValidityPasswordEvent() {
+        var btnSubmit = document.getElementById('btnNewUser');
+        btnSubmit.addEventListener('click', function() {
+            var password = document.getElementById('userPassword');
+            if (password.value.length < 8 || password.value.length > 16) {
+                password.setCustomValidity("Le mot de passe doit contenir entre 8 et 16 caractères");
+                paswword.dispatchEvent(new Event("invalid"));
+            }
+            password.reportValidity();
+        })
+    }*/
 }
