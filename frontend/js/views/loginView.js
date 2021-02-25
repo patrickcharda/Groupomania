@@ -14,6 +14,7 @@ class LoginView extends AbstractView {
         const divAccount = document.getElementById(DIV_ACCOUNT_ID);
         const signup = document.createElement('a');
         signup.setAttribute('href','#');
+        signup.setAttribute('aria-label', 'page inscription');
         signup.textContent = "S'inscrire";
         divAccount.appendChild(signup);
         signup.addEventListener('click', function(e) {
@@ -24,21 +25,21 @@ class LoginView extends AbstractView {
         });
 
         
-        let content = `<form id="loginForm" method="post">
+        let content = `<form id="loginForm" method="post" aria-label="Formulaire de connexion">
                 <div class='formGroup'>
                     <label for="userEmail">
                         Adresse de messagerie
                     </label>
-                    <input type="email" id="userEmail" required maxlength="50" minlenght="8">
+                    <input type="email" id="userEmail" required maxlength="50" minlenght="8" placeholder="sophie.dupont@gpmania.com">
                 </div>
                 <div class="formGroup">
-                    <label for="userPassword">
+                    <label for="userPassword" placeholder="********">
                         Mot de passe
                     </label>
                     <input type="password" id="userPassword" required maxlength="16" minlength="8">
                 </div>
                 <div class="formGroup">
-                    <button type="submit" id="btnNewUser" form='loginForm'>
+                    <button type="submit" id="btnNewUser" form='loginForm' aria-label="valider">
                         Valider
                     </button>
                 </div>

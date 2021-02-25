@@ -13,8 +13,68 @@ body {
 }
 
 h1 {
-    color: white;
+    color: rgb(255, 255, 255);
 }
+
+a {
+    color: red;
+    &:hover {
+        transform: scale(1.1);
+        color: rgb(218, 180, 180);
+    }
+}
+
+button {
+    &:hover {
+        transform: scale(1.2);
+        color: red;
+    }
+}
+
+input[type=file] {
+    &:hover {
+        background-color: red;
+        color: white;
+        transform: scale(1.1);
+    }
+}
+
+input[type=text] {
+    &:focus {
+        border: yellowgreen 8px solid;
+    }
+    &:hover {
+        border: rgb(218, 180, 180) 8px solid;
+    }
+}
+
+input[type=email] {
+    &:focus {
+        border: yellowgreen 8px solid;
+    }
+    &:hover {
+        border: rgb(218, 180, 180) 8px solid;
+    }
+}
+
+input[type=password] {
+    &:focus {
+        border: yellowgreen 8px solid;
+    }
+    &:hover {
+        border: rgb(218, 180, 180) 8px solid;
+    }
+}
+
+input[class=darken] {
+    &:hover {
+        border: 0px rgb(218, 180, 180) ;
+        transform: scale(.99);
+    }
+}
+
+
+
 
 
 

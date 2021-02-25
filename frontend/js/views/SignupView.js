@@ -15,6 +15,7 @@ class SignupView extends AbstractView {
         const signin = document.createElement('a');
         signin.setAttribute('href','./../index.html');
         signin.textContent = "Se connecter";
+        signin.setAttribute('aria-label', 'page de connexion');
         divAccount.appendChild(signin);
         signin.addEventListener('click', function(e) {
             e.preventDefault();
@@ -24,33 +25,33 @@ class SignupView extends AbstractView {
         
   
         let content = 
-        `<form id="signupForm" method="post">
+        `<form id="signupForm" method="post" aria-label="formulaire d'inscription" >
             <div class="formGroup">
                 <label for="firstname">
                     Prénom
                 </label>
-                <input type="text" id="firstname" required maxlength="20" minlength="2" required>
+                <input type="text" id="firstname" required maxlength="20" minlength="2" placeholder="Prénom" required>
             </div>
             <div class="formGroup">
                 <label for="lastname">
                     Nom
                 </label>
-                <input type="text" id="lastname" required maxlength="25" minlength="2">
+                <input type="text" id="lastname" required maxlength="25" minlength="2" placeholder="Nom">
             </div>
             <div class='formGroup'>
                 <label for="userEmail">
                     Adresse de messagerie
                 </label>
-                <input type="email" id="userEmail" required maxlength="50" minlenght="8">
+                <input type="email" id="userEmail" required maxlength="50" minlenght="8" placeholder="sophie.dupont@gpmania.com">
             </div>
             <div class="formGroup">
                 <label for="userPassword">
                     Mot de passe
                 </label>
-                <input type="password" id="userPassword" required maxlength="16" minlength="8">
+                <input type="password" id="userPassword" required maxlength="16" minlength="8" placeholder="********">
             </div>
             <div class="formGroup">
-                <button type="submit" id="btnNewUser" form='signupForm'>
+                <button type="submit" id="btnNewUser" form='signupForm' aria-label="valider">
                     Valider
                 </button>
             </div>

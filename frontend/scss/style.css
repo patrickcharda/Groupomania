@@ -16,6 +16,51 @@ h1 {
   color: white;
 }
 
+a {
+  color: red;
+}
+a:hover {
+  transform: scale(1.1);
+  color: #dab4b4;
+}
+
+button:hover {
+  transform: scale(1.2);
+  color: red;
+}
+
+input[type=file]:hover {
+  background-color: red;
+  color: white;
+  transform: scale(1.1);
+}
+
+input[type=text]:focus {
+  border: yellowgreen 8px solid;
+}
+input[type=text]:hover {
+  border: #dab4b4 8px solid;
+}
+
+input[type=email]:focus {
+  border: yellowgreen 8px solid;
+}
+input[type=email]:hover {
+  border: #dab4b4 8px solid;
+}
+
+input[type=password]:focus {
+  border: yellowgreen 8px solid;
+}
+input[type=password]:hover {
+  border: #dab4b4 8px solid;
+}
+
+input[class=darken]:hover {
+  border: 0px #dab4b4;
+  transform: scale(0.99);
+}
+
 #header {
   display: flex;
   justify-content: space-around;
@@ -361,9 +406,6 @@ input[type=file] {
   .postCard input[type=file] {
     margin-top: 20px;
   }
-}
-a {
-  color: red;
 }
 
 /*# sourceMappingURL=style.css.map */
