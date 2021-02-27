@@ -24,6 +24,7 @@ function getAPostQuery(sql, postInDB) {
       if (results.length === 1) {
         postInDB.content = results[0].content;
         postInDB.image_url = results[0].image_url;
+        //console.log(postInDB.image_url);
         prePost.user_id = postInDB.user_id;
         prePost.id = postInDB.id;
         const response = {
@@ -46,6 +47,7 @@ function getAPostQueryByAdmin(sql, postInDB) {
       if (results.length === 1) {
         postInDB.content = results[0].content;
         postInDB.image_url = results[0].image_url;
+        console.log(postInDB.image_url);
         prePost.user_id = results[0].user_id;
         prePost.id = results[0].id;
         const response = {
@@ -72,6 +74,22 @@ exports.delete = (req, res) => {
 
   //le propriétaire du post peut le supprimer
   if (req.body.userLoggedId == req.params.publisherId) {
+
+    //récupérer le nom de l éventuelle image associée au post, et la supprimer 
+    postInDB.user_id = req.params.publisherId;
+    postInDB.id = req.params.id;
+    console.log(postInDB);
+    const sql = `SELECT * FROM post WHERE post.id=? and post.user_id=? LIMIT 1`;
+    var result = getAPostQuery(sql, postInDB);
+    result.then( function(result) {
+      if (result.postInDB.image_url !== undefined || result.postInDB.image_url !== '') {
+        fs.unlink(`images/${result.postInDB.image_url}`, (err => {
+          if (err) console.log(err);
+          else {
+          }
+        }));
+      }
+    });
     Post.delete(req.params.id, req.params.publisherId, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
@@ -93,6 +111,22 @@ exports.delete = (req, res) => {
 };
 
 exports.deleteByAdmin = (req, res) => {
+  //récupérer le nom de l éventuelle image associée au post, et la supprimer 
+  postInDB.user_id = req.params.publisherId;
+  postInDB.id = req.params.id;
+  console.log(postInDB);
+  const sql = `SELECT * FROM post WHERE post.id=? and post.user_id=? LIMIT 1`;
+  var result = getAPostQuery(sql, postInDB);
+  result.then( function(result) {
+    if (result.postInDB.image_url !== undefined || result.postInDB.image_url !== '') {
+      fs.unlink(`images/${result.postInDB.image_url}`, (err => {
+        if (err) console.log(err);
+        else {
+        }
+      }));
+    }
+  });
+
   Post.delete(req.params.id, req.params.publisherId, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
