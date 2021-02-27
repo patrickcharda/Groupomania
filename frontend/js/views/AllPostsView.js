@@ -43,16 +43,16 @@ class AllPostsView extends AbstractView {
     addNewPostForm(user) {
         let content = 
         `<div id="newPost"> ${user.firstname} ${user.lastname}
-            <form id="newPostForm" enctype="multipart/form-data" method="post">
+            <form id="newPostForm" enctype="multipart/form-data" method="post" aria-label="Formulaire d'ajout de publication">
                 <div class='formGroup'>
                     <input type="text" id="content" name="content" maxlength="254" placeholder="Exprimez-vous !" autofocus >
                 </div>
                 <div class="formGroup">
-                    <input type="file" id="image" name="image" >
+                    <input type="file" id="image" name="image" aria-label="Ajouter une image de publication">
                     <div id="preview">
                      </div> 
                 </div>
-                <button type="submit" id="btnNewPost" form='newPostForm'>
+                <button type="submit" id="btnNewPost" form='newPostForm' aria-label="Valider">
                     Valider
                 </button>           
             </form>
@@ -157,9 +157,9 @@ class AllPostsView extends AbstractView {
         if (user.role == 'admin') {
   
             content += `
-            <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='true'>
+            <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='true' aria-label="Formulaire de modification de la publication">
                 <div class='formGroup'>
-                <input type="text" name="content" maxlength="254" value="${currentPost.content}" `;
+                <input type="text" name="content" maxlength="254" value="${currentPost.content}" aria-label="contenu de la publication"`;
                 if (currentPost.content == '') {
                     content +=` placeholder="Exprimez-vous !">`
                 } else {content+=`>`}
@@ -167,21 +167,21 @@ class AllPostsView extends AbstractView {
             if (currentPost.image_url != '') {
             content +=`
                 <div class="imgPost">
-                    <img src="${BASE_STATIC}/${currentPost.image_url}">
+                    <img src="${BASE_STATIC}/${currentPost.image_url}" alt="image de la publication">
                 </div>
                 Retirer l'image? <input type="checkbox" name="img_remove">`;
             }
             content += `
                 <div class="formGroup">
-                    <input type="file" name="image">
+                    <input type="file" name="image" aria-label="choisir une nouvelle image">
                 </div>`;
             content += `
-                <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
+                <button type="submit" name='${currentPost.id}' form='post${currentPost.id}' aria-label="Modifier">
                 modifier</button>
                 <a href='#' id='${currentPost.id}' admin='true'>
                 supprimer</a>
                 <div>
-                    <a href="#" id="comment${currentPost.id}" admin="true">commentaires</a>
+                    <a href="#" id="comment${currentPost.id}" admin="true" aria-label="commentaires de publication">commentaires</a>
                 </div>
             </form>`;
             this.postEventsTab.push({"postId":postId , "userId":userId});
@@ -193,7 +193,7 @@ class AllPostsView extends AbstractView {
             // c'est un user qui s'est loggé, il peut modifier ses propres posts
             
             content += `
-            <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='false'>
+            <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='false' aria-label="Formulaire de modification de la publication">
                 <div class='formGroup'>
                 <input type="text" name="content" maxlength="254" value="${currentPost.content}" `;
                 if (currentPost.content == '') {
@@ -203,21 +203,21 @@ class AllPostsView extends AbstractView {
             if (currentPost.image_url != '') {
             content +=`
                 <div class="imgPost">
-                    <img src="${BASE_STATIC}/${currentPost.image_url}">
+                    <img src="${BASE_STATIC}/${currentPost.image_url}" aria-label="image de la publication">
                     Retirer l'image? <input type="checkbox" name="img_remove">
                 </div>`;
             }
             content += `
                 <div class="formGroup">
-                    <input type="file" name="image">
+                    <input type="file" name="image" aria-label="choisir une nouvelle image">
                 </div>`;
             content += `
-                <button type="submit" name='${currentPost.id}' form='post${currentPost.id}'>
+                <button type="submit" name='${currentPost.id}' form='post${currentPost.id}' aria-label="Modifier">
                 modifier</button>
                 <a href='#' id='${currentPost.id}' admin='false'>
                 supprimer</a>
                 <div>
-                    <a href="#" id="comment${currentPost.id}" admin="false">commentaires</a>
+                    <a href="#" id="comment${currentPost.id}" admin="false" aria-label="Commentaires de publication">commentaires</a>
                 </div>
             </form>`;
             this.postEventsTab.push({"postId":postId , "userId":userId});
@@ -229,7 +229,7 @@ class AllPostsView extends AbstractView {
             //le user ne peut modifier les posts des autres
 
             content += `
-            <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='false'>
+            <form id="post${currentPost.id}" enctype="multipart/form-data" method="post" admin='false' aria-label="Publication non éditable">
                 <div class="formGroup">
                 <input class="darken" readonly name="content" maxlength="254" value="${currentPost.content}" `;
                 if (currentPost.content == '') {
@@ -239,10 +239,10 @@ class AllPostsView extends AbstractView {
             if (currentPost.image_url != '') {
             content +=`
                 <div class="imgPost">
-                    <img src="${BASE_STATIC}/${currentPost.image_url}">
+                    <img src="${BASE_STATIC}/${currentPost.image_url}" alt="image de la publication">
                 </div>
                 <div>
-                    <a href="#" id="comment${currentPost.id}" admin="false">commentaires</a>
+                    <a href="#" id="comment${currentPost.id}" admin="false" aria-label="Commentaires de publication">commentaires</a>
                 </div>
             </form>`;
             }

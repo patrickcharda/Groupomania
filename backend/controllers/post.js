@@ -2,7 +2,7 @@ require('dotenv').config();
 const fs = require('fs');
 const Post = require('../models/Post');
 const uploadFile = require('../middleware/multer-config');
-//const util = require("util");
+
 
 const mysql = require('mysql');
 const { resolve } = require('path');
@@ -22,15 +22,10 @@ function getAPostQuery(sql, postInDB) {
       return(error);
     } else {
       if (results.length === 1) {
-        //console.log(results[0].content);
-        //console.log(results[0].image_url);
-        //console.log('foundpost content + image_url:'+ results[0].content+' '+ results[0].image_url);
         postInDB.content = results[0].content;
         postInDB.image_url = results[0].image_url;
         prePost.user_id = postInDB.user_id;
         prePost.id = postInDB.id;
-        //console.log('prePost user_id :'+prePost.user_id);
-        //console.log('prePost id :'+prePost.id);
         const response = {
           'postInDB':postInDB,
           'prePost':prePost
@@ -49,15 +44,10 @@ function getAPostQueryByAdmin(sql, postInDB) {
       return(error);
     } else {
       if (results.length === 1) {
-        //console.log(results[0].content);
-        //console.log(results[0].image_url);
-        //console.log('foundpost content + image_url:'+ results[0].content+' '+ results[0].image_url);
         postInDB.content = results[0].content;
         postInDB.image_url = results[0].image_url;
         prePost.user_id = results[0].user_id;
         prePost.id = results[0].id;
-        //console.log('prePost user_id :'+prePost.user_id);
-        //console.log('prePost id :'+prePost.id);
         const response = {
           'postInDB':postInDB,
           'prePost':prePost
@@ -79,9 +69,6 @@ exports.getAllPosts = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  //console.log('loggedId '+req.body.userLoggedId);
-  //console.log('publisherId '+req.params.publisherId);
-  //console.log('post id '+req.params.id);
 
   //le propriétaire du post peut le supprimer
   if (req.body.userLoggedId == req.params.publisherId) {
@@ -106,9 +93,6 @@ exports.delete = (req, res) => {
 };
 
 exports.deleteByAdmin = (req, res) => {
-  //console.log('loggedId '+req.body.userLoggedId);
-  //console.log('publisherId '+req.params.publisherId);
-  //console.log('post id '+req.params.id);
   Post.delete(req.params.id, req.params.publisherId, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
@@ -189,11 +173,9 @@ exports.update = async (req, res) => {
     });
   } else {
   req.body.user_id = req.body.userLoggedId;
-  //console.log('post publisher id :'+req.body.user_id);
   // on paramètre la requête pour retrouver le post
   postInDB.user_id = req.body.user_id;
   postInDB.id = req.params.id;
-  //console.log('post id :' +postInDB.id+' post user id :'+postInDB.user_id);
   const sql = `SELECT * FROM post WHERE post.id=? and post.user_id=? LIMIT 1`;
   
   var test = await getAPostQuery(sql, postInDB);
@@ -201,26 +183,20 @@ exports.update = async (req, res) => {
   await uploadFile(req, res);
     console.log(req.body.content);
     if (req.file !== undefined) {
-      //console.log(req.file.filename);
     //suppression ancien fichier image
       if (test.postInDB.image_url !== undefined || test.postInDB.image_url !== '') {
-        //console.log('fic a suppr :'+ test.postInDB.image_url);
         fs.unlink(`images/${test.postInDB.image_url}`, (err => {
           if (err) console.log(err);
           else {
-            //console.log('Deleted file : '+test.postInDB.image_url);
           }
         }));
       }
       prePost.image_url = req.file.filename;
-      //console.log('prePost.image_ulr : '+prePost.image_url);
+ 
     } else { 
-      //console.log(req.file);
       //pas de nouvelle image
       if (req.body.img_remove != 'true') {
-        //console.log('no file');
         prePost.image_url = postInDB.image_url;
-        //console.log('prePost.image_ulr : '+prePost.image_url);
       } else {
         prePost.image_url ='';
         if (test.postInDB.image_url !='') {
@@ -233,11 +209,7 @@ exports.update = async (req, res) => {
         }
       }
     }
-    //console.log('body content :' +req.body.content);
-    //console.log('la '+test.postInDB.content);
-    
     //si nouveau contenu texte
-    
     prePost.content = req.body.content;
     //si post complètement vidé
     if ((prePost.content == undefined || prePost.content =='') && (prePost.image_url =='' || prePost.image_url == undefined)) {
@@ -273,25 +245,21 @@ exports.updateByAdmin = async (req, res) => {
       message: `pb de user id`
     });
   } else {
-  //req.body.user_id = req.body.userLoggedId;
-  //console.log('admin id :'+req.body.user_id);
+
 
   // on paramètre la requête pour retrouver le post
-  //postInDB.user_id = req.body.user_id;
+
   postInDB.id = req.params.id;
-  //console.log('post id :' +postInDB.id);
+
   const sql = `SELECT * FROM post WHERE post.id=? LIMIT 1`;
   
   var test = await getAPostQueryByAdmin(sql, postInDB);
 
   await uploadFile(req, res);
-    //console.log(req.body.content);
     if (req.file !== undefined) {
-      //console.log(req.file.filename);
 
     //suppression ancien fichier image
       if (test.postInDB.image_url !== undefined || test.postInDB.image_url !== '') {
-        //console.log('fic a suppr :'+ test.postInDB.image_url);
         fs.unlink(`images/${test.postInDB.image_url}`, (err => {
           if (err) console.log(err);
           else {
@@ -300,15 +268,13 @@ exports.updateByAdmin = async (req, res) => {
         }));
       }
       prePost.image_url = req.file.filename;
-      //console.log('prePost.image_ulr : '+prePost.image_url);
-    } else { 
-      //console.log(req.file);
 
+    } else { 
       //pas de nouvelle image
       if (req.body.img_remove != 'true') {
-        //console.log('no file');
+
         prePost.image_url = postInDB.image_url;
-        //console.log('prePost.image_ulr : '+prePost.image_url);
+
       } else {
         prePost.image_url ='';
         if (test.postInDB.image_url !='') {
@@ -321,9 +287,7 @@ exports.updateByAdmin = async (req, res) => {
         }
       }
     }
-    //console.log('body content :' +req.body.content);
-    //console.log('la '+test.postInDB.content);
-
+    
     prePost.content = req.body.content;
     //si post complètement vidé
     if ((prePost.content == undefined || prePost.content =='') && (prePost.image_url =='' || prePost.image_url == undefined)) {

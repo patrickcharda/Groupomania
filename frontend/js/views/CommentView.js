@@ -46,12 +46,12 @@ class CommentView extends AbstractView {
     addNewCommentForm(user, postId) {
         let content = 
         `<div id="newComment"> ${user.firstname} ${user.lastname}
-            <form id="newCommentForm" method="post">
+            <form id="newCommentForm" method="post" aria-label="Formulaire d'ajout de commentaires pour la publication choisie">
                 <div class='formGroup'>
                     <input type="text" id="newcomment" name="${postId}" maxlength="254" placeholder="Exprimez-vous !">
                 </div>
                 <div class="formGroup">
-                    <button type="submit" id="btnNewComment" form='newCommentForm'>
+                    <button type="submit" id="btnNewComment" form='newCommentForm' aria-label="Valider">
                         Valider
                     </button>
                 </div>
@@ -127,7 +127,7 @@ class CommentView extends AbstractView {
 
     addPostRef(postRef) {
         let content = `
-        <div id="postRef">
+        <div id="postRef" aria-label="section relative à la publication de référence">
             ${postRef.firstname} &nbsp; ${postRef.lastname}
             <div id="postRefContent"><input class="darken" readonly value="
                 `;
@@ -144,7 +144,7 @@ class CommentView extends AbstractView {
                 `;
                 if (postRef.image_url !='') {
                     content += `
-                    <img src="${postRef.image_url}" width="75" height="130">
+                    <img src="${postRef.image_url}" width="75" height="130" alt="image de la publication de référence">
                     `;
                 }
                 content +=`
@@ -156,28 +156,28 @@ class CommentView extends AbstractView {
     renderOneComment(currentComment, postref, userId) {
         let content =
             `<div class="comment" id="div${currentComment.id}">${currentComment.firstname} &nbsp ${currentComment.lastname}
-                <form id="comment${currentComment.id}" class="commentFrm">`;
+                <form id="comment${currentComment.id}" class="commentFrm" aria-label="Formulaire de modification de commentaire">`;
                     // l'admin peut modifier tous les commentaires
                     if (postref.isAdmin == 'true') {
                         content += `
-                        <input type="text" name="content" value="${currentComment.content}" admin="true">
-                        <button type="submit" name='button${currentComment.id}' form='comment${currentComment.id}'>
+                        <input type="text" name="content" value="${currentComment.content}" admin="true" aria-label="contenu">
+                        <button type="submit" name='button${currentComment.id}' form='comment${currentComment.id}' aria-label="Modifier">
                             modifier
                         </button>
-                        <a href="#" id="delLink${currentComment.id}" admin="true">supprimer</a>`;
+                        <a href="#" id="delLink${currentComment.id}" admin="true" aria-label="Suppression du commentaire">supprimer</a>`;
                         this.commentEventsTab.push(currentComment.id);
                     // le rédacteur d'un commentaire peut le modifier
                     } else if (userId == currentComment.user_id) {
                         content += `
-                        <input type="text" name="content" value="${currentComment.content}" admin="false">
-                        <button type="submit" name='button${currentComment.id}' form='comment${currentComment.id}'>
+                        <input type="text" name="content" value="${currentComment.content}" admin="false" aria-label="contenu">
+                        <button type="submit" name='button${currentComment.id}' form='comment${currentComment.id}' aria-label="Modifier">
                             modifier
                         </button>
-                        <a href="#" id="delLink${currentComment.id}" admin="false">supprimer</a>`;
+                        <a href="#" id="delLink${currentComment.id}" admin="false" aria-label="suppression du commentaire">supprimer</a>`;
                         this.commentEventsTab.push(currentComment.id);
                     } else {
                         content += `
-                        <input type="text" class="darken" name="content" value="${currentComment.content}" readonly>`;
+                        <input type="text" class="darken" name="content" value="${currentComment.content}" aria-label="contenu du commentaire"readonly>`;
                     }
                 content +=`
                 </form>

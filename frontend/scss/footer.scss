@@ -1,6 +1,6 @@
 #footer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -8,4 +8,14 @@
     & a {
         color: white;
     }
+}
+
+#divLinkUp {
+    position: relative;
+    background-color: white;
+}
+#linkUp {
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }

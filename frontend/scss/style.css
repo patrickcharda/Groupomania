@@ -16,6 +16,51 @@ h1 {
   color: white;
 }
 
+a {
+  color: red;
+}
+a:hover {
+  transform: scale(1.1);
+  color: #dab4b4;
+}
+
+button:hover {
+  transform: scale(1.2);
+  color: red;
+}
+
+input[type=file]:hover {
+  background-color: red;
+  color: white;
+  transform: scale(1.1);
+}
+
+input[type=text]:focus {
+  border: yellowgreen 8px solid;
+}
+input[type=text]:hover {
+  border: #dab4b4 8px solid;
+}
+
+input[type=email]:focus {
+  border: yellowgreen 8px solid;
+}
+input[type=email]:hover {
+  border: #dab4b4 8px solid;
+}
+
+input[type=password]:focus {
+  border: yellowgreen 8px solid;
+}
+input[type=password]:hover {
+  border: #dab4b4 8px solid;
+}
+
+input[class=darken]:hover {
+  border: 0px #dab4b4;
+  transform: scale(0.99);
+}
+
 #header {
   display: flex;
   justify-content: space-around;
@@ -58,7 +103,7 @@ h1 {
 
 #footer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -66,6 +111,17 @@ h1 {
 }
 #footer a {
   color: white;
+}
+
+#divLinkUp {
+  position: relative;
+  background-color: white;
+}
+
+#linkUp {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 #loginForm, #signupForm {
@@ -252,7 +308,7 @@ input[type=file] {
 
 @media only screen and (min-width: 800px) {
   #postRef {
-    width: 450px;
+    width: 40px;
   }
   #postRef #postRefContent input {
     width: 400px;
@@ -273,7 +329,7 @@ input[type=file] {
   }
 
   #newPostForm input[id=content] {
-    width: 450px;
+    width: 400px;
   }
   #newPostForm #preview, #newPostForm #imgPreview {
     width: 400px;
@@ -290,7 +346,7 @@ input[type=file] {
   }
 
   .postCard input[name=content] {
-    width: 450px;
+    width: 400px;
     margin-bottom: 10px;
   }
   .postCard .imgPost {
@@ -334,7 +390,7 @@ input[type=file] {
   }
 
   #newPostForm input[id=content] {
-    width: 550px;
+    width: 500px;
   }
   #newPostForm #preview, #newPostForm #imgPreview {
     width: 500px;
@@ -342,11 +398,11 @@ input[type=file] {
   }
 
   #messageModif {
-    width: 540px;
+    width: 500px;
   }
 
   .postCard input[name=content] {
-    width: 550px;
+    width: 500px;
     margin-bottom: 10px;
   }
   .postCard .imgPost {
@@ -361,9 +417,6 @@ input[type=file] {
   .postCard input[type=file] {
     margin-top: 20px;
   }
-}
-a {
-  color: red;
 }
 
 /*# sourceMappingURL=style.css.map */
