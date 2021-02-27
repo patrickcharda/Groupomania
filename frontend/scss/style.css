@@ -308,7 +308,7 @@ input[type=file] {
 
 @media only screen and (min-width: 800px) {
   #postRef {
-    width: 450px;
+    width: 40px;
   }
   #postRef #postRefContent input {
     width: 400px;
@@ -329,7 +329,7 @@ input[type=file] {
   }
 
   #newPostForm input[id=content] {
-    width: 450px;
+    width: 400px;
   }
   #newPostForm #preview, #newPostForm #imgPreview {
     width: 400px;
@@ -346,7 +346,7 @@ input[type=file] {
   }
 
   .postCard input[name=content] {
-    width: 450px;
+    width: 400px;
     margin-bottom: 10px;
   }
   .postCard .imgPost {
@@ -390,7 +390,7 @@ input[type=file] {
   }
 
   #newPostForm input[id=content] {
-    width: 550px;
+    width: 500px;
   }
   #newPostForm #preview, #newPostForm #imgPreview {
     width: 500px;
@@ -398,11 +398,11 @@ input[type=file] {
   }
 
   #messageModif {
-    width: 540px;
+    width: 500px;
   }
 
   .postCard input[name=content] {
-    width: 550px;
+    width: 500px;
     margin-bottom: 10px;
   }
   .postCard .imgPost {

@@ -1,7 +1,7 @@
 @media only screen and (min-width:800px) {
 
     #postRef {
-        width: 450px;
+        width: 40px;
         & #postRefContent {
             & input {
                 width: 400px;
@@ -27,7 +27,7 @@
 
     #newPostForm {
         & input[id=content]  {
-            width: 450px;
+            width: 400px;
         }
 
         & #preview, #imgPreview {
@@ -48,7 +48,7 @@
     }
     .postCard {
         & input[name=content] {
-            width: 450px;
+            width: 400px;
             margin-bottom: 10px;
         }
         & .imgPost {
@@ -103,7 +103,7 @@
 
     #newPostForm {
         & input[id=content]  {
-            width: 550px;
+            width: 500px;
         }
 
         & #preview, #imgPreview {
@@ -112,11 +112,11 @@
         }
     } 
     #messageModif {
-        width: 540px;
+        width: 500px;
     }
     .postCard {
         & input[name=content] {
-            width: 550px;
+            width: 500px;
             margin-bottom: 10px;
         }
         & .imgPost {
