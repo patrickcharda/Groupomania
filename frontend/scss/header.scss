@@ -19,6 +19,13 @@
 .divMenu {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
+    & > svg path {
+        fill:rgb(162, 8, 252);
+    }
+    &:hover .navMenu {
+        display: block;
+    }
 }
 
 .navMenu {
@@ -77,6 +84,19 @@
         fill: white !important;
     }
 }
+
+.divMonCompte {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-content;
+}
+
+
+.navMenu {
+    cursor: pointer;
+    display: none;
+}
+
 
 
 

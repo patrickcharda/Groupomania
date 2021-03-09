@@ -148,9 +148,12 @@ class AllPostsView extends AbstractView {
     newDivAccount(user) {
         const divMenu = document.getElementById(DIV_ACCOUNT_ID);
         divMenu.setAttribute('class', 'divMenu');
+        divMenu.innerHTML = `<i class="fas fa-bars"></i>`;
 
         const navMenu = document.createElement('nav');
-
+        navMenu.setAttribute('class', 'navMenu');
+        divMenu.appendChild(navMenu);
+        
         const divMonCompte = document.createElement('div');
         divMonCompte.setAttribute('class', 'divMonCompte');
 
@@ -187,16 +190,23 @@ class AllPostsView extends AbstractView {
         if (user.role === 'admin') {
 
             const divAdmin = document.createElement('div');
-            divAdmin.textContent = 'ADMIN';
+            //divAdmin.textContent = 'ADMIN';
             navMenu.appendChild(divAdmin);
             const ulAdmin = document.createElement('ul');
+            ulAdmin.setAttribute('class', 'ulMenuAccount');
             const liAdmin = document.createElement('li');
+            liAdmin.innerHTML = `<u> Administration </u><i class="fas fa-user-cog"></i>`;
             ulAdmin.appendChild(liAdmin);
             divAdmin.appendChild(ulAdmin);
+            const ulUsers = document.createElement('ul');
+            liAdmin.appendChild(ulUsers);
+            const liUsers = document.createElement('li');
+            ulUsers.setAttribute('class', 'ulSubMenu');
+            ulUsers.appendChild(liUsers);
             const users = document.createElement('a');
             users.setAttribute('href', '#');
-            users.textContent = "Utilisateurs";
-            liAdmin.appendChild(users);
+            users.innerHTML = "Utilisateurs <i class='fas fa-users'></i>";
+            liUsers.appendChild(users);
             users.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();

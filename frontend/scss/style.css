@@ -84,6 +84,13 @@ input[class=darken]:hover {
 .divMenu {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
+}
+.divMenu > svg path {
+  fill: #a208fc;
+}
+.divMenu:hover .navMenu {
+  display: block;
 }
 
 .navMenu {
@@ -136,6 +143,17 @@ input[class=darken]:hover {
 }
 #logout svg > path {
   fill: white !important;
+}
+
+.divMonCompte {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-content;
+}
+
+.navMenu {
+  cursor: pointer;
+  display: none;
 }
 
 #container {
