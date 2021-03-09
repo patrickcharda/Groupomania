@@ -83,7 +83,7 @@ class AllPostsView extends AbstractView {
         });
     }
 
-    newDivAccount(user) {
+    /*newDivAccount(user) {
         const divAccount = document.getElementById(DIV_ACCOUNT_ID);
         divAccount.setAttribute('class', 'divAccount');
 
@@ -143,6 +143,85 @@ class AllPostsView extends AbstractView {
                 router.execute('showUsers', user.token);
             })
         }
+    }*/
+
+    newDivAccount(user) {
+        const divMenu = document.getElementById(DIV_ACCOUNT_ID);
+        divMenu.setAttribute('class', 'divMenu');
+
+        const navMenu = document.createElement('nav');
+
+        const divMonCompte = document.createElement('div');
+        divMonCompte.setAttribute('class', 'divMonCompte');
+
+        navMenu.setAttribute('class', 'navMenu');
+        navMenu.appendChild(divMonCompte);
+        divMenu.appendChild(navMenu);
+
+        const ulMenuAccount = document.createElement('ul'); //1er niveau
+        ulMenuAccount.setAttribute('class', 'ulMenuAccount');
+        divMonCompte.appendChild(ulMenuAccount);
+        const liAccount = document.createElement('li');
+        liAccount.setAttribute("id", "liAccount");
+        liAccount.setAttribute("class", "liAccount");
+        liAccount.innerHTML= '<u>Mon compte</u> <i class="fas fa-user-circle"></i>';
+        const ulAccount= document.createElement('ul');
+        ulAccount.setAttribute('class', 'ulSubMenu');
+        liAccount.appendChild(ulAccount);
+        ulMenuAccount.appendChild(liAccount);
+
+        const liDelete = document.createElement('li');
+        ulAccount.appendChild(liDelete);
+
+        const deleteAccount = document.createElement('a');
+        deleteAccount.setAttribute('href','#');
+        deleteAccount.textContent = 'Supprimer';
+        liDelete.appendChild(deleteAccount);
+        deleteAccount.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            router.execute('showDeleteUser', user);
+        });
+        liDelete.innerHTML += ' <i class="fas fa-trash-alt"></i>';
+
+        if (user.role === 'admin') {
+
+            const divAdmin = document.createElement('div');
+            divAdmin.textContent = 'ADMIN';
+            navMenu.appendChild(divAdmin);
+            const ulAdmin = document.createElement('ul');
+            const liAdmin = document.createElement('li');
+            ulAdmin.appendChild(liAdmin);
+            divAdmin.appendChild(ulAdmin);
+            const users = document.createElement('a');
+            users.setAttribute('href', '#');
+            users.textContent = "Utilisateurs";
+            liAdmin.appendChild(users);
+            users.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                //console.log(user.token);
+                router.execute('showUsers', user.token);
+            })
+        }
+
+        const divLogout = document.createElement('div');
+        const liLogout = document.createElement('li');
+        divLogout.appendChild(liLogout);
+        navMenu.appendChild(divLogout);
+        const logout = document.createElement('a');
+        logout.setAttribute('href','#');
+        logout.setAttribute('id', 'logout');
+        logout.innerHTML = `Se déconnecter <i class="fas fa-sign-out-alt"></i>`;
+        liLogout.appendChild(logout);
+        logout.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            localStorage.removeItem('user');
+            router.execute('showLogin');
+        });
+
+
     }
 
     renderOnePost(currentPost, user) {

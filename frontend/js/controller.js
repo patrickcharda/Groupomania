@@ -5,7 +5,7 @@ class Controller {
 
     constructor(args) {
         this.args = args;
-        this.panier = [];
+        //this.panier = [];
     }
 
     async showLogin() {

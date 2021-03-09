@@ -17,7 +17,7 @@ h1 {
 }
 
 a {
-  color: red;
+  color: #a208fc;
 }
 a:hover {
   transform: scale(1.1);
@@ -26,11 +26,11 @@ a:hover {
 
 button:hover {
   transform: scale(1.2);
-  color: red;
+  color: #a208fc;
 }
 
 input[type=file]:hover {
-  background-color: red;
+  background-color: #a208fc;
   color: white;
   transform: scale(1.1);
 }
@@ -81,16 +81,61 @@ input[class=darken]:hover {
   text-align: right;
 }
 
-.divAccount {
+.divMenu {
   display: flex;
   flex-direction: column;
 }
 
-.navAccount {
-  color: red;
+.navMenu {
+  color: #a208fc;
 }
-.navAccount li {
+.navMenu li {
   list-style: none;
+}
+
+.ulMenuAccount {
+  cursor: pointer;
+}
+.ulMenuAccount a, .ulMenuAccount path {
+  background: #a208fc;
+  color: white;
+  fill: white;
+}
+.ulMenuAccount > li:hover .ulSubMenu li {
+  transform: scale(1);
+}
+.ulMenuAccount li:hover .ulSubMenu {
+  transform: scale(1);
+}
+
+.ulSubMenu {
+  transform: scale(0);
+  transform-origin: top center;
+  transition: all 300ms ease-in-out;
+}
+.ulSubMenu li {
+  color: #a208fc;
+  transform: scale(0);
+  transform-origin: top center;
+  transition: all 300ms ease-in-out;
+}
+.ulSubMenu li:last-child {
+  border-bottom: black;
+}
+.ulSubMenu li:hover {
+  color: white;
+}
+.ulSubMenu li:hover a {
+  background: #a208fc;
+  color: white;
+}
+
+#logout:hover {
+  color: white;
+  background-color: #a208fc;
+}
+#logout svg > path {
+  fill: white !important;
 }
 
 #container {
@@ -132,7 +177,7 @@ input[class=darken]:hover {
 #newPost {
   padding: 18px;
   border: 7px solid #312f2f;
-  color: red;
+  color: #a208fc;
   margin-bottom: 10px;
 }
 #newPost .formGroup {
@@ -162,7 +207,7 @@ input[class=darken]:hover {
 
 .postCard {
   padding: 18px;
-  color: red;
+  color: #a208fc;
   margin-bottom: 5px;
   border: 4px solid white;
 }
@@ -200,7 +245,7 @@ input[class=darken]:hover {
 
 label {
   display: block;
-  color: red;
+  color: #a208fc;
   margin-bottom: 5px;
   font-size: 1.1em;
   font-weight: 700;
@@ -242,7 +287,7 @@ input[type=file] {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: red;
+  color: #a208fc;
   width: 340px;
   border: 7px solid #312f2f;
   border-radius: 25px;
@@ -275,11 +320,11 @@ input[type=file] {
 }
 
 #newComment {
-  color: red;
+  color: #a208fc;
 }
 
 .comment {
-  color: red;
+  color: #a208fc;
 }
 
 .commentFrm {

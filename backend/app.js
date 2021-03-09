@@ -1,5 +1,5 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 const path = require('path');
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
@@ -33,8 +33,11 @@ app.use((req, res, next) => {
 });
 
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({limit: '2Mb'}));
+//app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.json({limit: '2Mb'}));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json({limit: '2Mb'}));
 
 
 app.use('/images/', express.static(path.join(__dirname, 'images')));
