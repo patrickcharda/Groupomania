@@ -17,7 +17,7 @@ h1 {
 }
 
 a {
-    color: red;
+    color: rgb(162, 8, 252);
     &:hover {
         transform: scale(1.1);
         color: rgb(218, 180, 180);
@@ -27,13 +27,13 @@ a {
 button {
     &:hover {
         transform: scale(1.2);
-        color: red;
+        color: rgb(162, 8, 252);
     }
 }
 
 input[type=file] {
     &:hover {
-        background-color: red;
+        background-color: rgb(162, 8, 252);
         color: white;
         transform: scale(1.1);
     }
