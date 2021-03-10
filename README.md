@@ -17,4 +17,5 @@ Nb :
 - pour se connecter en admin (profil chargé.e de communication Groupomania) utiliser le compte suivant :
   fanny@free.fr
   Fanny777
+- modifications prévues : remplacement des champs input text par des champs textarea, rendre plus ergonomique la façon dont sont modifiés posts et commentaires
   
