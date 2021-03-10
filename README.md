@@ -1,5 +1,10 @@
 # Groupomania
 
+Projet de cours dans le cadre de la formation Développeur Web dispensée par OpenClassrooms.
+Il s'agit d'un prototype de mini-application de réseau social pour l'intranet d'une entreprise fictive (Groupomania).
+L'API repose sur un backend NodeJS Express.
+Le frontend "vanilla" prend la forme d'une architecture MVC.
+
 Installation :
 
 - cloner le dépôt
