@@ -1,5 +1,16 @@
 @media only screen and (min-width:800px) {
 
+    #logo img {
+        max-width: 200px;
+        max-height: 200px;
+        text-align: left;
+    }
+
+    #account {
+        padding-top: 80px;
+        text-align: right;
+    }
+
     #postRef {
         width: 40px;
         & #postRefContent {
@@ -68,6 +79,17 @@
 }
 
 @media only screen and (min-width:1100px) {
+
+    #logo img {
+        max-width: 200px;
+        max-height: 250px;
+        text-align: left;
+    }
+
+    #account {
+        padding-top: 80px;
+        text-align: right;
+    }
 
     #postRef {
         width: 550px;

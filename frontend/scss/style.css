@@ -64,7 +64,7 @@ input[class=darken]:hover {
 #header {
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
 }
 
 #logo img, #account {
@@ -72,12 +72,13 @@ input[class=darken]:hover {
 }
 
 #logo img {
-  max-width: 200px;
-  max-height: 250px;
+  max-width: 175px;
+  max-height: 200px;
   text-align: left;
 }
 
 #account {
+  padding-top: 75px;
   text-align: right;
 }
 
@@ -370,6 +371,17 @@ input[type=file] {
 }
 
 @media only screen and (min-width: 800px) {
+  #logo img {
+    max-width: 200px;
+    max-height: 200px;
+    text-align: left;
+  }
+
+  #account {
+    padding-top: 80px;
+    text-align: right;
+  }
+
   #postRef {
     width: 40px;
   }
@@ -426,6 +438,17 @@ input[type=file] {
   }
 }
 @media only screen and (min-width: 1100px) {
+  #logo img {
+    max-width: 200px;
+    max-height: 250px;
+    text-align: left;
+  }
+
+  #account {
+    padding-top: 80px;
+    text-align: right;
+  }
+
   #postRef {
     width: 550px;
   }

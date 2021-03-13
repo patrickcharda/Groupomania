@@ -68,11 +68,13 @@ class UsersView extends AbstractView {
             let userId = this.eventsTab[i];
             console.log(userId);
             console.log(userIdLink.id);
-            userIdLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                router.execute("showUserDeleteByAdmin", user, userId);
-            })
+            if (userId != 8) {
+                userIdLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    router.execute("showUserDeleteByAdmin", user, userId);
+                })
+            }
         }
     }
 
