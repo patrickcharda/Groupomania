@@ -5,6 +5,8 @@ Il s'agit d'un mini-prototype d'application de réseau social pour l'intranet d'
 L'API repose sur un backend NodeJS Express.
 Le frontend "vanilla" prend la forme d'une architecture MVC.
 
+Résultat temporaire de l'intégration ici : https://groupomania.by-webcycle.fr
+
 Installation :
 
 - cloner le dépôt
